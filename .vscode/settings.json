@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "BrickBreaker.sln"
+    "dotnet.defaultSolution": "Github_BrickBreaker.sln"
 }
