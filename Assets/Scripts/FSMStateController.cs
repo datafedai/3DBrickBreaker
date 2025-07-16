@@ -16,7 +16,7 @@ public class StateController : MonoBehaviour
     InputAction replayGame; // input for R from keyboard
 
     public TextMeshProUGUI displayText; // right side of canvas
-    public TextMeshProUGUI displayButtonName; // left side of canvas
+    //public TextMeshProUGUI displayButtonName; // left side of canvas
 
     private PlayerState currentState; // current player state
 
@@ -44,7 +44,7 @@ public class StateController : MonoBehaviour
                 {
                     //Debug.Log("SP pressed");
                     displayText.text = "Playing";
-                    displayButtonName.text = "Playing";
+                    //displayButtonName.text = "Playing";
                     currentState = PlayerState.Playing;
                 }
                 break;
@@ -59,7 +59,7 @@ public class StateController : MonoBehaviour
                 {
                     //Debug.Log("Q pressed");
                     displayText.text = "Game Over";
-                    displayButtonName.text = "Game Over";
+                    //displayButtonName.text = "Game Over";
                     currentState = PlayerState.Over;
                 }
 
@@ -76,22 +76,26 @@ public class StateController : MonoBehaviour
                     //Debug.Log("replaying game");
                     //Debug.Log("R pressed");
                     displayText.text = "Playing";
-                    displayButtonName.text = "Playing";
+                    //displayButtonName.text = "Playing";
                     currentState = PlayerState.Playing;
                 }
                 else if (quitGame.triggered) // if q pressed, transition to 'main menu' state
                 {
                     //Debug.Log("Q pressed");
                     displayText.text = "Main Menu";
-                    displayButtonName.text = "Main Menu";
+                    //displayButtonName.text = "Main Menu";
                     currentState = PlayerState.Menu;
                 }
 
                 break;
 
+            default:
+                break;
+
         }
 
     }
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -101,10 +105,12 @@ public class StateController : MonoBehaviour
         replayGame = InputSystem.actions.FindAction("Restart"); // r
 
         displayText.text = "Main Menu";
-        displayButtonName.text = "Main Menu";
+        //displayButtonName.text = "Main Menu";
 
         currentState = PlayerState.Menu;
     }
+
+
 
     // Update is called once per frame
     void Update()
