@@ -14,8 +14,8 @@ public class PlayerController : MonoBehaviour
     private int currentGameState; // 0: main menu, 1: playing, 2: game over
 
 
-    public TextMeshProUGUI displayText;
-    public TextMeshProUGUI displayButtonName;
+    private TextMeshProUGUI displayText;
+    private TextMeshProUGUI displayButtonName;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
