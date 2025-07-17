@@ -1,5 +1,15 @@
+//using System.Numerics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+using TMPro;
+using Unity.Mathematics;
+using Unity.VisualScripting;
+
+using UnityEngine.UI;
+
+using UnityEngine.WSA;
+using JetBrains.Annotations;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -7,6 +17,8 @@ public class PlayerControl : MonoBehaviour
 
     InputAction moveAction;
     public int moveSpeed;
+    private float posX;
+    private float posY;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,7 +41,20 @@ public class PlayerControl : MonoBehaviour
         }
 
         // move paddle left or right
+        posX = transform.position.x;
+        posY = transform.position.y;
+        Debug.Log("posX: " + posX);
+        if (posX < -12f)
+        {
+            transform.position = new Vector3(-11.9f, posY, 0);
+        }
+        else if (posX > 12f)
+        {
+            transform.position = new Vector3(11.9f, posY, 0);
+        }
         transform.Translate(moveValue.x * Time.deltaTime * moveSpeed, 0, 0);
+
+
 
     }
 }
