@@ -12,7 +12,7 @@ public class PlayerControl : MonoBehaviour
     void Start()
     {
         moveAction = InputSystem.actions.FindAction("Move");
-        moveSpeed = 10;
+        moveSpeed = 20;
     }
 
     // Update is called once per frame
@@ -28,7 +28,8 @@ public class PlayerControl : MonoBehaviour
             Debug.Log("right arrow pressed");
         }
 
-        transform.Translate(0,-moveValue.x * Time.deltaTime * moveSpeed, 0);
+        // move paddle left or right
+        transform.Translate(moveValue.x * Time.deltaTime * moveSpeed, 0, 0);
 
     }
 }
