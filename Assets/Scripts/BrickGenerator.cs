@@ -7,37 +7,10 @@ public class BrickGenerator : MonoBehaviour
 {
 
     public GameObject brickObject;
-    private int row;
-    private int col;
-    private int midCol;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        row = 8;
-        col = 13;
-        midCol = 7;
-
-        int[] columns = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 }; // columns for the grid
-        Debug.Log("print statement here");
-        printRowCol(row, col);
-
-
-        createBricks(brickObject.transform);
-    }
-
-    public void printRowCol(int row, int col)
-    {
-        for (int i = 1; i <= row; i++) // row
-        {
-            for (int j = midCol; j <= col; j++) // col
-            {
-
-
-            }
-        }
-
-    }
+    private int numRows;
+    private int numCols;
+    private float brickHeight;
+    private float brickWidth;
 
 
 
@@ -45,25 +18,50 @@ public class BrickGenerator : MonoBehaviour
 
     public void createBricks(Transform refPos)
     {
-        Vector3 currentPos = refPos.position; // position of the original object
-        int n = (col - 1) / 2;
-        int count = 0;
-        float brick_thickness = 0.6f;
+        Vector3 currentPos = refPos.position; // position of the (middle = original) object
+        int n = (numCols - 1) / 2; // n = number of rows left or right of the middle column
 
 
-        for (int j = 0; j < row; j++)
+        for (int j = 0; j < numRows; j++) // rows: j=0~7 
         {
-            for (int i = -n; i <= n; i++)
+            for (int jj = 0; jj < numCols; jj++) // columns: jj=0~12
             {
-                currentPos = refPos.position + new Vector3(i * 2, -j * brick_thickness, 0);
+                // column layout: 1,2,3,4,5,6,[7],8,9,10,11,12,13
+                // order of creation: (jj, col) = (0, 7th), (1, 6th), (2, 8th), (3, 5th), (4, 9th), (5, 4th), ....
+                // shift index i from the middle as jj changes 0~12:
+                // (jj, i) = (0, 0), (1, -1), (2, 1), (3, -2), (4, 2), (5, -3), ....
+                // In short, the shift index changes 0, -1, 1, -2, 2, -3, 3, -4, ....
+                int i = (int)(Mathf.Pow(-1, jj) * Mathf.Floor((jj + 1) / 2));
+                //Debug.Log("jj:i = " + jj + ":" + i);
+
+                // j=0 top row, j=1 2nd row from top, j=2 3rd row from top, etc.
+                // As i changes in the order of 0, -1, 1, -2, 2, -3, 3,.... 
+                // object is created first in the middle(7th=0*brickWidth), 
+                // then 1st left(6th=-1*brickWidth) of middle, then 1st right(8th=1*brickWidth) of middle
+                // then 2nd left(5th=-2*brickWidth) of middle, then 2nd right(9th=2*brickWidth) of middle, .....
+                currentPos = refPos.position + new Vector3(i * brickWidth, -j * brickHeight, 0);
                 Instantiate(brickObject, currentPos, Quaternion.identity);
-                count++;
             }
 
         }
-        Debug.Log("total bricks created: " + count);
 
     }
+
+
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        numRows = 8;
+        numCols = 13;
+        brickHeight = 0.6f;
+        brickWidth = 2f;
+ 
+        createBricks(brickObject.transform);
+    }
+
+
+
     // Update is called once per frame
     void Update()
     {
