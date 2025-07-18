@@ -11,7 +11,7 @@ using UnityEngine.UI;
 using UnityEngine.WSA;
 using JetBrains.Annotations;
 
-public class PlayerControl : MonoBehaviour
+public class PaddleController : MonoBehaviour
 {
 
 
