@@ -11,6 +11,11 @@ public class BrickGenerator : MonoBehaviour
     private float brickHeight;
     private float brickWidth;
 
+    public Material[] materials;
+
+
+
+
     // Method1: 
     // create bricks starting from the middle column 
     // and alternate left and right toward 1st and 13th column
@@ -36,7 +41,10 @@ public class BrickGenerator : MonoBehaviour
                 // then 1st left(6th=-1*brickWidth) of middle, then 1st right(8th=1*brickWidth) of middle
                 // then 2nd left(5th=-2*brickWidth) of middle, then 2nd right(9th=2*brickWidth) of middle, .....
                 currentPos = refPos.position + new Vector3(i * brickWidth, -j * brickHeight, 0);
-                Instantiate(brickObject, currentPos, Quaternion.identity);
+
+                GameObject instantiatedObject = Instantiate(brickObject, currentPos, Quaternion.identity);
+                Renderer brickRenderer = instantiatedObject.GetComponent<Renderer>();
+                brickRenderer.material = materials[j];
             }
 
         }

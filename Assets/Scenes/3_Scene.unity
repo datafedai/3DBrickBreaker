@@ -550,6 +550,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   brickObject: {fileID: 7872368346859609066, guid: eff6e10d18b63a24b9bc03ddd8011d68, type: 3}
+  materials:
+  - {fileID: 2100000, guid: 6676f544c417f3c4da30f8f0ff9c08fe, type: 2}
+  - {fileID: 2100000, guid: 3c9b588b62ab39b4ca07a188c5765398, type: 2}
+  - {fileID: 2100000, guid: e1201b306c770294f9b50ac2228aa67b, type: 2}
+  - {fileID: 2100000, guid: 918894857f2dcda4c8721ef8a0e634d9, type: 2}
+  - {fileID: 2100000, guid: 580c4488231c4684996366d5af1e07ed, type: 2}
+  - {fileID: 2100000, guid: 1147eb33e8589a140a7cf3dc0ca1a1de, type: 2}
+  - {fileID: 2100000, guid: 0a9bdf03a13a8064491b6b16a0441c76, type: 2}
+  - {fileID: 2100000, guid: 1c717346fe3155c4c92523e8ac9b671a, type: 2}
 --- !u!4 &794380256
 Transform:
   m_ObjectHideFlags: 0
@@ -1348,6 +1357,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 227285434364266961, guid: eff6e10d18b63a24b9bc03ddd8011d68, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 6676f544c417f3c4da30f8f0ff9c08fe, type: 2}
     - target: {fileID: 3771378189959594265, guid: eff6e10d18b63a24b9bc03ddd8011d68, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.6
@@ -1398,7 +1411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7872368346859609066, guid: eff6e10d18b63a24b9bc03ddd8011d68, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8228334371865633483, guid: eff6e10d18b63a24b9bc03ddd8011d68, type: 3}
       propertyPath: m_Name
