@@ -43,7 +43,7 @@ public class PaddleController : MonoBehaviour
         // move paddle left or right
         posX = transform.position.x;
         posY = transform.position.y;
-        Debug.Log("posX: " + posX);
+        //Debug.Log("posX: " + posX);
         if (posX < -12f)
         {
             transform.position = new Vector3(-11.9f, posY, 0);

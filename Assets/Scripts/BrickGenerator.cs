@@ -13,8 +13,20 @@ public class BrickGenerator : MonoBehaviour
 
     public Material[] materials;
 
+    public bool randomizedBrickColors;
 
 
+    private int chooseMaterial(int j)
+    {
+        if (randomizedBrickColors == true)
+        {
+            return Random.Range(0, 8);
+        }
+        else
+        {
+            return j;
+        }
+    }
 
     // Method1: 
     // create bricks starting from the middle column 
@@ -22,6 +34,7 @@ public class BrickGenerator : MonoBehaviour
     public void createBricks(Transform refPos)
     {
         Vector3 currentPos = refPos.position; // position of the (middle = original) object
+        int count = 0;
 
         for (int j = 0; j < numRows; j++) // rows: j=0~7 
         {
@@ -44,7 +57,10 @@ public class BrickGenerator : MonoBehaviour
 
                 GameObject instantiatedObject = Instantiate(brickObject, currentPos, Quaternion.identity);
                 Renderer brickRenderer = instantiatedObject.GetComponent<Renderer>();
-                brickRenderer.material = materials[j];
+                brickRenderer.material = materials[chooseMaterial(j)];
+
+                //count++;
+                //Debug.Log(count + " : " + Random.Range(0, 8));
             }
 
         }

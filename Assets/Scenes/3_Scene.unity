@@ -559,6 +559,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 1147eb33e8589a140a7cf3dc0ca1a1de, type: 2}
   - {fileID: 2100000, guid: 0a9bdf03a13a8064491b6b16a0441c76, type: 2}
   - {fileID: 2100000, guid: 1c717346fe3155c4c92523e8ac9b671a, type: 2}
+  randomizedBrickColors: 1
 --- !u!4 &794380256
 Transform:
   m_ObjectHideFlags: 0
