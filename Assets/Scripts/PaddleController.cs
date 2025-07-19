@@ -31,6 +31,8 @@ public class PaddleController : MonoBehaviour
     void Update()
     {
         Vector2 moveValue = moveAction.ReadValue<Vector2>();
+
+        /*
         if (moveValue.x == -1f)
         {
             Debug.Log("left arrow pressed");
@@ -39,6 +41,8 @@ public class PaddleController : MonoBehaviour
         {
             Debug.Log("right arrow pressed");
         }
+        */
+        
 
         // move paddle left or right
         posX = transform.position.x;

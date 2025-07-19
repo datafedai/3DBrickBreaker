@@ -10,10 +10,9 @@ public class BrickGenerator : MonoBehaviour
     private int numCols;
     private float brickHeight;
     private float brickWidth;
-
     public Material[] materials;
-
     public bool randomizedBrickColors;
+    private int count = 0;
 
 
     private int chooseMaterial(int j)
@@ -34,7 +33,7 @@ public class BrickGenerator : MonoBehaviour
     public void createBricks(Transform refPos)
     {
         Vector3 currentPos = refPos.position; // position of the (middle = original) object
-        int count = 0;
+        //int count = 0;
 
         for (int j = 0; j < numRows; j++) // rows: j=0~7 
         {
@@ -55,12 +54,15 @@ public class BrickGenerator : MonoBehaviour
                 // then 2nd left(5th=-2*brickWidth) of middle, then 2nd right(9th=2*brickWidth) of middle, .....
                 currentPos = refPos.position + new Vector3(i * brickWidth, -j * brickHeight, 0);
 
+
+
                 GameObject instantiatedObject = Instantiate(brickObject, currentPos, Quaternion.identity);
                 Renderer brickRenderer = instantiatedObject.GetComponent<Renderer>();
                 brickRenderer.material = materials[chooseMaterial(j)];
 
-                //count++;
-                //Debug.Log(count + " : " + Random.Range(0, 8));
+                count++;
+                Debug.Log(count + " : " + Random.Range(0, 8));
+
             }
 
         }
@@ -101,7 +103,7 @@ public class BrickGenerator : MonoBehaviour
         numCols = 13;
         brickHeight = 0.6f;
         brickWidth = 2f;
- 
+
         // creeate bricks in 8 rows x 13 columns using Method1
         createBricks(brickObject.transform);
     }
