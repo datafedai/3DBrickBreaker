@@ -27,7 +27,7 @@ public class PaddleController : MonoBehaviour
     {
         moveAction = InputSystem.actions.FindAction("Move");
         moveSpeed = 20;
-        wall = 13f;
+        wall = 12f;
     }
 
     // Update is called once per frame
