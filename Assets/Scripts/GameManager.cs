@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
                 }
                 else if (SceneManager.GetActiveScene().name == "Menu_Scene")
                 {
+                    displayText.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
                     if (playGame.triggered)
                     {
                         SceneManager.LoadScene("3_Scene");
