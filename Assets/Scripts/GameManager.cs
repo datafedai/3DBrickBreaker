@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -10,13 +11,15 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI displayText; // for GameState text
     public TextMeshProUGUI displayText2; // special menu scene text
     private GameState currentGameState;
-    private static GameState newGameState; // 1st enum value is assigned by default
+    private static GameState newGameState; // A 'static' variable carries information through different scenes.
 
     InputAction playGame;
     InputAction pauseGame;
     InputAction quitGame;
     private bool canMovePaddle; // to control paddle move when paused
 
+    public GameObject ballObject;
+    Rigidbody ballRB;
 
     private enum GameState
     {
@@ -77,7 +80,8 @@ public class GameManager : MonoBehaviour
 
 
             case GameState.Playing:
-                // load playing scene
+                // unpause ball
+                unpauseBall();
 
                 // enable PaddleController
                 canMovePaddle = true;
@@ -94,6 +98,7 @@ public class GameManager : MonoBehaviour
                 if (pauseGame.triggered)
                 {
                     currentGameState = GameState.Paused;
+                    pauseBall();
                 }
 
                 break;
@@ -106,7 +111,8 @@ public class GameManager : MonoBehaviour
                 // display Paused text
                 displayText.text = "Paused";
 
-
+                // pause ball
+                Time.timeScale = 0f;
 
                 // if pauseGame triggered, (= ESC or P pressed)
                 // resume playing
@@ -114,6 +120,7 @@ public class GameManager : MonoBehaviour
                 if (pauseGame.triggered)
                 {
                     currentGameState = GameState.Playing;
+                    //unpauseBall();
                 }
 
 
@@ -145,11 +152,31 @@ public class GameManager : MonoBehaviour
     }
 
 
+    void unpauseBall()
+    {
+        // Time.timeScale to 1
+        Time.timeScale = 1;
+
+        // apply gravity
+        ballRB.useGravity = true;
+    }
+
+
+    void pauseBall()
+    {
+        // Time.timeScale to 1
+        Time.timeScale = 0;
+
+        // apply gravity
+        ballRB.useGravity = false;
+    }
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        ballRB = ballObject.GetComponent<Rigidbody>();
+
         playGame = InputSystem.actions.FindAction("Confirm");   // space bar
         pauseGame = InputSystem.actions.FindAction("Restart");  // ESC or P
         quitGame = InputSystem.actions.FindAction("Menu");      // Q
