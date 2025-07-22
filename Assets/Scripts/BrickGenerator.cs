@@ -61,7 +61,7 @@ public class BrickGenerator : MonoBehaviour
                 brickRenderer.material = materials[chooseMaterial(j)];
 
                 count++;
-                Debug.Log(count + " : " + Random.Range(0, 8));
+                //Debug.Log(count + " : " + Random.Range(0, 8));
 
             }
 
