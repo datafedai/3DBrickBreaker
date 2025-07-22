@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         switch (currentGameState)
         {
             case GameState.Menu:
-                
+
                 // enable PaddleController
                 canMovePaddle = true;
 
@@ -40,25 +40,37 @@ public class GameManager : MonoBehaviour
                 displayText.text = "Main Menu";
                 //displayTextMenuScene.text = "Special Scene";
 
-                //Debug.Log(SceneManager.GetActiveScene().name);
+                Debug.Log(SceneManager.GetActiveScene().name);
 
                 // if playGame triggered, (= Space Bar pressed)
                 // launch game
                 // change currentGameState to Playing
 
-                //Debug.Log(playGame.triggered);
+                Debug.Log(playGame.triggered);
 
-                if (playGame.triggered)
+                if (SceneManager.GetActiveScene().name == "3_Scene")
                 {
-                    if (SceneManager.GetActiveScene().name == "Menu_Scene")
+                    if (playGame.triggered)
+                    {
+                        currentGameState = GameState.Playing;
+                    }
+                }
+                else if (SceneManager.GetActiveScene().name == "Menu_Scene")
+                {
+                    if (playGame.triggered)
                     {
                         SceneManager.LoadScene("3_Scene");
+                        newGameState = GameState.Playing;
                     }
-
-                    currentGameState = GameState.Playing;
-                    //Debug.Log(currentGameState);
-
+                    else if (quitGame.triggered)
+                    {
+                        SceneManager.LoadScene("3_Scene");
+                        newGameState = GameState.Menu;
+                    }
                 }
+
+
+
 
                 break;
 
@@ -155,8 +167,8 @@ public class GameManager : MonoBehaviour
             currentGameState = GameState.Playing;
         }
 
-        //Debug.Log("newGameState: " + newGameState);
-        //Debug.Log("currentGameState: " + currentGameState);
+        Debug.Log("newGameState: " + newGameState);
+        Debug.Log("currentGameState: " + currentGameState);
 
     }
 
