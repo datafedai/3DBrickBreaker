@@ -3,13 +3,15 @@ using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 
 public class GameManager : MonoBehaviour
 {
 
-    public TextMeshProUGUI displayText; // for GameState text
-    public TextMeshProUGUI displayText2; // special menu scene text
+    public TextMeshProUGUI displayState; // for GameState text
+    public TextMeshProUGUI displayState2; // for special menu
+    public TextMeshProUGUI displayInstruction; // special menu scene text
     private GameState currentGameState;
     private static GameState newGameState; // A 'static' variable carries information through different scenes.
 
@@ -20,13 +22,14 @@ public class GameManager : MonoBehaviour
 
     public GameObject ballObject;
     Rigidbody ballRB;
+    //public GameObject paddleObject;
 
     private enum GameState
     {
         Menu,       // main menu: menu only scene
         Playing,    // playing game: can move paddle
         Paused,       // game paused: can't move paddle
-
+        //Over        // game over when ball is lost
     }
 
 
@@ -35,22 +38,15 @@ public class GameManager : MonoBehaviour
         switch (currentGameState)
         {
             case GameState.Menu:
-
-                // enable PaddleController
+                // enable Paddle Control
                 canMovePaddle = true;
 
-                //display a scene for menu
-                displayText.text = "Main Menu";
-                //displayTextMenuScene.text = "Special Scene";
+                //display menu state
+                displayState.text = "Main Menu";
 
-                Debug.Log(SceneManager.GetActiveScene().name);
+                //Debug.Log(SceneManager.GetActiveScene().name);
 
-                // if playGame triggered, (= Space Bar pressed)
-                // launch game
-                // change currentGameState to Playing
-
-                Debug.Log(playGame.triggered);
-
+                // if in main game scene, check for space bar input and change game state accordingly
                 if (SceneManager.GetActiveScene().name == "3_Scene")
                 {
                     if (playGame.triggered)
@@ -58,9 +54,11 @@ public class GameManager : MonoBehaviour
                         currentGameState = GameState.Playing;
                     }
                 }
+                // if in special temporary scene after quiting game, display appropriate instruction
+                // and check user input to choose for Main Menu or Playing of the main game scene 
                 else if (SceneManager.GetActiveScene().name == "Menu_Scene")
                 {
-                    displayText.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
+                    displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
                     if (playGame.triggered)
                     {
                         SceneManager.LoadScene("3_Scene");
@@ -73,21 +71,18 @@ public class GameManager : MonoBehaviour
                     }
                 }
 
-
-
-
                 break;
 
 
             case GameState.Playing:
-                // unpause ball
+                // make sure that ball is not paused
                 unpauseBall();
 
                 // enable PaddleController
                 canMovePaddle = true;
 
                 // display Playing
-                displayText.text = "Playing";
+                displayState.text = "Playing";
 
                 // if ball gets lost, game over
 
@@ -100,7 +95,16 @@ public class GameManager : MonoBehaviour
                     currentGameState = GameState.Paused;
                     pauseBall();
                 }
-
+/*
+                // temporary test
+                Vector3 ballPos = ballObject.transform.position;
+                //Vector3 paddlePos = paddleObject.transform.position;
+                //Debug.Log("ballY:paddleY = " + ballPos.y + " : " + paddlePos.y);
+                if (ballPos.y < -10f)
+                {
+                    currentGameState = GameState.Over;
+                }
+*/
                 break;
 
 
@@ -109,10 +113,10 @@ public class GameManager : MonoBehaviour
                 canMovePaddle = false;
 
                 // display Paused text
-                displayText.text = "Paused";
+                displayState.text = "Paused";
 
                 // pause ball
-                Time.timeScale = 0f;
+                pauseBall();
 
                 // if pauseGame triggered, (= ESC or P pressed)
                 // resume playing
@@ -135,8 +139,24 @@ public class GameManager : MonoBehaviour
                 }
 
                 break;
+/*
+            case GameState.Over:
+                // check ball position
+                //Vector3 ballPos = ballObject.transform.position;
+                Debug.Log("I am over");
+                displayText.text = "Game Over";
+                displayInstruction.text = "Press Q for Main Menu";
 
+                //SceneManager.LoadScene("Menu_Scene");
+                if (quitGame.triggered)
+                {
+                    SceneManager.LoadScene("Menu_Scene");
+                    currentGameState = GameState.Menu;
+                    newGameState = GameState.Playing; // a new state when space bar pressed from Menu_Scene
+                }
+                break;
 
+*/
             default:
                 break;
 
@@ -182,8 +202,9 @@ public class GameManager : MonoBehaviour
         quitGame = InputSystem.actions.FindAction("Menu");      // Q
 
         //currentGameState = GameState.Menu;
-        displayText.text = "Main Menu";
-        displayText2.text = "Special\nMenu Scene";
+        displayState.text = "Main Menu";
+        displayState2.text = "Special\nMenu Scene";
+        displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
 
         canMovePaddle = true;
 
@@ -195,8 +216,8 @@ public class GameManager : MonoBehaviour
             currentGameState = GameState.Playing;
         }
 
-        Debug.Log("newGameState: " + newGameState);
-        Debug.Log("currentGameState: " + currentGameState);
+        //Debug.Log("newGameState: " + newGameState);
+        //Debug.Log("currentGameState: " + currentGameState);
 
     }
 
