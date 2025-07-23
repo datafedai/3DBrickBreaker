@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 
 
 public class GameManager : MonoBehaviour
@@ -13,7 +14,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI displayState2; // for special menu
     public TextMeshProUGUI displayInstruction; // special menu scene text
     private GameState currentGameState;
-    private static GameState newGameState; // A 'static' variable carries information through different scenes.
+    private static GameState nextGameState; // A 'static' variable carries information through different scenes.
+    private static GameState prevGameState; // previous game state
 
     InputAction playGame;
     InputAction pauseGame;
@@ -22,14 +24,14 @@ public class GameManager : MonoBehaviour
 
     public GameObject ballObject;
     Rigidbody ballRB;
-    //public GameObject paddleObject;
+    private const float gameOverThresholdY = -7f;
 
     private enum GameState
     {
         Menu,       // main menu: menu only scene
         Playing,    // playing game: can move paddle
         Paused,       // game paused: can't move paddle
-        //Over        // game over when ball is lost
+        Over        // Experimental: game over when ball is lost downward
     }
 
 
@@ -58,17 +60,24 @@ public class GameManager : MonoBehaviour
                 // and check user input to choose for Main Menu or Playing of the main game scene 
                 else if (SceneManager.GetActiveScene().name == "Menu_Scene")
                 {
-                    displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
+
+                    displayInstruction.text = "Press Space Bar to play again.\nPress Q to reurn to Main Menu.";
+                    if (prevGameState == GameState.Over)
+                    {
+                        displayState2.text = "<color=Red>--Game Over--</color>";
+                    }
+
                     if (playGame.triggered)
                     {
                         SceneManager.LoadScene("3_Scene");
-                        newGameState = GameState.Playing;
+                        nextGameState = GameState.Playing;
                     }
                     else if (quitGame.triggered)
                     {
                         SceneManager.LoadScene("3_Scene");
-                        newGameState = GameState.Menu;
+                        nextGameState = GameState.Menu;
                     }
+
                 }
 
                 break;
@@ -95,16 +104,16 @@ public class GameManager : MonoBehaviour
                     currentGameState = GameState.Paused;
                     pauseBall();
                 }
-/*
-                // temporary test
+
+                // Experimental: Game Over
                 Vector3 ballPos = ballObject.transform.position;
                 //Vector3 paddlePos = paddleObject.transform.position;
                 //Debug.Log("ballY:paddleY = " + ballPos.y + " : " + paddlePos.y);
-                if (ballPos.y < -10f)
+                if (ballPos.y < gameOverThresholdY)
                 {
                     currentGameState = GameState.Over;
                 }
-*/
+
                 break;
 
 
@@ -135,28 +144,34 @@ public class GameManager : MonoBehaviour
                 {
                     SceneManager.LoadScene("Menu_Scene");
                     currentGameState = GameState.Menu;
-                    newGameState = GameState.Playing; // a new state when space bar pressed from Menu_Scene
+                    prevGameState = GameState.Paused;
+                    nextGameState = GameState.Playing; // a new state when space bar pressed from Menu_Scene
                 }
 
                 break;
-/*
+
             case GameState.Over:
-                // check ball position
-                //Vector3 ballPos = ballObject.transform.position;
-                Debug.Log("I am over");
-                displayText.text = "Game Over";
-                displayInstruction.text = "Press Q for Main Menu";
+                //Debug.Log("I am over");
 
-                //SceneManager.LoadScene("Menu_Scene");
-                if (quitGame.triggered)
-                {
-                    SceneManager.LoadScene("Menu_Scene");
-                    currentGameState = GameState.Menu;
-                    newGameState = GameState.Playing; // a new state when space bar pressed from Menu_Scene
-                }
+                // change scene
+                SceneManager.LoadScene("Menu_Scene");
+                prevGameState = GameState.Over;
+                currentGameState = GameState.Menu;
+                nextGameState = GameState.Playing; // a new state when space bar pressed from Menu_Scene
+
+                /*
+                                //SceneManager.LoadScene("Menu_Scene");
+                                if (quitGame.triggered)
+                                {
+                                    SceneManager.LoadScene("Menu_Scene");
+                                    currentGameState = GameState.Menu;
+                                    newGameState = GameState.Playing; // a new state when space bar pressed from Menu_Scene
+                                }
+
+                */
                 break;
 
-*/
+
             default:
                 break;
 
@@ -203,7 +218,7 @@ public class GameManager : MonoBehaviour
 
         //currentGameState = GameState.Menu;
         displayState.text = "Main Menu";
-        displayState2.text = "Special\nMenu Scene";
+        displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
 
         canMovePaddle = true;
@@ -211,14 +226,21 @@ public class GameManager : MonoBehaviour
         // When newGameState and currentGameState are declared, they get the valueof the 1st enum, Menu
         // currentGameState = GameState.Menu, newGameState = GameState.Menu, 
         // so don't need to assign GameState.Menu at Start()
-        if (SceneManager.GetActiveScene().name == "3_Scene" && newGameState == GameState.Playing) // if loaded from the new scene
+
+        if (SceneManager.GetActiveScene().name == "3_Scene" && nextGameState == GameState.Playing) // if loaded from the new scene
         {
             currentGameState = GameState.Playing;
         }
 
-        //Debug.Log("newGameState: " + newGameState);
-        //Debug.Log("currentGameState: " + currentGameState);
+        /*
+        else if (SceneManager.GetActiveScene().name == "Menu_Scene" && prevGameState == GameState.Over)
+        {
+            displayState2.text = "---Game Over---";
+        }*/
 
+        //Debug.Log("prevGameState: " + prevGameState);
+        //Debug.Log("currentGameState: " + currentGameState);
+        //Debug.Log("newGameState: " + newGameState);
     }
 
     // Update is called once per frame
