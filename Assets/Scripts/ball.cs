@@ -10,8 +10,18 @@ public class ball : MonoBehaviour
     private bool isBallLaunched;
     public bool isBallMissed;
 
+    void OnCollisionEnter(Collision collision)
+    {
+        //Debug.Log("collision collider: " + collision.collider);
+        //Debug.Log("collision gameObject: " + collision.gameObject.name);
+        //Debug.Log("gameObject: " + gameObject.name);
+        if (collision.gameObject.name == "Brick(Clone)" || collision.gameObject.name == "Brick")
+        {
+            Destroy(collision.gameObject);
+            Debug.Log(collision.gameObject.name + " destroyed.");
+        }
 
-
+    }
     void Awake()
     {
         ballRB = GetComponent<Rigidbody>();

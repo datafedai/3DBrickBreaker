@@ -88,10 +88,10 @@ public class GameManager : MonoBehaviour
                 // if in main game scene, check for space bar input and change game state accordingly
                 if (SceneManager.GetActiveScene().name == "3_Scene")
                 {
-                    Debug.Log("ding1");
+                    //Debug.Log("ding1");
                     if (playGame.triggered)
                     {
-                        Debug.Log("ding2");
+                        //Debug.Log("ding2");
                         currentGameState = GameState.Playing;
                     }
                 }
