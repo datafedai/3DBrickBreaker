@@ -18,7 +18,7 @@ public class ball : MonoBehaviour
         if (collision.gameObject.name == "Brick(Clone)" || collision.gameObject.name == "Brick")
         {
             Destroy(collision.gameObject);
-            Debug.Log(collision.gameObject.name + " destroyed.");
+            //Debug.Log(collision.gameObject.name + " destroyed.");
         }
 
     }
@@ -101,7 +101,7 @@ public class ball : MonoBehaviour
 
         if (ballRB.transform.position.y < -5f)
         {
-            Debug.Log("The ball is missed. Game Over");
+            //Debug.Log("The ball is missed. Game Over");
             isBallMissed = true;
         }
     }

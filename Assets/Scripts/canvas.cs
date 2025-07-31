@@ -60,8 +60,8 @@ public class canvas : MonoBehaviour
         displayState.text = "Game Over";
         displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
-        Debug.Log(" I am on Game Over");
-        SceneManager.LoadScene("Menu_Scene");
+        //Debug.Log(" I am on Game Over");
+        //SceneManager.LoadScene("Menu_Scene");
         //Debug.Log(SceneManager.GetActiveScene().name);
     }
 

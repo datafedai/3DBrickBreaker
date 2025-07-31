@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject ballObject;
     ball ballScript;
+    private bool isInvoked;
 
 
     private void Awake()
@@ -73,7 +74,12 @@ public class GameManager : MonoBehaviour
         switch (currentGameState)
         {
             case GameState.Menu:
-                OnGameStateChangedToMenu?.Invoke();
+                if (isInvoked)
+                {
+                    OnGameStateChangedToMenu?.Invoke();
+                    isInvoked = false;
+                }
+
 
 
                 //Debug.Log("in Menu state");
@@ -92,6 +98,7 @@ public class GameManager : MonoBehaviour
                     if (playGame.triggered)
                     {
                         //Debug.Log("ding2");
+                        isInvoked = true;
                         currentGameState = GameState.Playing;
                     }
                 }
@@ -129,7 +136,12 @@ public class GameManager : MonoBehaviour
 
 
             case GameState.Playing:
-                OnGameStateChangedToPlaying?.Invoke();
+                if (isInvoked)
+                {
+                    OnGameStateChangedToPlaying?.Invoke();
+                    isInvoked = false;
+                }
+
 
                 //Debug.Log(" in Playing state");
                 // enable PaddleController
@@ -147,8 +159,9 @@ public class GameManager : MonoBehaviour
 
                 if (pauseGame.triggered)
                 {
+                    isInvoked = true;
                     currentGameState = GameState.Paused;
-                    Debug.Log("pausing game");
+                    //Debug.Log("pausing game");
                 }
 
                 /*
@@ -165,7 +178,12 @@ public class GameManager : MonoBehaviour
 
 
             case GameState.Paused:
-                OnGameStateChangedToPaused?.Invoke();
+                if (isInvoked)
+                {
+                    OnGameStateChangedToPaused?.Invoke();
+                    isInvoked = false;
+                }
+
 
 
                 //Debug.Log("in pause state");
@@ -180,8 +198,9 @@ public class GameManager : MonoBehaviour
                 // change currentGameState to Playing
                 if (pauseGame.triggered)
                 {
+                    isInvoked = true;
                     currentGameState = GameState.Playing;
-                    Debug.Log("replaying game");
+                    //Debug.Log("replaying game");
                 }
 
 
@@ -190,8 +209,9 @@ public class GameManager : MonoBehaviour
                 // change currentGameState to Menu
                 if (quitGame.triggered)
                 {
+                    isInvoked = true;
                     newGameState = GameState.Over;
-                    Debug.Log("quitting game");
+                    //Debug.Log("quitting game");
                     SceneManager.LoadScene("Menu_Scene");
 
                     //prevGameState = GameState.Paused;
@@ -202,8 +222,14 @@ public class GameManager : MonoBehaviour
 
             case GameState.Over:
                 //Debug.Log("in over state");
-                OnGameStateChangedToOver?.Invoke();
-
+                //Debug.Log("is invoked1: " + isInvoked);
+                if (isInvoked)
+                {
+                    OnGameStateChangedToOver?.Invoke();
+                    isInvoked = false;
+                    //Debug.Log("hey");
+                }
+                //Debug.Log("is invoked2: " + isInvoked);
                 // change scene
                 //SceneManager.LoadScene("Menu_Scene");
                 //prevGameState = GameState.Over;
@@ -213,8 +239,9 @@ public class GameManager : MonoBehaviour
                 if (quitGame.triggered)
                 {
                     //newGameState = GameState.Over;
-                    Debug.Log("Going back to Main menu");
-                    newGameState = GameState.Menu;                    
+                    //Debug.Log("Going back to Main menu");
+                    isInvoked = true;
+                    newGameState = GameState.Menu;
                     SceneManager.LoadScene("3_Scene");
 
                     //prevGameState = GameState.Paused;
@@ -223,20 +250,12 @@ public class GameManager : MonoBehaviour
 
                 if (playGame.triggered)
                 {
-                    Debug.Log("Paying again");
+                    //Debug.Log("Paying again");
+                    isInvoked = true;
                     newGameState = GameState.Playing;
                     SceneManager.LoadScene("3_Scene");
                 }
-                /*
-                                //SceneManager.LoadScene("Menu_Scene");
-                                if (quitGame.triggered)
-                                {
-                                    SceneManager.LoadScene("Menu_Scene");
-                                    currentGameState = GameState.Menu;
-                                    newGameState = GameState.Playing; // a new state when space bar pressed from Menu_Scene
-                                }
 
-                */
                 break;
 
 
@@ -285,6 +304,8 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        isInvoked = true;
+        Debug.Log("isInvoked set to true on Start");
         //ballRB = ballObject.GetComponent<Rigidbody>();
 
         playGame = InputSystem.actions.FindAction("Confirm");   // space bar
@@ -308,18 +329,19 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "3_Scene" && newGameState == GameState.Playing) // if loaded from the new scene
         {
             currentGameState = GameState.Playing;
-            Debug.Log("here1");
+            //Debug.Log("here1");
         }
 
 
         else if (SceneManager.GetActiveScene().name == "Menu_Scene" && newGameState == GameState.Over)
         {
             currentGameState = GameState.Over;
-            Debug.Log("here2");
+            //isInvoked = true;
+            //Debug.Log("here2");
         }
 
-        Debug.Log("newGameState: " + newGameState);
-        Debug.Log("currentGameState: " + currentGameState);
+        //Debug.Log("newGameState: " + newGameState);
+        //Debug.Log("currentGameState: " + currentGameState);
 
         ballScript = ballObject.GetComponent<ball>();
     }
@@ -333,7 +355,7 @@ public class GameManager : MonoBehaviour
             currentGameState = GameState.Over;
             newGameState = GameState.Over;
             SceneManager.LoadScene("Menu_Scene");
-
+            Debug.Log("in update if");
         }
 
         handleGameState();
