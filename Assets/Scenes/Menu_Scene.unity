@@ -685,7 +685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11dade036ea41e24d8a1ca30a3e1f477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 736240209}
   moveSpeed: 0
 --- !u!114 &736240209
 MonoBehaviour:
@@ -699,9 +698,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e3de252afa0e8846bcb72d6d3bfc2a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayState: {fileID: 2139025099}
-  displayState2: {fileID: 1176189997}
-  displayInstruction: {fileID: 735807773}
   ballObject: {fileID: 1389977432}
 --- !u!4 &736240210
 Transform:
@@ -1187,8 +1183,8 @@ GameObject:
   - component: {fileID: 1389977435}
   - component: {fileID: 1389977437}
   - component: {fileID: 1389977433}
-  - component: {fileID: 1389977438}
   - component: {fileID: 1389977434}
+  - component: {fileID: 1389977438}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -1321,13 +1317,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1389977432}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e3de252afa0e8846bcb72d6d3bfc2a1, type: 3}
+  m_Script: {fileID: 11500000, guid: 956246258445589488df60f340720513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayState: {fileID: 2139025099}
-  displayState2: {fileID: 2139025099}
-  displayInstruction: {fileID: 735807773}
-  ballObject: {fileID: 1389977432}
 --- !u!1 &1489527576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1338,9 +1330,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1489527580}
   - component: {fileID: 1489527579}
-  - component: {fileID: 1489527583}
   - component: {fileID: 1489527578}
   - component: {fileID: 1489527577}
+  - component: {fileID: 1489527583}
   - component: {fileID: 1489527582}
   m_Layer: 5
   m_Name: Canvas
@@ -1470,13 +1462,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1489527576}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e3de252afa0e8846bcb72d6d3bfc2a1, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f9678ca0199cc34fa0458578c5e44bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   displayState: {fileID: 2139025099}
   displayState2: {fileID: 1176189997}
   displayInstruction: {fileID: 735807773}
-  ballObject: {fileID: 1389977432}
 --- !u!1 &1571217887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1677,7 +1668,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11dade036ea41e24d8a1ca30a3e1f477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 736240209}
   moveSpeed: 0
 --- !u!1 &2139025097
 GameObject:
@@ -1696,7 +1686,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2139025098
 RectTransform:
   m_ObjectHideFlags: 0

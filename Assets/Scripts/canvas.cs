@@ -1,0 +1,83 @@
+using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
+
+
+public class canvas : MonoBehaviour
+{
+
+    public TextMeshProUGUI displayState; // for GameState text
+    public TextMeshProUGUI displayState2; // for special menu
+    public TextMeshProUGUI displayInstruction; // special menu scene text
+
+
+
+    void OnEnable()
+    {
+        //Debug.Log("in OnEnable in Canvas");
+        GameManager.Instance.OnGameStateChangedToPlaying += OnPlaying;
+        GameManager.Instance.OnGameStateChangedToPaused += OnPause;
+        GameManager.Instance.OnGameStateChangedToMenu += OnMenu;
+        GameManager.Instance.OnGameStateChangedToOver += OnOver;
+    }
+
+    void OnDisable()
+    {
+        GameManager.Instance.OnGameStateChangedToPlaying -= OnPlaying;
+        GameManager.Instance.OnGameStateChangedToPaused -= OnPause;
+        GameManager.Instance.OnGameStateChangedToMenu -= OnMenu;
+        GameManager.Instance.OnGameStateChangedToOver -= OnOver;
+    }
+
+    void OnMenu()
+    {
+        displayState.text = "Main Menu";
+        //Debug.Log(" I am on Menu");
+        //Debug.Log(SceneManager.GetActiveScene().name);
+    }
+
+    void OnPlaying()
+    {
+        //Debug.Log("setting gameOnPlaying to true");
+        //Debug.Log("gameOnPlaying: " + gameOnPlaying);
+        //Debug.Log("gameOnpause: " + gameOnPause);
+        //Debug.Log(" I am on Playing");
+        displayState.text = "Playing";
+    }
+
+    void OnPause()
+    {
+        //Debug.Log("setting gameOnPause to true");
+        //Debug.Log("gameOnPlaying: " + gameOnPlaying);
+        //Debug.Log("gameOnpause: " + gameOnPause);
+        //Debug.Log("I am on Pause");
+
+        displayState.text = "Paused";
+    }
+
+    void OnOver()
+    {
+        displayState.text = "Game Over";
+        displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
+        displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
+        Debug.Log(" I am on Game Over");
+        SceneManager.LoadScene("Menu_Scene");
+        //Debug.Log(SceneManager.GetActiveScene().name);
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
+        //displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //Debug.Log(SceneManager.GetActiveScene().name);
+
+    }
+    
+}
