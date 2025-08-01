@@ -101,7 +101,7 @@ public class ball : MonoBehaviour
         //Debug.Log("launching ball");
         float initialForce = 10f;
         //Vector3 launchDirection = new Vector3(1f, 0.01f, 0f).normalized;  // test, straight down
-        Vector3 launchDirection = new Vector3(Random.Range(-1f, 1f), -1f, 0f).normalized;  
+        Vector3 launchDirection = new Vector3(Random.Range(-1f, 1f), -1f, 0f).normalized;  // unit vector with varing direction
         ballRB.AddForce(launchDirection * initialForce, ForceMode.Impulse);      
     }
 
