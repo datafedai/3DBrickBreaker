@@ -28,15 +28,15 @@ public class ball : MonoBehaviour
         else if (collision.collider.name == "Paddle")
         {
 
-            paddle paddleCont = collision.collider.GetComponent<paddle>();
+            paddle pd = collision.collider.GetComponent<paddle>();
             //Debug.Log("Ball hit Paddle");
-            Vector2 paddleMoveValue = paddleCont.getMoveValue();
+            Vector2 paddleMoveValue = pd.getMoveValue();
             //Debug.Log("ball velocity1: " + ballRB.linearVelocity);
             //Debug.Log("paddle move value: " + paddleMoveValue.x);
             //Debug.Log("ball linear velocity: " + ballRB.linearVelocity);
             //Debug.Log("paddle move value: " + paddleMoveValue.x);
             //Debug.Log("paddle move speed: " + paddleCont.moveSpeed);
-            float paddleSpeedInfluence = paddleCont.moveSpeed * 0.1f;
+            float paddleSpeedInfluence = pd.moveSpeed * 0.1f;   // default paddle speed: 20, 
 
             // if the paddle is moving while ball hits it, 
             // the horizontal speed of the ball is added by -1 or +1
