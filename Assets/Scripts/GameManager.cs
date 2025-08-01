@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         isInvoked = true;
-        Debug.Log("isInvoked set to true on Start");
+        //Debug.Log("isInvoked set to true on Start");
         //ballRB = ballObject.GetComponent<Rigidbody>();
 
         playGame = InputSystem.actions.FindAction("Confirm");   // space bar
