@@ -1,4 +1,10 @@
 using UnityEngine;
+using System;
+
+using UnityEngine.UI;
+using UnityEngine.Events;
+using Random = UnityEngine.Random;
+
 
 public class ball : MonoBehaviour
 {
@@ -7,9 +13,11 @@ public class ball : MonoBehaviour
     private Rigidbody ballRB;
     private bool gameOnPlaying;
     private bool gameOnPause;
+    public float initialForce;
     private bool isBallLaunched;
     public bool isBallMissed;
-    int destroyedBrickCount;
+    private int destroyedBrickCount;
+
 
     void OnCollisionEnter(Collision collision)
     {
@@ -99,7 +107,6 @@ public class ball : MonoBehaviour
     void launchBall()
     {
         //Debug.Log("launching ball");
-        float initialForce = 10f;
         //Vector3 launchDirection = new Vector3(1f, 0.01f, 0f).normalized;  // test, straight down
         Vector3 launchDirection = new Vector3(Random.Range(-1f, 1f), -1f, 0f).normalized;  // unit vector with varing direction
         ballRB.AddForce(launchDirection * initialForce, ForceMode.Impulse);      
@@ -110,14 +117,16 @@ public class ball : MonoBehaviour
         Time.timeScale = 0;
     }
 
-
     void initializeBall()
     {
         ballRB.transform.position = new Vector3(0f, 5f, 0f);
         ballRB.linearVelocity = Vector3.zero;        
     }
 
-
+    public int getDestroyedBricksCount()
+    {
+        return destroyedBrickCount;
+    } 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -125,6 +134,7 @@ public class ball : MonoBehaviour
         //ballRB.linearVelocity = Vector3.zero;
         isBallLaunched = false;
         isBallMissed = false;
+        initialForce = 10f;
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
 
@@ -148,7 +158,7 @@ public class ball : MonoBehaviour
 
         }
 
-        if (ballRB.transform.position.y < -5f)
+        if (ballRB.transform.position.y < -5f) // if under paddle position
         {
             //Debug.Log("The ball is missed. Game Over");
             isBallMissed = true;

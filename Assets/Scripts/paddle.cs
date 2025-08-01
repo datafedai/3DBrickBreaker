@@ -13,7 +13,6 @@ using JetBrains.Annotations;
 
 public class paddle : MonoBehaviour
 {
-    //public GameManager gameManager;
     InputAction moveAction;
     public int moveSpeed;
     private float posX;
@@ -53,13 +52,10 @@ public class paddle : MonoBehaviour
     }
     private void movePaddle()
     {
-
-
         float moveDistance = getMoveValue().x * Time.deltaTime * moveSpeed;
         Vector3 newPos = transform.position + new Vector3(moveDistance, 0, 0);
         newPos.x = Mathf.Clamp(newPos.x, -wall, wall);
         transform.position = newPos;
-
     }
 
 

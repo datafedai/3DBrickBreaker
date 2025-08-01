@@ -49,8 +49,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-
-
     private enum GameState
     {
         Menu,       // main menu: menu only scene
@@ -238,8 +236,16 @@ public class GameManager : MonoBehaviour
             currentGameState = GameState.Over;
             newGameState = GameState.Over;
             SceneManager.LoadScene("Menu_Scene");
-            Debug.Log("in update if");
+            Debug.Log(ballScript.getDestroyedBricksCount() + " brickes destroyed.");
         }
+
+        if (ballScript.getDestroyedBricksCount() == 105)
+        {
+            Debug.Log("You won!");
+            //newGameState = GameState.Menu;
+            SceneManager.LoadScene("3_Scene");
+        }
+        //Debug.Log(ballScript.getDestroyedBricksCount() + " brickes destroyed.");
 
         handleGameState();
     }

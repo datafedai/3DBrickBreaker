@@ -1045,9 +1045,9 @@ GameObject:
   - component: {fileID: 1389977436}
   - component: {fileID: 1389977435}
   - component: {fileID: 1389977437}
+  - component: {fileID: 1389977438}
   - component: {fileID: 1389977433}
   - component: {fileID: 1389977434}
-  - component: {fileID: 1389977438}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -1183,6 +1183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956246258445589488df60f340720513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialForce: 50
   isBallMissed: 0
 --- !u!1 &1489527576
 GameObject:
