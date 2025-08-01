@@ -158,7 +158,7 @@ public class ball : MonoBehaviour
 
         }
 
-        if (ballRB.transform.position.y < -5f) // if under paddle position
+        if (ballRB.transform.position.y < -5f) // if ball is under paddle position
         {
             //Debug.Log("The ball is missed. Game Over");
             isBallMissed = true;
