@@ -39,7 +39,7 @@ public class ball : MonoBehaviour
             float paddleSpeedInfluence = pd.moveSpeed * 0.1f;   // default paddle speed: 20, 
 
             // if the paddle is moving while ball hits it, 
-            // the horizontal speed of the ball is added by -1 or +1
+            // the horizontal speed of the ball is added by -2 or +2 by default
             ballRB.linearVelocity += new Vector3(paddleSpeedInfluence * paddleMoveValue.x, 0f, 0f);
 
             //Debug.Log(ballRB.linearVelocityY);
