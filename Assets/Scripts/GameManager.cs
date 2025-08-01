@@ -238,7 +238,7 @@ public class GameManager : MonoBehaviour
             currentGameState = GameState.Over;
             newGameState = GameState.Over;
             SceneManager.LoadScene("Menu_Scene");
-            Debug.Log(ballScript.getDestroyedBricksCount() + " brickes destroyed.");
+            Debug.Log("Total " + ballScript.getDestroyedBricksCount() + " brickes destroyed.");
         }
 
         // check if all the bricks are destroyed

@@ -53,17 +53,17 @@ public class ball : MonoBehaviour
             //Debug.Log(ballRB.linearVelocityY);
             //Debug.Log("ball velocity2: " + ballRB.linearVelocity);
         }
+        
         /*
-        else if (collision.collider.name == "LWall")
+        else if (collision.collider.name == "LWall" || collision.collider.name == "RWall")
         {
             if (ballRB.linearVelocity.y < 0.1f && ballRB.linearVelocity.y > -0.1f)
             {
                 //Debug.Log("Ball barely has verticcal movement");
                 //Debug.Log(ballRB.linearVelocity.y);
-
             }
-        } 
-        */
+        } */
+        
     }
     void Awake()
     {
@@ -109,7 +109,7 @@ public class ball : MonoBehaviour
         //Debug.Log("launching ball");
         //Vector3 launchDirection = new Vector3(1f, 0.01f, 0f).normalized;  // test, straight down
         Vector3 launchDirection = new Vector3(Random.Range(-1f, 1f), -1f, 0f).normalized;  // unit vector with varing direction
-        ballRB.AddForce(launchDirection * initialForce, ForceMode.Impulse);      
+        ballRB.AddForce(launchDirection * initialForce, ForceMode.Impulse);
     }
 
     void pauseGame()
@@ -120,13 +120,13 @@ public class ball : MonoBehaviour
     void initializeBall()
     {
         ballRB.transform.position = new Vector3(0f, 5f, 0f);
-        ballRB.linearVelocity = Vector3.zero;        
+        ballRB.linearVelocity = Vector3.zero;
     }
 
     public int getDestroyedBricksCount()
     {
         return destroyedBrickCount;
-    } 
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
