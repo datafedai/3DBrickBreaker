@@ -45,17 +45,17 @@ public class ball : MonoBehaviour
             //Debug.Log(ballRB.linearVelocityY);
             //Debug.Log("ball velocity2: " + ballRB.linearVelocity);
         }
-
+        /*
         else if (collision.collider.name == "LWall")
         {
             if (ballRB.linearVelocity.y < 0.1f && ballRB.linearVelocity.y > -0.1f)
             {
-                Debug.Log("Ball barely has verticcal movement");
-                Debug.Log(ballRB.linearVelocity.y);
+                //Debug.Log("Ball barely has verticcal movement");
+                //Debug.Log(ballRB.linearVelocity.y);
 
             }
         } 
-
+        */
     }
     void Awake()
     {
