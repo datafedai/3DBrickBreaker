@@ -21,6 +21,23 @@ public class ball : MonoBehaviour
             //Debug.Log(collision.gameObject.name + " destroyed.");
         }
 
+
+        else if (collision.collider.name == "Paddle")
+        {
+
+            paddle paddleCont = collision.collider.GetComponent<paddle>();
+            //Debug.Log("Ball hit Paddle");
+            Vector2 paddleMoveValue = paddleCont.getMoveValue();
+            //Debug.Log("ball velocity1: " + ballRB.linearVelocity);
+            //Debug.Log("paddle move value: " + paddleMoveValue.x);
+            //Debug.Log("ball linear velocity: " + ballRB.linearVelocity);
+            //Debug.Log("paddle move value: " + paddleMoveValue.x);
+            ballRB.linearVelocity += new Vector3(paddleMoveValue.x, 0f, 0f);
+
+            //Debug.Log(ballRB.linearVelocityY);
+            //Debug.Log("ball velocity2: " + ballRB.linearVelocity);
+        }        
+
     }
     void Awake()
     {
@@ -64,13 +81,25 @@ public class ball : MonoBehaviour
     void launchBall()
     {
         //Debug.Log("launching ball");
-        ballRB.AddForce(new Vector3(0f, -1f, 0f) * 10f, ForceMode.Impulse);
+        float initialForce = 10f;
+        //Vector3 launchDirection = new Vector3(0f, -1f, 0f).normalized;  // test, straight down
+        Vector3 launchDirection = new Vector3(Random.Range(-1f, 1f), -1f, 0f).normalized;  
+        ballRB.AddForce(launchDirection * initialForce, ForceMode.Impulse);      
     }
 
     void pauseGame()
     {
         Time.timeScale = 0;
     }
+
+
+    void initializeBall()
+    {
+        ballRB.transform.position = new Vector3(0f, 5f, 0f);
+        ballRB.linearVelocity = Vector3.zero;        
+    }
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

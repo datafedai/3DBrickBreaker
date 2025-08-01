@@ -45,12 +45,17 @@ public class paddle : MonoBehaviour
     {
         canMove = false;
     }
-    
-    private void movePaddle()
+
+    public Vector2 getMoveValue()
     {
         Vector2 moveValue = moveAction.ReadValue<Vector2>();
+        return moveValue;    
+    }
+    private void movePaddle()
+    {
 
-        float moveDistance = moveValue.x * Time.deltaTime * moveSpeed;
+
+        float moveDistance = getMoveValue().x * Time.deltaTime * moveSpeed;
         Vector3 newPos = transform.position + new Vector3(moveDistance, 0, 0);
         newPos.x = Mathf.Clamp(newPos.x, -wall, wall);
         transform.position = newPos;
