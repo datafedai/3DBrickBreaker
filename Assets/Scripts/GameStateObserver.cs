@@ -27,23 +27,23 @@ public class GameStateObserver : MonoBehaviour
     void OnConsolePlaying()
     {
         //Debug.Log("This is console output");
-        Debug.Log("game on Playing");
+        Debug.Log("On Game Playing");
     }
 
     void OnConsolePaused()
     {
-        Debug.Log("game on Pause");
+        Debug.Log("On Game Paused");
     }
 
 
     void OnConsoleMenu()
     {
-        Debug.Log("game on Menu");
+        Debug.Log("On Main Menu");
     }
 
     void OnConsoleOver()
     {
-        Debug.Log("game on Over");
+        Debug.Log("On Game Over");
     }
 
 
