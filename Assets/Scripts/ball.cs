@@ -30,7 +30,7 @@ public class ball : MonoBehaviour
 
             paddle pd = collision.collider.GetComponent<paddle>();
             //Debug.Log("Ball hit Paddle");
-            Vector2 paddleMoveValue = pd.getMoveValue();
+            Vector2 paddleMoveValue = pd.getMoveValue();    // +1 for right arrow, -1 for left arrow
             //Debug.Log("ball velocity1: " + ballRB.linearVelocity);
             //Debug.Log("paddle move value: " + paddleMoveValue.x);
             //Debug.Log("ball linear velocity: " + ballRB.linearVelocity);
