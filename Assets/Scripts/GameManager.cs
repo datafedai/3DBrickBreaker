@@ -231,6 +231,8 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         //Debug.Log(ballObject.transform.position.y);
+
+        // if ball is missed while game is not over, that is on playing
         if (currentGameState != GameState.Over && ballScript.isBallMissed)
         {
             currentGameState = GameState.Over;
@@ -239,10 +241,10 @@ public class GameManager : MonoBehaviour
             Debug.Log(ballScript.getDestroyedBricksCount() + " brickes destroyed.");
         }
 
+        // check if all the bricks are destroyed
         if (ballScript.getDestroyedBricksCount() == 105)
         {
             Debug.Log("You won!");
-            //newGameState = GameState.Menu;
             SceneManager.LoadScene("3_Scene");
         }
         //Debug.Log(ballScript.getDestroyedBricksCount() + " brickes destroyed.");
