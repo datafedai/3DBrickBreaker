@@ -3,12 +3,13 @@ using UnityEngine;
 public class ball : MonoBehaviour
 {
 
-
+    //public GameObject paddleObject;
     private Rigidbody ballRB;
     private bool gameOnPlaying;
     private bool gameOnPause;
     private bool isBallLaunched;
     public bool isBallMissed;
+    int destroyedBrickCount;
 
     void OnCollisionEnter(Collision collision)
     {
@@ -19,6 +20,8 @@ public class ball : MonoBehaviour
         {
             Destroy(collision.gameObject);
             //Debug.Log(collision.gameObject.name + " destroyed.");
+            destroyedBrickCount++;
+            //Debug.Log(destroyedBrickCount + " bricks destroyed.");
         }
 
 
@@ -32,11 +35,26 @@ public class ball : MonoBehaviour
             //Debug.Log("paddle move value: " + paddleMoveValue.x);
             //Debug.Log("ball linear velocity: " + ballRB.linearVelocity);
             //Debug.Log("paddle move value: " + paddleMoveValue.x);
-            ballRB.linearVelocity += new Vector3(paddleMoveValue.x, 0f, 0f);
+            //Debug.Log("paddle move speed: " + paddleCont.moveSpeed);
+            float paddleSpeedInfluence = paddleCont.moveSpeed * 0.1f;
+
+            // if the paddle is moving while ball hits it, 
+            // the horizontal speed of the ball is added by -1 or +1
+            ballRB.linearVelocity += new Vector3(paddleSpeedInfluence * paddleMoveValue.x, 0f, 0f);
 
             //Debug.Log(ballRB.linearVelocityY);
             //Debug.Log("ball velocity2: " + ballRB.linearVelocity);
-        }        
+        }
+
+        else if (collision.collider.name == "LWall")
+        {
+            if (ballRB.linearVelocity.y < 0.1f && ballRB.linearVelocity.y > -0.1f)
+            {
+                Debug.Log("Ball barely has verticcal movement");
+                Debug.Log(ballRB.linearVelocity.y);
+
+            }
+        } 
 
     }
     void Awake()
@@ -82,7 +100,7 @@ public class ball : MonoBehaviour
     {
         //Debug.Log("launching ball");
         float initialForce = 10f;
-        //Vector3 launchDirection = new Vector3(0f, -1f, 0f).normalized;  // test, straight down
+        //Vector3 launchDirection = new Vector3(1f, 0.01f, 0f).normalized;  // test, straight down
         Vector3 launchDirection = new Vector3(Random.Range(-1f, 1f), -1f, 0f).normalized;  
         ballRB.AddForce(launchDirection * initialForce, ForceMode.Impulse);      
     }
@@ -110,6 +128,8 @@ public class ball : MonoBehaviour
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
 
+        destroyedBrickCount = 0;
+
     }
 
     // Update is called once per frame
@@ -133,5 +153,8 @@ public class ball : MonoBehaviour
             //Debug.Log("The ball is missed. Game Over");
             isBallMissed = true;
         }
+
+
+
     }
 }

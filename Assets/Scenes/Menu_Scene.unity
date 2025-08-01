@@ -1319,6 +1319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956246258445589488df60f340720513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paddleObject: {fileID: 1954861303}
   isBallMissed: 0
 --- !u!1 &1489527576
 GameObject:

@@ -11,21 +11,12 @@ using System; // for Action
 
 public class GameManager : MonoBehaviour
 {
-
-    //public TextMeshProUGUI displayState; // for GameState text
-    //public TextMeshProUGUI displayState2; // for special menu
-    //public TextMeshProUGUI displayInstruction; // special menu scene text
     GameState currentGameState;
     static GameState newGameState; // game state after loding special menu scene 
 
     InputAction playGame;
     InputAction pauseGame;
     InputAction quitGame;
-    //private bool canMovePaddle; // to control paddle move when paused
-
-    //public GameObject ballObject;
-    //Rigidbody ballRB;
-    private const float gameOverThresholdY = -7f;
 
     public static GameManager Instance { get; private set; }
     public event Action OnGameStateChangedToPlaying;
@@ -74,21 +65,14 @@ public class GameManager : MonoBehaviour
         switch (currentGameState)
         {
             case GameState.Menu:
+                // To make sure Invoke() is activated only once per key stroke
                 if (isInvoked)
                 {
                     OnGameStateChangedToMenu?.Invoke();
                     isInvoked = false;
                 }
 
-
-
                 //Debug.Log("in Menu state");
-                // enable Paddle Control
-                //canMovePaddle = true;
-
-                //display menu state
-                //displayState.text = "Main Menu";
-
                 //Debug.Log(SceneManager.GetActiveScene().name);
 
                 // if in main game scene, check for space bar input and change game state accordingly
@@ -98,39 +82,10 @@ public class GameManager : MonoBehaviour
                     if (playGame.triggered)
                     {
                         //Debug.Log("ding2");
+                        currentGameState = GameState.Playing;
                         isInvoked = true;
-                        currentGameState = GameState.Playing;
                     }
                 }
-                // if in special temporary scene after quiting game, display appropriate instruction
-                // and check user input to choose for Main Menu or Playing of the main game scene 
-
-                /*
-                else if (SceneManager.GetActiveScene().name == "Menu_Scene")
-                {
-                    Debug.Log("ding3");
-                    //displayInstruction.text = "Press Space Bar to play again.\nPress Q to reurn to Main Menu.";
-                    if (newGameState == GameState.Over)
-                    {
-                        Debug.Log("ding4");
-                        //displayState2.text = "<color=Red>--Game Over--</color>";
-                    }
-
-                    if (playGame.triggered)
-                    {
-                        Debug.Log("ding5");
-                        SceneManager.LoadScene("3_Scene");
-                        currentGameState = GameState.Playing;
-                    }
-                    else if (quitGame.triggered)
-                    {
-                        Debug.Log("ding6");
-                        SceneManager.LoadScene("3_Scene");
-                        currentGameState = GameState.Menu;
-                    }
-
-                }
-                */
 
                 break;
 
@@ -142,38 +97,18 @@ public class GameManager : MonoBehaviour
                     isInvoked = false;
                 }
 
-
                 //Debug.Log(" in Playing state");
-                // enable PaddleController
-                //canMovePaddle = true;
-
-                // display Playing
-                //displayState.text = "Playing";
-
-                // if ball gets lost, game over
-
 
                 // if pauseGame triggered, (= ESC or P pressed)
                 // pause game
                 // change currentGameState to Paused
-
                 if (pauseGame.triggered)
                 {
-                    isInvoked = true;
                     currentGameState = GameState.Paused;
+                    isInvoked = true;
                     //Debug.Log("pausing game");
                 }
 
-                /*
-                                // Experimental: Game Over
-                                Vector3 ballPos = ballObject.transform.position;
-                                //Vector3 paddlePos = paddleObject.transform.position;
-                                //Debug.Log("ballY:paddleY = " + ballPos.y + " : " + paddlePos.y);
-                                if (ballPos.y < gameOverThresholdY)
-                                {
-                                    currentGameState = GameState.Over;
-                                }
-                */
                 break;
 
 
@@ -184,22 +119,15 @@ public class GameManager : MonoBehaviour
                     isInvoked = false;
                 }
 
-
-
                 //Debug.Log("in pause state");
-                // display Paused text
-                //displayState.text = "Paused";
-
-                // pause ball
-                //pauseBall();
 
                 // if pauseGame triggered, (= ESC or P pressed)
                 // resume playing
                 // change currentGameState to Playing
                 if (pauseGame.triggered)
                 {
-                    isInvoked = true;
                     currentGameState = GameState.Playing;
+                    isInvoked = true;
                     //Debug.Log("replaying game");
                 }
 
@@ -213,12 +141,10 @@ public class GameManager : MonoBehaviour
                     newGameState = GameState.Over;
                     //Debug.Log("quitting game");
                     SceneManager.LoadScene("Menu_Scene");
-
-                    //prevGameState = GameState.Paused;
-                    //nextGameState = GameState.Playing; // a new state when space bar pressed from Menu_Scene
                 }
 
                 break;
+
 
             case GameState.Over:
                 //Debug.Log("in over state");
@@ -229,12 +155,9 @@ public class GameManager : MonoBehaviour
                     isInvoked = false;
                     //Debug.Log("hey");
                 }
+
                 //Debug.Log("is invoked2: " + isInvoked);
-                // change scene
-                //SceneManager.LoadScene("Menu_Scene");
-                //prevGameState = GameState.Over;
-                //currentGameState = GameState.Menu;
-                //nextGameState = GameState.Playing; // a new state when space bar pressed from Menu_Scene
+
 
                 if (quitGame.triggered)
                 {
@@ -243,9 +166,6 @@ public class GameManager : MonoBehaviour
                     isInvoked = true;
                     newGameState = GameState.Menu;
                     SceneManager.LoadScene("3_Scene");
-
-                    //prevGameState = GameState.Paused;
-                    //nextGameState = GameState.Playing; // a new state when space bar pressed from Menu_Scene
                 }
 
                 if (playGame.triggered)
@@ -266,40 +186,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-    /*
-        public GameState getCurrentGameState()
-        {
-            return currentGameState;
-        }
-    */
-
-
-    /*
-        public bool getCanMovePaddle()
-        {
-            return canMovePaddle;
-        }
-    */
-    /*
-        void unpauseBall()
-        {
-            // Time.timeScale to 1
-            Time.timeScale = 1;
-
-            // apply gravity
-            ballRB.useGravity = true;
-        }
-
-
-        void pauseBall()
-        {
-            // Time.timeScale to 1
-            Time.timeScale = 0;
-
-            // apply gravity
-            ballRB.useGravity = false;
-        }
-    */
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -318,9 +204,6 @@ public class GameManager : MonoBehaviour
         displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
         */
-
-
-        //canMovePaddle = true;
 
         // When newGameState and currentGameState are declared, they get the valueof the 1st enum, Menu
         // currentGameState = GameState.Menu, newGameState = GameState.Menu, 
