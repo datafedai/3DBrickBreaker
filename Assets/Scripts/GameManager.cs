@@ -12,11 +12,16 @@ using System; // for Action
 public class GameManager : MonoBehaviour
 {
     GameState currentGameState;
-    static GameState newGameState; // game state after loding special menu scene 
+    static GameState newGameState; // game state after loading special menu scene 
 
     InputAction playGame;
     InputAction pauseGame;
     InputAction quitGame;
+    public InputSystem_Actions inputActions;
+    private Action<InputAction.CallbackContext> spacePerformedAction;
+    private Action<InputAction.CallbackContext> escPerformedAction;
+    private Action<InputAction.CallbackContext> qPerformedAction;
+    private Action<InputAction.CallbackContext> pPerformedAction;
 
     public static GameManager Instance { get; private set; }
     public event Action OnGameStateChangedToPlaying;
@@ -27,6 +32,14 @@ public class GameManager : MonoBehaviour
     public GameObject ballObject;
     ball ballScript;
     private bool isInvoked;
+
+    private enum GameState
+    {
+        Menu,       // main menu: menu only scene
+        Playing,    // playing game: can move paddle
+        Paused,       // game paused: can't move paddle
+        Over        // Experimental: game over when ball is lost downward
+    }
 
 
     private void Awake()
@@ -46,15 +59,40 @@ public class GameManager : MonoBehaviour
             // Optionally, prevent the Singleton from being destroyed on scene changes.
             // DontDestroyOnLoad(gameObject);
         }
+
+        inputActions = new InputSystem_Actions();
     }
 
-
-    private enum GameState
+    void OnEnable()
     {
-        Menu,       // main menu: menu only scene
-        Playing,    // playing game: can move paddle
-        Paused,       // game paused: can't move paddle
-        Over        // Experimental: game over when ball is lost downward
+        inputActions.Player.Confirm.performed += spacePerformedAction = ctx => handleSpacePressed();
+        inputActions.Player.Restart.performed += escPerformedAction = ctx => handleEscOrPPressed();
+        inputActions.Player.Restart.performed += pPerformedAction = ctx => handleEscOrPPressed();
+        inputActions.Player.Menu.performed += qPerformedAction = ctx => handleQPressed();
+        inputActions.Enable();
+    }
+    void OnDisable()
+    {
+        inputActions.Disable();
+        inputActions.Player.Confirm.performed -= spacePerformedAction = ctx => handleSpacePressed();
+        inputActions.Player.Restart.performed -= escPerformedAction = ctx => handleEscOrPPressed();
+        inputActions.Player.Restart.performed -= pPerformedAction = ctx => handleEscOrPPressed();
+        inputActions.Player.Menu.performed -= qPerformedAction = ctx => handleQPressed();
+    }
+
+    void handleSpacePressed()
+    {
+        Debug.Log("Space bar pressed");
+    }
+
+    void handleEscOrPPressed()
+    {
+        Debug.Log("ESC or P pressed");
+    }
+
+    void handleQPressed()
+    {
+        Debug.Log("Q pressed");
     }
 
 
