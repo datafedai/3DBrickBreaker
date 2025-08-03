@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Microsoft.Unity.VisualStudio.Editor;
+using Image = UnityEngine.UI.Image;
 
 
 public class canvas : MonoBehaviour
@@ -9,6 +11,12 @@ public class canvas : MonoBehaviour
     public TextMeshProUGUI displayState; // for GameState text
     public TextMeshProUGUI displayState2; // for special menu
     public TextMeshProUGUI displayInstruction; // special menu scene text
+    public TextMeshProUGUI displayScore; // current score
+    public TextMeshProUGUI displayLives; // lives left
+    public Sprite[] lifeSprites;
+    public Image[] livesDisplayImage;
+
+
 
 
 
@@ -19,6 +27,11 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPaused += OnPause;
         GameManager.Instance.OnGameStateChangedToMenu += OnMenu;
         GameManager.Instance.OnGameStateChangedToOver += OnOver;
+
+        // score update
+        ball.Instance.BrickDestroyed += UpdateScore;
+        ball.Instance.BallLives += UpdateBallLives;
+        //ball.Instance.BallLives += UpdateLives;     
     }
 
     void OnDisable()
@@ -27,6 +40,36 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPaused -= OnPause;
         GameManager.Instance.OnGameStateChangedToMenu -= OnMenu;
         GameManager.Instance.OnGameStateChangedToOver -= OnOver;
+
+        // score
+        ball.Instance.BrickDestroyed -= UpdateScore;
+        ball.Instance.BallLives -= UpdateBallLives;
+        //ball.Instance.BallLives -= UpdateLives;
+    }
+
+
+    void UpdateScore(int bricksDestroyed)
+    {
+        //Debug.Log("score updated");
+        displayScore.text = (100*bricksDestroyed).ToString();
+    }
+
+    void UpdateBallLives(int lives)
+    {
+        Debug.Log("in updateBallLives");
+        displayLives.text = lives.ToString();
+
+        // populate image UI elements with solid white ball sprites
+        livesDisplayImage[0].sprite = lifeSprites[1];
+        livesDisplayImage[1].sprite = lifeSprites[1];
+        livesDisplayImage[2].sprite = lifeSprites[1];
+
+        // replace solid circle with empty circle when ball is out for playing
+        for (int i = 0; i < 3 - lives; i++)
+        {
+            livesDisplayImage[i].sprite = lifeSprites[0];
+        }
+
     }
 
     void OnMenu()
@@ -70,6 +113,7 @@ public class canvas : MonoBehaviour
     {
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         //displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
+        
 
     }
 

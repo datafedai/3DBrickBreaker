@@ -27,12 +27,21 @@ public class paddle : MonoBehaviour
         //Debug.Log("in OnEnable in PaddleController");
         GameManager.Instance.OnGameStateChangedToPlaying += OnPlaying;
         GameManager.Instance.OnGameStateChangedToPaused += OnPause;
+
+        //ballController.Instance.BrickDestroyed += sayHello;
     }
 
     void OnDisable()
     {
         GameManager.Instance.OnGameStateChangedToPlaying -= OnPlaying;
         GameManager.Instance.OnGameStateChangedToPaused -= OnPause;
+        //ballController.Instance.BrickDestroyed -= sayHello;
+    }
+
+    // test
+    void sayHello()
+    {
+        Debug.Log("hello dude");
     }
 
     void OnPlaying()

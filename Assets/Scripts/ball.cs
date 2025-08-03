@@ -16,8 +16,36 @@ public class ball : MonoBehaviour
     public float initialForce;
     private bool isBallLaunched;
     public bool isBallMissed;
+    private int ballLives;
     private int destroyedBrickCount;
 
+    public static ball Instance { get; private set; }
+    public event Action<int> BrickDestroyed;
+    public event Action<int> BallLives;
+
+
+    private void Awake()
+    {
+        // Check if an instance already exists and it's not this one.
+        if (Instance != null && Instance != this)
+        {
+            // Destroy the duplicate instance.
+            //Debug.Log("destroying..." + gameObject.name);
+            Destroy(gameObject);
+        }
+        else
+        {
+            // Assign this instance as the Singleton.
+            Instance = this;
+            //Debug.Log("this is " + this);
+            // Optionally, prevent the Singleton from being destroyed on scene changes.
+            // DontDestroyOnLoad(gameObject);
+        }
+
+        //inputActions = new InputSystem_Actions();
+
+        ballRB = GetComponent<Rigidbody>();
+    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -27,8 +55,12 @@ public class ball : MonoBehaviour
         if (collision.gameObject.name == "Brick(Clone)" || collision.gameObject.name == "Brick")
         {
             Destroy(collision.gameObject);
+
             //Debug.Log(collision.gameObject.name + " destroyed.");
+
             destroyedBrickCount++;
+            BrickDestroyed?.Invoke(destroyedBrickCount);
+
             //Debug.Log(destroyedBrickCount + " bricks destroyed.");
         }
 
@@ -53,7 +85,7 @@ public class ball : MonoBehaviour
             //Debug.Log(ballRB.linearVelocityY);
             //Debug.Log("ball velocity2: " + ballRB.linearVelocity);
         }
-        
+
         /*
         else if (collision.collider.name == "LWall" || collision.collider.name == "RWall")
         {
@@ -63,12 +95,14 @@ public class ball : MonoBehaviour
                 //Debug.Log(ballRB.linearVelocity.y);
             }
         } */
-        
+
     }
+
+    /*
     void Awake()
     {
         ballRB = GetComponent<Rigidbody>();
-    }
+    } */
 
     void OnEnable()
     {
@@ -121,6 +155,11 @@ public class ball : MonoBehaviour
     {
         ballRB.transform.position = new Vector3(0f, 5f, 0f);
         ballRB.linearVelocity = Vector3.zero;
+        isBallLaunched = false;
+        for (int i = 0; i < 10000000; i++)
+        {
+            //
+        }
     }
 
     public int getDestroyedBricksCount()
@@ -128,10 +167,58 @@ public class ball : MonoBehaviour
         return destroyedBrickCount;
     }
 
+    public int getBallLives()
+    {
+        return ballLives;
+    }
+
+    public bool canContinueToPlay()
+    {
+        if (ballLives > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void resetIsBallLaunched()
+    {
+        isBallLaunched = false;
+    }
+
+
+    void Restart()
+    {
+        //ballLives--;
+        //BallLives?.Invoke(ballLives);
+        //initializeBall();
+        Debug.Log("Restarted");
+        //ballLives--;
+        BallLives?.Invoke(ballLives);
+
+        isBallLaunched = false;
+        isBallMissed = false;
+        initialForce = 10f;
+
+        ballRB.transform.position = new Vector3(0f, 5f, 0f);
+        ballRB.linearVelocity = Vector3.zero;
+        //Debug.Log("gameOnPlaying: " + gameOnPlaying);
+        //Debug.Log("gameOnpause: " + gameOnPause);
+
+        //destroyedBrickCount = 0;
+    }
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //ballRB.linearVelocity = Vector3.zero;
+        ballLives = 3;
+        BallLives?.Invoke(ballLives);
+
         isBallLaunched = false;
         isBallMissed = false;
         initialForce = 10f;
@@ -148,6 +235,8 @@ public class ball : MonoBehaviour
         if (!isBallLaunched && gameOnPlaying)
         {
             launchBall();
+            ballLives--;
+            BallLives?.Invoke(ballLives);
             isBallLaunched = true;
         }
 
@@ -160,8 +249,17 @@ public class ball : MonoBehaviour
 
         if (ballRB.transform.position.y < -5f) // if ball is under paddle position
         {
+            if (ballLives > 0)
+            {
+                Restart();
+            }
+            else
+            {
+                isBallMissed = true;
+                //gameOnPlaying = true;
+            }
             //Debug.Log("The ball is missed. Game Over");
-            isBallMissed = true;
+
         }
 
 
