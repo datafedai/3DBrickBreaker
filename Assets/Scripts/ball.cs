@@ -4,7 +4,8 @@ using System;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
-
+//using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class ball : MonoBehaviour
 {
@@ -22,6 +23,9 @@ public class ball : MonoBehaviour
     public static ball Instance { get; private set; }
     public event Action<int> BrickDestroyed;
     public event Action<int> BallLives;
+    private float delayTime;
+    private float timer;
+    private bool timerStarted = false;
 
 
     private void Awake()
@@ -199,6 +203,7 @@ public class ball : MonoBehaviour
         //ballLives--;
         BallLives?.Invoke(ballLives);
 
+
         isBallLaunched = false;
         isBallMissed = false;
         initialForce = 10f;
@@ -209,7 +214,21 @@ public class ball : MonoBehaviour
         //Debug.Log("gameOnpause: " + gameOnPause);
 
         //destroyedBrickCount = 0;
+        //Invoke("delaying ball launch", delayTime);
+        //StartDelayedSceneLoad();
+        StartTimer();
+
     }
+
+    void StartTimer()
+    {
+        timerStarted = true;
+        timer = 0f;
+        delayTime = 2f;
+    }
+
+
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -222,22 +241,38 @@ public class ball : MonoBehaviour
         isBallLaunched = false;
         isBallMissed = false;
         initialForce = 10f;
-        //Debug.Log("gameOnPlaying: " + gameOnPlaying);
+        Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
 
         destroyedBrickCount = 0;
+        timerStarted = true;
+        delayTime = 0.5f;
+        timer = 0f;
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log("timer:1 " + timer);
         if (!isBallLaunched && gameOnPlaying)
         {
-            launchBall();
-            ballLives--;
-            BallLives?.Invoke(ballLives);
-            isBallLaunched = true;
+            //Debug.Log("timer:2 " + timer);
+            if (timerStarted)
+            {
+                timer += Time.deltaTime;
+                //Debug.Log("timer:3 " + timer);
+                if (timer > delayTime)
+                {
+                    launchBall();
+                    ballLives--;
+                    BallLives?.Invoke(ballLives);
+                    isBallLaunched = true;
+                    timerStarted = false;
+                }
+            }
+
+
         }
 
         if (gameOnPause)
