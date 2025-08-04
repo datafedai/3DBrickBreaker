@@ -57,7 +57,8 @@ public class canvas : MonoBehaviour
     void UpdateBallLives(int lives)
     {
         //Debug.Log("in updateBallLives");
-        displayLives.text = lives.ToString();
+        //displayLives.text = lives.ToString();
+        displayLives.text = "";
 
         // populate image UI elements with solid white ball sprites
         displayLivesImage[0].sprite = lifeSprites[1];   // solid white
@@ -68,7 +69,7 @@ public class canvas : MonoBehaviour
         for (int i = 2; i > lives-1 ; i--)
         {
             //Debug.Log(i);
-            displayLivesImage[i].sprite = lifeSprites[0];   // white lined circle
+            displayLivesImage[i].sprite = lifeSprites[2];   // white lined circle or none
         }
 
     }
