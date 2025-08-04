@@ -106,7 +106,7 @@ public class canvas : MonoBehaviour
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         displayState2.text = "Score: " + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
 
-        displayInstruction.text = "Press Q for the initial Main Menu.";
+        displayInstruction.text = "Press Space Bar to restart game";
         //Debug.Log(" I am on Game Over");
         //SceneManager.LoadScene("Menu_Scene");
         //Debug.Log(SceneManager.GetActiveScene().name);

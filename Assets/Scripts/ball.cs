@@ -141,8 +141,8 @@ public class ball : MonoBehaviour
         gameOnPause = true;
         gameOnPlaying = false;
 
-        Debug.Log("gameOnpause: " + gameOnPause);
-        Debug.Log("gameOnPlaying: " + gameOnPlaying);
+        //Debug.Log("gameOnpause: " + gameOnPause);
+        //Debug.Log("gameOnPlaying: " + gameOnPlaying);
     }
 
     void launchBall()
@@ -249,7 +249,7 @@ public class ball : MonoBehaviour
 
         destroyedBrickCount = 0;
         timerStarted = true;
-        delayTime = 0.5f;
+        delayTime = 1f;
         timer = 0f;
 
     }
