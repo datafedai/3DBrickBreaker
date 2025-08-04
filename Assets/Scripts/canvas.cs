@@ -60,10 +60,9 @@ public class canvas : MonoBehaviour
         displayLives.text = lives.ToString();
 
         // populate image UI elements with solid white ball sprites
-        for (int i = 0; i < 3; i++)
-        {
-            displayLivesImage[i].sprite = lifeSprites[1];   // solid white            
-        }
+        displayLivesImage[0].sprite = lifeSprites[1];   // solid white
+        displayLivesImage[1].sprite = lifeSprites[1];   // solid white
+        displayLivesImage[2].sprite = lifeSprites[1];   // solid white
 
         // replace solid circle with empty circle when ball is out for playing
         for (int i = 0; i < 3 - lives; i++)
