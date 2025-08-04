@@ -69,7 +69,7 @@ public class canvas : MonoBehaviour
         for (int i = 2; i > lives-1 ; i--)
         {
             //Debug.Log(i);
-            displayLivesImage[i].sprite = lifeSprites[2];   // white lined circle or none
+            displayLivesImage[i].sprite = lifeSprites[0];   // white lined circle or none
         }
 
     }
