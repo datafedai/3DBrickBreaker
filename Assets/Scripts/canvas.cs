@@ -75,6 +75,7 @@ public class canvas : MonoBehaviour
     void OnMenu()
     {
         displayState.text = "Main Menu";
+        displayInstruction.text = "Press Space Bar to play";
         //Debug.Log(" I am on Menu");
         //Debug.Log(SceneManager.GetActiveScene().name);
     }
@@ -85,6 +86,7 @@ public class canvas : MonoBehaviour
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
         //Debug.Log(" I am on Playing");
+        displayInstruction.text = "";
         displayState.text = "Playing";
     }
 
@@ -102,7 +104,7 @@ public class canvas : MonoBehaviour
     {
         displayState.text = "Game Over";
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
-        displayState2.text = "Score\n" + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
+        displayState2.text = "Score: " + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
 
         displayInstruction.text = "Press Q for the initial Main Menu.";
         //Debug.Log(" I am on Game Over");

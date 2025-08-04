@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Space bar pressed");
 
 
-        if (currentGameState == GameState.Menu && SceneManager.GetActiveScene().name == "3_Scene")
+        if (currentGameState == GameState.Menu && SceneManager.GetActiveScene().name == "Main_Scene")
         {
             Debug.Log("playing from main menu");
             OnGameStateChangedToPlaying?.Invoke();
@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
                 OnGameStateChangedToMenu?.Invoke();
                 currentGameState = GameState.Menu;
                 newGameState = GameState.Playing;
-                SceneManager.LoadScene("3_Scene");
+                SceneManager.LoadScene("main_Scene");
                 break;
 
             case GameState.Paused:
@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("quitting game from pasue");
                 OnGameStateChangedToOver?.Invoke();
                 currentGameState = GameState.Over;
-                SceneManager.LoadScene("Menu_Scene");
+                SceneManager.LoadScene("Over_Scene");
                 break;
 
             case GameState.Over:
@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
                 OnGameStateChangedToOver?.Invoke();
                 currentGameState = GameState.Menu;
                 newGameState = GameState.Playing;
-                SceneManager.LoadScene("3_Scene");
+                SceneManager.LoadScene("Main_Scene");
 
                 break;
 
@@ -314,13 +314,13 @@ public class GameManager : MonoBehaviour
         // so don't need to assign GameState.Menu at Start()
 
         Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
-        if (SceneManager.GetActiveScene().name == "3_Scene")
+        if (SceneManager.GetActiveScene().name == "Main_Scene")
         {
             OnGameStateChangedToMenu?.Invoke();
         }
-        else if (SceneManager.GetActiveScene().name == "Menu_Scene")
+        else if (SceneManager.GetActiveScene().name == "Over_Scene")
         {
-            Debug.Log("I am on Menu scene");
+            Debug.Log("I am on Main Scene");
             OnGameStateChangedToOver?.Invoke();
             currentGameState = GameState.Over;
         }
@@ -363,7 +363,7 @@ public class GameManager : MonoBehaviour
             {
                 currentGameState = GameState.Over;
                 newGameState = GameState.Over;
-                SceneManager.LoadScene("Menu_Scene");
+                SceneManager.LoadScene("Over_Scene");
                 Debug.Log("Total " + ballScript.getDestroyedBricksCount() + " brickes destroyed.");
             }
 
@@ -373,7 +373,7 @@ public class GameManager : MonoBehaviour
         if (ballScript.getDestroyedBricksCount() == 105)
         {
             Debug.Log("You won!");
-            SceneManager.LoadScene("3_Scene");
+            SceneManager.LoadScene("Main_Scene");
         }
         //Debug.Log(ballScript.getDestroyedBricksCount() + " brickes destroyed.");
 
