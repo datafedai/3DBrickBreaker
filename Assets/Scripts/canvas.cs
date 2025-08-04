@@ -14,7 +14,7 @@ public class canvas : MonoBehaviour
     public TextMeshProUGUI displayScore; // current score
     public TextMeshProUGUI displayLives; // lives left
     public Sprite[] lifeSprites;
-    public Image[] livesDisplayImage;
+    public Image[] displayLivesImage;
 
 
 
@@ -60,14 +60,15 @@ public class canvas : MonoBehaviour
         displayLives.text = lives.ToString();
 
         // populate image UI elements with solid white ball sprites
-        livesDisplayImage[0].sprite = lifeSprites[1];
-        livesDisplayImage[1].sprite = lifeSprites[1];
-        livesDisplayImage[2].sprite = lifeSprites[1];
+        for (int i = 0; i < 3; i++)
+        {
+            displayLivesImage[i].sprite = lifeSprites[1];   // solid white            
+        }
 
         // replace solid circle with empty circle when ball is out for playing
         for (int i = 0; i < 3 - lives; i++)
         {
-            livesDisplayImage[i].sprite = lifeSprites[0];
+            displayLivesImage[i].sprite = lifeSprites[0];   // white lined circle
         }
 
     }
