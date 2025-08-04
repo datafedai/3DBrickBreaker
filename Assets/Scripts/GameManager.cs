@@ -113,14 +113,14 @@ public class GameManager : MonoBehaviour
             case GameState.Menu:
                 if (SceneManager.GetActiveScene().name == "Main_Scene")
                 {
-                    Debug.Log("playing from main menu");
+                    //Debug.Log("playing from main menu");
                     OnGameStateChangedToPlaying?.Invoke();
                     currentGameState = GameState.Playing;
                 }
                 break;
 
             case GameState.Over:
-                Debug.Log("changing scenes: from Over to Main");
+                //Debug.Log("changing scenes: from Over to Main");
                 OnGameStateChangedToPlaying?.Invoke();
                 currentGameState = GameState.Playing;
                 newGameState = GameState.Playing;
@@ -141,18 +141,15 @@ public class GameManager : MonoBehaviour
         switch (currentGameState)
         {
             case GameState.Playing:
-                //
-                Debug.Log("pausing game from playing");
+                //Debug.Log("pausing game from playing");
                 OnGameStateChangedToPaused?.Invoke();
                 currentGameState = GameState.Paused;
                 break;
 
             case GameState.Paused:
-                //
-                Debug.Log("replaying game from pause");
+                //Debug.Log("replaying game from pause");
                 OnGameStateChangedToPlaying?.Invoke();
                 currentGameState = GameState.Playing;
-
                 break;
 
             default:
@@ -167,16 +164,14 @@ public class GameManager : MonoBehaviour
         switch (currentGameState)
         {
             case GameState.Paused:
-                //
-                Debug.Log("quitting game from pasue");
+                //Debug.Log("quitting game from pasue");
                 //OnGameStateChangedToOver?.Invoke();
                 //currentGameState = GameState.Over;
                 SceneManager.LoadScene("Over_Scene");
                 break;
 
             case GameState.Over:
-                //
-                Debug.Log("returning to main menu");
+                //Debug.Log("returning to main menu");
                 //OnGameStateChangedToMenu?.Invoke();
                 newGameState = GameState.Menu;
                 SceneManager.LoadScene("Main_Scene");
@@ -191,8 +186,8 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Debug.Log("starting... a new scene");
-        Debug.Log("current state: " + currentGameState);
+        //Debug.Log("starting... a new scene");
+        //Debug.Log("current state: " + currentGameState);
 
         //isInvoked = true;
         //Debug.Log("isInvoked set to true on Start");
@@ -207,7 +202,7 @@ public class GameManager : MonoBehaviour
         // currentGameState = GameState.Menu, newGameState = GameState.Menu, 
         // so don't need to assign GameState.Menu at Start()
 
-        Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
+        //Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
         if (SceneManager.GetActiveScene().name == "Main_Scene")
         {
             if (newGameState == GameState.Playing)
@@ -252,7 +247,7 @@ public class GameManager : MonoBehaviour
             {
                 currentGameState = GameState.Over;
                 SceneManager.LoadScene("Over_Scene");
-                Debug.Log("Total " + ballScript.getDestroyedBricksCount() + " brickes destroyed.");
+                //Debug.Log("Total " + ballScript.getDestroyedBricksCount() + " brickes destroyed.");
             }
 
         }
@@ -260,7 +255,7 @@ public class GameManager : MonoBehaviour
         // check if all the bricks are destroyed
         if (ballScript.getDestroyedBricksCount() == 105)
         {
-            Debug.Log("You won!");
+            //Debug.Log("You won!");
             SceneManager.LoadScene("Main_Scene");
         }
 
