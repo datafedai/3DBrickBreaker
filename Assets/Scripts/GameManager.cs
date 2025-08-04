@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour
     InputAction quitGame;
     public InputSystem_Actions inputActions;
     private Action<InputAction.CallbackContext> spacePerformedAction;
-    //private Action<InputAction.CallbackContext> escPerformedAction;
-    private Action<InputAction.CallbackContext> pEscPerformedAction;
+    private Action<InputAction.CallbackContext> escPerformedAction;
+    private Action<InputAction.CallbackContext> pPerformedAction;
     private Action<InputAction.CallbackContext> qPerformedAction;
 
 
@@ -68,12 +68,12 @@ public class GameManager : MonoBehaviour
     {
         //inputActions.Player.Confirm.performed += spacePerformedAction = ctx => handleSpacePressed();
         //inputActions.Player.Restart.performed += escPerformedAction = ctx => handleEscOrPPressed();
-        //inputActions.Player.Restart.performed += pEscPerformedAction = ctx => handleEscOrPPressed();
+        //inputActions.Player.Restart.performed += pPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Menu.performed += qPerformedAction = ctx => handleQPressed();
 
         inputActions.Menu.PlayGame.performed += spacePerformedAction = ctx => handleSpacePressed();
-        inputActions.Playing.PauseGame.performed += pEscPerformedAction = ctx => handleEscOrPPressed();
-        inputActions.Paused.ContinueGame.performed += pEscPerformedAction = ctx => handleEscOrPPressed();
+        inputActions.Playing.PauseGame.performed += pPerformedAction = ctx => handleEscOrPPressed();
+        inputActions.Paused.ContinueGame.performed += escPerformedAction = ctx => handleEscOrPPressed();
         inputActions.Paused.QuitGame.performed += qPerformedAction = ctx => handleQPressed();
         inputActions.Over.RestartGame.performed += spacePerformedAction = ctx => handleSpacePressed();
         inputActions.Enable();
@@ -82,14 +82,14 @@ public class GameManager : MonoBehaviour
     {
         inputActions.Disable();
         inputActions.Menu.PlayGame.performed -= spacePerformedAction = ctx => handleSpacePressed();
-        inputActions.Playing.PauseGame.performed -= pEscPerformedAction = ctx => handleEscOrPPressed();
-        inputActions.Paused.ContinueGame.performed -= pEscPerformedAction = ctx => handleEscOrPPressed();
+        inputActions.Playing.PauseGame.performed -= pPerformedAction = ctx => handleEscOrPPressed();
+        inputActions.Paused.ContinueGame.performed -= escPerformedAction = ctx => handleEscOrPPressed();
         inputActions.Paused.QuitGame.performed -= qPerformedAction = ctx => handleQPressed();
         inputActions.Over.RestartGame.performed -= spacePerformedAction = ctx => handleSpacePressed();
 
         //inputActions.Player.Confirm.performed -= spacePerformedAction = ctx => handleSpacePressed();
         //inputActions.Player.Restart.performed -= escPerformedAction = ctx => handleEscOrPPressed();
-        //inputActions.Player.Restart.performed -= pEscPerformedAction = ctx => handleEscOrPPressed();
+        //inputActions.Player.Restart.performed -= pPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Menu.performed -= qPerformedAction = ctx => handleQPressed();
     }
 
@@ -161,6 +161,79 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("Over_Scene");
         }
     }
+
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        Debug.Log("starting... a new scene");
+        Debug.Log("current state: " + currentGameState);
+
+        //isInvoked = true;
+        //Debug.Log("isInvoked set to true on Start");
+        //ballRB = ballObject.GetComponent<Rigidbody>();
+        /*
+                playGame = InputSystem.actions.FindAction("Confirm");   // space bar
+                pauseGame = InputSystem.actions.FindAction("Restart");  // ESC or P
+                quitGame = InputSystem.actions.FindAction("Menu");      // Q
+        */
+
+        // When newGameState and currentGameState are declared, they get the valueof the 1st enum, Menu
+        // currentGameState = GameState.Menu, newGameState = GameState.Menu, 
+        // so don't need to assign GameState.Menu at Start()
+
+        Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
+        if (SceneManager.GetActiveScene().name == "Main_Scene")
+        {
+            OnGameStateChangedToMenu?.Invoke();
+        }
+        else if (SceneManager.GetActiveScene().name == "Over_Scene")
+        {
+            OnGameStateChangedToOver?.Invoke();
+            currentGameState = GameState.Over;
+        }
+
+        //Debug.Log("newGameState: " + newGameState);
+        //Debug.Log("currentGameState: " + currentGameState);
+
+        ballScript = ballObject.GetComponent<ball>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //Debug.Log(ballObject.transform.position.y);
+        //Debug.Log("current state: " + currentGameState);
+
+        // if ball is missed while game is not over, that is on playing
+        if (currentGameState != GameState.Over && ballScript.isBallMissed)
+        {
+            if (ballScript.canContinueToPlay())
+            {
+                ballScript.resetIsBallLaunched();
+                currentGameState = GameState.Playing;
+            }
+            else
+            {
+                currentGameState = GameState.Over;
+                SceneManager.LoadScene("Over_Scene");
+                Debug.Log("Total " + ballScript.getDestroyedBricksCount() + " brickes destroyed.");
+            }
+
+        }
+
+        // check if all the bricks are destroyed
+        if (ballScript.getDestroyedBricksCount() == 105)
+        {
+            Debug.Log("You won!");
+            SceneManager.LoadScene("Main_Scene");
+        }
+
+        //handleGameState();
+    }
+}
+
+
 
 
 /*
@@ -290,99 +363,3 @@ public class GameManager : MonoBehaviour
 
     }
 */
-
-// Start is called once before the first execution of Update after the MonoBehaviour is created
-void Start()
-{
-
-    Debug.Log("starting... a new scene");
-    Debug.Log("current state: " + currentGameState);
-
-
-
-    //isInvoked = true;
-    //Debug.Log("isInvoked set to true on Start");
-    //ballRB = ballObject.GetComponent<Rigidbody>();
-    /*
-            playGame = InputSystem.actions.FindAction("Confirm");   // space bar
-            pauseGame = InputSystem.actions.FindAction("Restart");  // ESC or P
-            quitGame = InputSystem.actions.FindAction("Menu");      // Q
-    */
-    //currentGameState = GameState.Menu;
-    /*
-    displayState.text = "Main Menu";
-    displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
-    displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
-    */
-
-    // When newGameState and currentGameState are declared, they get the valueof the 1st enum, Menu
-    // currentGameState = GameState.Menu, newGameState = GameState.Menu, 
-    // so don't need to assign GameState.Menu at Start()
-
-    Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
-    if (SceneManager.GetActiveScene().name == "Main_Scene")
-    {
-        OnGameStateChangedToMenu?.Invoke();
-    }
-    else if (SceneManager.GetActiveScene().name == "Over_Scene")
-    {
-        OnGameStateChangedToOver?.Invoke();
-        currentGameState = GameState.Over;
-    }
-
-    /*
-            if (SceneManager.GetActiveScene().name == "3_Scene" && newGameState == GameState.Playing) // if loaded from the new scene
-            {
-                currentGameState = GameState.Playing;
-                //Debug.Log("here1");
-            }
-
-
-            else if (SceneManager.GetActiveScene().name == "Menu_Scene" && newGameState == GameState.Over)
-            {
-                currentGameState = GameState.Over;
-                //isInvoked = true;
-                //Debug.Log("here2");
-            }
-    */
-    //Debug.Log("newGameState: " + newGameState);
-    //Debug.Log("currentGameState: " + currentGameState);
-
-    ballScript = ballObject.GetComponent<ball>();
-}
-
-// Update is called once per frame
-void Update()
-{
-    //Debug.Log(ballObject.transform.position.y);
-    //Debug.Log("current state: " + currentGameState);
-
-    // if ball is missed while game is not over, that is on playing
-    if (currentGameState != GameState.Over && ballScript.isBallMissed)
-    {
-        if (ballScript.canContinueToPlay())
-        {
-            ballScript.resetIsBallLaunched();
-            currentGameState = GameState.Playing;
-        }
-        else
-        {
-            currentGameState = GameState.Over;
-            //newGameState = GameState.Over;
-            SceneManager.LoadScene("Over_Scene");
-            Debug.Log("Total " + ballScript.getDestroyedBricksCount() + " brickes destroyed.");
-        }
-
-    }
-
-    // check if all the bricks are destroyed
-    if (ballScript.getDestroyedBricksCount() == 105)
-    {
-        Debug.Log("You won!");
-        SceneManager.LoadScene("Main_Scene");
-    }
-    //Debug.Log(ballScript.getDestroyedBricksCount() + " brickes destroyed.");
-
-    //handleGameState();
-}
-}

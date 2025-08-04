@@ -65,13 +65,6 @@ public class paddle : MonoBehaviour
         Vector3 newPos = transform.position + new Vector3(moveDistance, 0, 0);
         newPos.x = Mathf.Clamp(newPos.x, -wall, wall);
         transform.position = newPos;
-
-        /*
-        if (getMoveValue().y == 1)
-        {
-            Debug.Log("paddle jump");
-        }
-        */
     }
 
 

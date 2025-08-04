@@ -89,24 +89,9 @@ public class ball : MonoBehaviour
             //Debug.Log(ballRB.linearVelocityY);
             //Debug.Log("ball velocity2: " + ballRB.linearVelocity);
         }
-
-        /*
-        else if (collision.collider.name == "LWall" || collision.collider.name == "RWall")
-        {
-            if (ballRB.linearVelocity.y < 0.1f && ballRB.linearVelocity.y > -0.1f)
-            {
-                //Debug.Log("Ball barely has verticcal movement");
-                //Debug.Log(ballRB.linearVelocity.y);
-            }
-        } */
-
     }
 
-    /*
-    void Awake()
-    {
-        ballRB = GetComponent<Rigidbody>();
-    } */
+
 
     void OnEnable()
     {
@@ -158,16 +143,6 @@ public class ball : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    void initializeBall()
-    {
-        ballRB.transform.position = new Vector3(0f, 5f, 0f);
-        ballRB.linearVelocity = Vector3.zero;
-        isBallLaunched = false;
-        for (int i = 0; i < 10000000; i++)
-        {
-            //
-        }
-    }
 
     public int getDestroyedBricksCount()
     {
@@ -216,14 +191,10 @@ public class ball : MonoBehaviour
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
 
-        //destroyedBrickCount = 0;
-        //Invoke("delaying ball launch", delayTime);
-        //StartDelayedSceneLoad();
-        StartTimer();
-
+        initTimer();
     }
 
-    void StartTimer()
+    void initTimer()
     {
         timerStarted = true;
         timer = 0f;
@@ -274,13 +245,11 @@ public class ball : MonoBehaviour
                     timerStarted = false;
                 }
             }
-
-
         }
 
         if (gameOnPause)
         {
-            Debug.Log("game paused");
+            //Debug.Log("game paused");
             pauseGame();
 
         }
@@ -299,8 +268,6 @@ public class ball : MonoBehaviour
             //Debug.Log("The ball is missed. Game Over");
 
         }
-
-
 
     }
 }
