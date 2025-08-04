@@ -18,7 +18,7 @@ public class ball : MonoBehaviour
     private bool isBallLaunched;
     public bool isBallMissed;
     private int ballLives;
-    private int destroyedBrickCount;
+    static private int destroyedBrickCount;
 
     public static ball Instance { get; private set; }
     public event Action<int> BrickDestroyed;
@@ -130,16 +130,19 @@ public class ball : MonoBehaviour
         Time.timeScale = 1;
         gameOnPlaying = true;
         gameOnPause = false;
+        isBallLaunched = false;
     }
 
     void OnPause()
     {
         //Debug.Log("setting gameOnPause to true");
-        //Debug.Log("gameOnPlaying: " + gameOnPlaying);
-        //Debug.Log("gameOnpause: " + gameOnPause);
+
+
         gameOnPause = true;
         gameOnPlaying = false;
 
+        Debug.Log("gameOnpause: " + gameOnPause);
+        Debug.Log("gameOnPlaying: " + gameOnPlaying);
     }
 
     void launchBall()
@@ -199,7 +202,7 @@ public class ball : MonoBehaviour
         //ballLives--;
         //BallLives?.Invoke(ballLives);
         //initializeBall();
-        Debug.Log("Restarted");
+        //Debug.Log("Restarted");
         //ballLives--;
         BallLives?.Invoke(ballLives);
 
@@ -241,7 +244,7 @@ public class ball : MonoBehaviour
         isBallLaunched = false;
         isBallMissed = false;
         initialForce = 10f;
-        Debug.Log("gameOnPlaying: " + gameOnPlaying);
+        //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
 
         destroyedBrickCount = 0;
@@ -277,7 +280,7 @@ public class ball : MonoBehaviour
 
         if (gameOnPause)
         {
-            //Debug.Log("game paused");
+            Debug.Log("game paused");
             pauseGame();
 
         }

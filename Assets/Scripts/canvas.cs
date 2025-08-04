@@ -56,7 +56,7 @@ public class canvas : MonoBehaviour
 
     void UpdateBallLives(int lives)
     {
-        Debug.Log("in updateBallLives");
+        //Debug.Log("in updateBallLives");
         displayLives.text = lives.ToString();
 
         // populate image UI elements with solid white ball sprites
@@ -101,8 +101,10 @@ public class canvas : MonoBehaviour
     void OnOver()
     {
         displayState.text = "Game Over";
-        displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
-        displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
+        //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
+        displayState2.text = "Score\n" + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
+
+        displayInstruction.text = "Press Q for the initial Main Menu.";
         //Debug.Log(" I am on Game Over");
         //SceneManager.LoadScene("Menu_Scene");
         //Debug.Log(SceneManager.GetActiveScene().name);

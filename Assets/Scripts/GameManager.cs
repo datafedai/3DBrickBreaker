@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
     {
         inputActions.Player.Confirm.performed += spacePerformedAction = ctx => handleSpacePressed();
         inputActions.Player.Restart.performed += escPerformedAction = ctx => handleEscOrPPressed();
-        inputActions.Player.Restart.performed += pPerformedAction = ctx => handleEscOrPPressed();
+        //inputActions.Player.Restart.performed += pPerformedAction = ctx => handleEscOrPPressed();
         inputActions.Player.Menu.performed += qPerformedAction = ctx => handleQPressed();
         inputActions.Enable();
     }
@@ -76,26 +76,88 @@ public class GameManager : MonoBehaviour
         inputActions.Disable();
         inputActions.Player.Confirm.performed -= spacePerformedAction = ctx => handleSpacePressed();
         inputActions.Player.Restart.performed -= escPerformedAction = ctx => handleEscOrPPressed();
-        inputActions.Player.Restart.performed -= pPerformedAction = ctx => handleEscOrPPressed();
+        //inputActions.Player.Restart.performed -= pPerformedAction = ctx => handleEscOrPPressed();
         inputActions.Player.Menu.performed -= qPerformedAction = ctx => handleQPressed();
     }
 
     void handleSpacePressed()
     {
         Debug.Log("Space bar pressed");
+
+
+        if (currentGameState == GameState.Menu && SceneManager.GetActiveScene().name == "3_Scene")
+        {
+            Debug.Log("playing from main menu");
+            OnGameStateChangedToPlaying?.Invoke();
+            currentGameState = GameState.Playing;
+        }
     }
+
 
     void handleEscOrPPressed()
     {
         Debug.Log("ESC or P pressed");
+        switch (currentGameState)
+        {
+            case GameState.Playing:
+                //
+                Debug.Log("pausing game from playing");
+                OnGameStateChangedToPaused?.Invoke();
+                currentGameState = GameState.Paused;
+                break;
+
+            case GameState.Paused:
+                //
+                Debug.Log("replaying game from pause");
+                OnGameStateChangedToPlaying?.Invoke();
+                currentGameState = GameState.Playing;
+
+                break;
+
+            default:
+                break;
+        }
     }
+
 
     void handleQPressed()
     {
         Debug.Log("Q pressed");
+        switch (currentGameState)
+        {
+            case GameState.Menu:
+                //
+                Debug.Log("changing scenes: from special to main");
+                OnGameStateChangedToMenu?.Invoke();
+                currentGameState = GameState.Menu;
+                newGameState = GameState.Playing;
+                SceneManager.LoadScene("3_Scene");
+                break;
+
+            case GameState.Paused:
+                //
+                Debug.Log("quitting game from pasue");
+                OnGameStateChangedToOver?.Invoke();
+                currentGameState = GameState.Over;
+                SceneManager.LoadScene("Menu_Scene");
+                break;
+
+            case GameState.Over:
+                //
+                Debug.Log("going to main menu from game over");
+                OnGameStateChangedToOver?.Invoke();
+                currentGameState = GameState.Menu;
+                newGameState = GameState.Playing;
+                SceneManager.LoadScene("3_Scene");
+
+                break;
+
+            default:
+                break;
+        }
     }
 
-
+/*
     private void handleGameState()
     {
         switch (currentGameState)
@@ -221,11 +283,17 @@ public class GameManager : MonoBehaviour
         }
 
     }
-
+*/
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        Debug.Log("starting... a new scene");
+        Debug.Log("current state: " + currentGameState);
+
+
+
         isInvoked = true;
         //Debug.Log("isInvoked set to true on Start");
         //ballRB = ballObject.GetComponent<Rigidbody>();
@@ -245,20 +313,33 @@ public class GameManager : MonoBehaviour
         // currentGameState = GameState.Menu, newGameState = GameState.Menu, 
         // so don't need to assign GameState.Menu at Start()
 
-        if (SceneManager.GetActiveScene().name == "3_Scene" && newGameState == GameState.Playing) // if loaded from the new scene
+        Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
+        if (SceneManager.GetActiveScene().name == "3_Scene")
         {
-            currentGameState = GameState.Playing;
-            //Debug.Log("here1");
+            OnGameStateChangedToMenu?.Invoke();
         }
-
-
-        else if (SceneManager.GetActiveScene().name == "Menu_Scene" && newGameState == GameState.Over)
+        else if (SceneManager.GetActiveScene().name == "Menu_Scene")
         {
+            Debug.Log("I am on Menu scene");
+            OnGameStateChangedToOver?.Invoke();
             currentGameState = GameState.Over;
-            //isInvoked = true;
-            //Debug.Log("here2");
         }
 
+        /*
+                if (SceneManager.GetActiveScene().name == "3_Scene" && newGameState == GameState.Playing) // if loaded from the new scene
+                {
+                    currentGameState = GameState.Playing;
+                    //Debug.Log("here1");
+                }
+
+
+                else if (SceneManager.GetActiveScene().name == "Menu_Scene" && newGameState == GameState.Over)
+                {
+                    currentGameState = GameState.Over;
+                    //isInvoked = true;
+                    //Debug.Log("here2");
+                }
+        */
         //Debug.Log("newGameState: " + newGameState);
         //Debug.Log("currentGameState: " + currentGameState);
 
@@ -296,6 +377,6 @@ public class GameManager : MonoBehaviour
         }
         //Debug.Log(ballScript.getDestroyedBricksCount() + " brickes destroyed.");
 
-        handleGameState();
+        //handleGameState();
     }
 }
