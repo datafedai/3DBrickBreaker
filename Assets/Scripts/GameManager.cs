@@ -71,12 +71,21 @@ public class GameManager : MonoBehaviour
         //inputActions.Player.Restart.performed += pPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Menu.performed += qPerformedAction = ctx => handleQPressed();
 
+        // on Menu: space bar
         inputActions.Menu.PlayGame.performed += spacePerformedAction = ctx => handleSpacePressed();
+
+        // on Playing: P (not both P and ESC)
         inputActions.Playing.PauseGame.performed += pPerformedAction = ctx => handleEscOrPPressed();
-        inputActions.Paused.ContinueGame.performed += escPerformedAction = ctx => handleEscOrPPressed();
+
+        // on Pause: esc, Q
+        inputActions.Paused.ContinueGame.performed += escPerformedAction = ctx => handleEscOrPPressed(); 
         inputActions.Paused.QuitGame.performed += qPerformedAction = ctx => handleQPressed();
+
+        // on Over: Q, space bar
         inputActions.Over.ReturnToMenu.performed += qPerformedAction = ctx => handleQPressed();
         inputActions.Over.PlayAgain.performed += spacePerformedAction = ctx => handleSpacePressed();
+
+        // enable input action map
         inputActions.Enable();
     }
     void OnDisable()
