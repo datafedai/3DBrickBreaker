@@ -683,9 +683,18 @@
             "id": "51acfb6c-22c2-4769-8284-9148e9a3db7c",
             "actions": [
                 {
-                    "name": "RestartGame",
+                    "name": "PlayAgain",
                     "type": "Button",
                     "id": "a520bb13-e464-498c-bdb1-e6aa5fff5c6d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ReturnToMenu",
+                    "type": "Button",
+                    "id": "0b230645-453e-4f60-b5ba-c2dba5c277dc",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -700,7 +709,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "RestartGame",
+                    "action": "PlayAgain",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -711,7 +720,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "RestartGame",
+                    "action": "PlayAgain",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -722,7 +731,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
-                    "action": "RestartGame",
+                    "action": "PlayAgain",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3de1af3e-ba61-477c-a467-8a2bbb0bcc87",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ReturnToMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

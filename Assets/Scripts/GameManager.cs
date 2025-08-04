@@ -12,7 +12,7 @@ using System; // for Action
 public class GameManager : MonoBehaviour
 {
     GameState currentGameState;
-    //static GameState newGameState; // game state after loading special menu scene 
+    static GameState newGameState; // game state after loading special menu scene 
 
     InputAction playGame;
     InputAction pauseGame;
@@ -75,7 +75,8 @@ public class GameManager : MonoBehaviour
         inputActions.Playing.PauseGame.performed += pPerformedAction = ctx => handleEscOrPPressed();
         inputActions.Paused.ContinueGame.performed += escPerformedAction = ctx => handleEscOrPPressed();
         inputActions.Paused.QuitGame.performed += qPerformedAction = ctx => handleQPressed();
-        inputActions.Over.RestartGame.performed += spacePerformedAction = ctx => handleSpacePressed();
+        inputActions.Over.ReturnToMenu.performed += qPerformedAction = ctx => handleQPressed();
+        inputActions.Over.PlayAgain.performed += spacePerformedAction = ctx => handleSpacePressed();
         inputActions.Enable();
     }
     void OnDisable()
@@ -85,7 +86,8 @@ public class GameManager : MonoBehaviour
         inputActions.Playing.PauseGame.performed -= pPerformedAction = ctx => handleEscOrPPressed();
         inputActions.Paused.ContinueGame.performed -= escPerformedAction = ctx => handleEscOrPPressed();
         inputActions.Paused.QuitGame.performed -= qPerformedAction = ctx => handleQPressed();
-        inputActions.Over.RestartGame.performed -= spacePerformedAction = ctx => handleSpacePressed();
+        inputActions.Over.ReturnToMenu.performed -= qPerformedAction = ctx => handleQPressed();
+        inputActions.Over.PlayAgain.performed -= spacePerformedAction = ctx => handleSpacePressed();
 
         //inputActions.Player.Confirm.performed -= spacePerformedAction = ctx => handleSpacePressed();
         //inputActions.Player.Restart.performed -= escPerformedAction = ctx => handleEscOrPPressed();
@@ -110,9 +112,9 @@ public class GameManager : MonoBehaviour
 
             case GameState.Over:
                 Debug.Log("changing scenes: from Over to Main");
-                OnGameStateChangedToMenu?.Invoke();
-                currentGameState = GameState.Menu;
-                //newGameState = GameState.Playing;
+                OnGameStateChangedToPlaying?.Invoke();
+                currentGameState = GameState.Playing;
+                newGameState = GameState.Playing;
                 SceneManager.LoadScene("main_Scene");
                 break;
 
@@ -153,12 +155,26 @@ public class GameManager : MonoBehaviour
     void handleQPressed()
     {
         Debug.Log("Q pressed");
-        if (currentGameState == GameState.Paused)
+        switch (currentGameState)
         {
-            Debug.Log("quitting game from pasue");
-            OnGameStateChangedToOver?.Invoke();
-            currentGameState = GameState.Over;
-            SceneManager.LoadScene("Over_Scene");
+            case GameState.Paused:
+                //
+                Debug.Log("quitting game from pasue");
+                //OnGameStateChangedToOver?.Invoke();
+                //currentGameState = GameState.Over;
+                SceneManager.LoadScene("Over_Scene");
+                break;
+
+            case GameState.Over:
+                //
+                Debug.Log("returning to main menu");
+                //OnGameStateChangedToMenu?.Invoke();
+                newGameState = GameState.Menu;
+                SceneManager.LoadScene("Main_Scene");
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -185,7 +201,17 @@ public class GameManager : MonoBehaviour
         Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
         if (SceneManager.GetActiveScene().name == "Main_Scene")
         {
-            OnGameStateChangedToMenu?.Invoke();
+            if (newGameState == GameState.Playing)
+            {
+                currentGameState = GameState.Playing;
+                OnGameStateChangedToPlaying?.Invoke();
+            }
+            else if(newGameState == GameState.Menu)
+            {
+                currentGameState = GameState.Menu;
+                OnGameStateChangedToMenu?.Invoke();
+            }
+
         }
         else if (SceneManager.GetActiveScene().name == "Over_Scene")
         {

@@ -705,9 +705,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             ""id"": ""51acfb6c-22c2-4769-8284-9148e9a3db7c"",
             ""actions"": [
                 {
-                    ""name"": ""RestartGame"",
+                    ""name"": ""PlayAgain"",
                     ""type"": ""Button"",
                     ""id"": ""a520bb13-e464-498c-bdb1-e6aa5fff5c6d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ReturnToMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""0b230645-453e-4f60-b5ba-c2dba5c277dc"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -722,7 +731,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""RestartGame"",
+                    ""action"": ""PlayAgain"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -733,7 +742,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""RestartGame"",
+                    ""action"": ""PlayAgain"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -744,7 +753,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XR"",
-                    ""action"": ""RestartGame"",
+                    ""action"": ""PlayAgain"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3de1af3e-ba61-477c-a467-8a2bbb0bcc87"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ReturnToMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1436,7 +1456,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Paused_QuitGame = m_Paused.FindAction("QuitGame", throwIfNotFound: true);
         // Over
         m_Over = asset.FindActionMap("Over", throwIfNotFound: true);
-        m_Over_RestartGame = m_Over.FindAction("RestartGame", throwIfNotFound: true);
+        m_Over_PlayAgain = m_Over.FindAction("PlayAgain", throwIfNotFound: true);
+        m_Over_ReturnToMenu = m_Over.FindAction("ReturnToMenu", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1780,12 +1801,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     // Over
     private readonly InputActionMap m_Over;
     private List<IOverActions> m_OverActionsCallbackInterfaces = new List<IOverActions>();
-    private readonly InputAction m_Over_RestartGame;
+    private readonly InputAction m_Over_PlayAgain;
+    private readonly InputAction m_Over_ReturnToMenu;
     public struct OverActions
     {
         private @InputSystem_Actions m_Wrapper;
         public OverActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @RestartGame => m_Wrapper.m_Over_RestartGame;
+        public InputAction @PlayAgain => m_Wrapper.m_Over_PlayAgain;
+        public InputAction @ReturnToMenu => m_Wrapper.m_Over_ReturnToMenu;
         public InputActionMap Get() { return m_Wrapper.m_Over; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1795,16 +1818,22 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_OverActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_OverActionsCallbackInterfaces.Add(instance);
-            @RestartGame.started += instance.OnRestartGame;
-            @RestartGame.performed += instance.OnRestartGame;
-            @RestartGame.canceled += instance.OnRestartGame;
+            @PlayAgain.started += instance.OnPlayAgain;
+            @PlayAgain.performed += instance.OnPlayAgain;
+            @PlayAgain.canceled += instance.OnPlayAgain;
+            @ReturnToMenu.started += instance.OnReturnToMenu;
+            @ReturnToMenu.performed += instance.OnReturnToMenu;
+            @ReturnToMenu.canceled += instance.OnReturnToMenu;
         }
 
         private void UnregisterCallbacks(IOverActions instance)
         {
-            @RestartGame.started -= instance.OnRestartGame;
-            @RestartGame.performed -= instance.OnRestartGame;
-            @RestartGame.canceled -= instance.OnRestartGame;
+            @PlayAgain.started -= instance.OnPlayAgain;
+            @PlayAgain.performed -= instance.OnPlayAgain;
+            @PlayAgain.canceled -= instance.OnPlayAgain;
+            @ReturnToMenu.started -= instance.OnReturnToMenu;
+            @ReturnToMenu.performed -= instance.OnReturnToMenu;
+            @ReturnToMenu.canceled -= instance.OnReturnToMenu;
         }
 
         public void RemoveCallbacks(IOverActions instance)
@@ -2058,7 +2087,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     }
     public interface IOverActions
     {
-        void OnRestartGame(InputAction.CallbackContext context);
+        void OnPlayAgain(InputAction.CallbackContext context);
+        void OnReturnToMenu(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
