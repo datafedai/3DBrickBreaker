@@ -65,8 +65,9 @@ public class canvas : MonoBehaviour
         displayLivesImage[2].sprite = lifeSprites[1];   // solid white
 
         // replace solid circle with empty circle when ball is out for playing
-        for (int i = 0; i < 3 - lives; i++)
+        for (int i = 2; i > lives-1 ; i--)
         {
+            //Debug.Log(i);
             displayLivesImage[i].sprite = lifeSprites[0];   // white lined circle
         }
 
