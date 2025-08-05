@@ -27,6 +27,8 @@ public class ball : MonoBehaviour
     private float timer;
     private bool timerStarted = false;
 
+    public AudioSource collisionAudioSource;
+
 
     private void Awake()
     {
@@ -59,7 +61,7 @@ public class ball : MonoBehaviour
         if (collision.gameObject.name == "Brick(Clone)" || collision.gameObject.name == "Brick")
         {
             Destroy(collision.gameObject);
-
+            collisionAudioSource.Play();
             //Debug.Log(collision.gameObject.name + " destroyed.");
 
             destroyedBrickCount++;
@@ -71,7 +73,8 @@ public class ball : MonoBehaviour
 
         else if (collision.collider.name == "Paddle")
         {
-
+            collisionAudioSource.Play();
+            
             paddle pd = collision.collider.GetComponent<paddle>();
             //Debug.Log("Ball hit Paddle");
             Vector2 paddleMoveValue = pd.getMoveValue();    // +1 for right arrow, -1 for left arrow
