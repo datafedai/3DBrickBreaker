@@ -74,7 +74,7 @@ public class ball : MonoBehaviour
         else if (collision.collider.name == "Paddle")
         {
             collisionAudioSource.Play();
-            
+
             paddle pd = collision.collider.GetComponent<paddle>();
             //Debug.Log("Ball hit Paddle");
             Vector2 paddleMoveValue = pd.getMoveValue();    // +1 for right arrow, -1 for left arrow
@@ -91,6 +91,10 @@ public class ball : MonoBehaviour
 
             //Debug.Log(ballRB.linearVelocityY);
             //Debug.Log("ball velocity2: " + ballRB.linearVelocity);
+        }
+        else if (collision.collider.name == "LWall" || collision.collider.name == "RWall")
+        {
+            collisionAudioSource.Play();
         }
     }
 
