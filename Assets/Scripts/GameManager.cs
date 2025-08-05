@@ -66,6 +66,9 @@ public class GameManager : MonoBehaviour
 
     void OnEnable()
     {
+
+
+
         //inputActions.Player.Confirm.performed += spacePerformedAction = ctx => handleSpacePressed();
         //inputActions.Player.Restart.performed += escPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Restart.performed += pPerformedAction = ctx => handleEscOrPPressed();
@@ -78,7 +81,7 @@ public class GameManager : MonoBehaviour
         inputActions.Playing.PauseGame.performed += pPerformedAction = ctx => handleEscOrPPressed();
 
         // on Pause: esc, Q
-        inputActions.Paused.ContinueGame.performed += escPerformedAction = ctx => handleEscOrPPressed(); 
+        inputActions.Paused.ContinueGame.performed += escPerformedAction = ctx => handleEscOrPPressed();
         inputActions.Paused.QuitGame.performed += qPerformedAction = ctx => handleQPressed();
 
         // on Over: Q, space bar
@@ -87,9 +90,18 @@ public class GameManager : MonoBehaviour
 
         // enable input action map
         inputActions.Enable();
+
+        // Play Again Button Clicks
+        //canvas.Instance.ClickedYes += PlayAgainYes;
+        //canvas.Instance.ClickedNo += PlayAgainNo;
+
     }
     void OnDisable()
     {
+        // Play Again Button Clicks
+        //canvas.Instance.ClickedYes -= PlayAgainYes;
+        //canvas.Instance.ClickedNo -= PlayAgainNo;
+
         inputActions.Disable();
         inputActions.Menu.PlayGame.performed -= spacePerformedAction = ctx => handleSpacePressed();
         inputActions.Playing.PauseGame.performed -= pPerformedAction = ctx => handleEscOrPPressed();
@@ -103,6 +115,18 @@ public class GameManager : MonoBehaviour
         //inputActions.Player.Restart.performed -= pPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Menu.performed -= qPerformedAction = ctx => handleQPressed();
     }
+
+    void PlayAgainYes()
+    {
+        Debug.Log("Yes Button Clicked GM");
+    }
+
+    void PlayAgainNo()
+    {
+        
+        Debug.Log("No Button Clicked GM");
+    }
+
 
     void handleSpacePressed()
     {

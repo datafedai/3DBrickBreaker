@@ -3,7 +3,8 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using Microsoft.Unity.VisualStudio.Editor;
 using Image = UnityEngine.UI.Image;
-
+using UnityEngine.UI; // For UI elements like Button and Text
+using System; // for Action
 
 public class canvas : MonoBehaviour
 {
@@ -16,8 +17,35 @@ public class canvas : MonoBehaviour
     public Sprite[] lifeSprites;
     public Image[] displayLivesImage;
 
+    // experimental
+    public GameObject buttonPanel; // Reference to the panel containing the dialog
+    public TextMeshProUGUI questionText; // Or public Text questionText;
+    public Button yesButton;
+    public Button noButton;
+    public static canvas Instance { get; private set; }
+    public event Action ClickedYes;
+    public event Action ClickedNo;
 
 
+
+    private void Awake()
+    {
+        // Check if an instance already exists and it's not this one.
+        if (Instance != null && Instance != this)
+        {
+            // Destroy the duplicate instance.
+            //Debug.Log("destroying..." + gameObject.name);
+            Destroy(gameObject);
+        }
+        else
+        {
+            // Assign this instance as the Singleton.
+            Instance = this;
+            Debug.Log("this is " + this);
+            // Optionally, prevent the Singleton from being destroyed on scene changes.
+            // DontDestroyOnLoad(gameObject);
+        }
+    }
 
 
     void OnEnable()
@@ -106,7 +134,8 @@ public class canvas : MonoBehaviour
     {
         displayState.text = "Game Over";
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
-        displayState2.text = "Score: " + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
+        displayState2.text = "Play Again?";
+        displayScore.text = "Score: " + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
 
         //displayInstruction.text = "Press Space Bar to restart game";
         displayInstruction.text = "Press Space Bar to play again.\nPress Q to return to Main Menu";
@@ -115,13 +144,33 @@ public class canvas : MonoBehaviour
         //Debug.Log(SceneManager.GetActiveScene().name);
     }
 
+    void YesClicked()
+    {
+        Debug.Log("Yes Clicked");
+        ClickedYes?.Invoke();
+        //buttonPanel.SetActive(false); // Hide the dialog
+    }
+
+    void NoClicked()
+    {
+        Debug.Log("No Clicked");
+        ClickedNo?.Invoke();
+        //buttonPanel.SetActive(false); // Hide the dialog
+    }
+
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         //displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
-        
-
+        //buttonPanel.SetActive(true);
+        // Add listeners to the buttons
+        //ClickedYes?.Invoke();
+        //ClickedNo?.Invoke();
+        yesButton.onClick.AddListener(YesClicked);
+        noButton.onClick.AddListener(NoClicked);
     }
 
     // Update is called once per frame

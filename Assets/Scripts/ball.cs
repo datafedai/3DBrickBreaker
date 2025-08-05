@@ -105,6 +105,10 @@ public class ball : MonoBehaviour
         //Debug.Log("in OnEnable in Ball");
         GameManager.Instance.OnGameStateChangedToPlaying += OnPlaying;
         GameManager.Instance.OnGameStateChangedToPaused += OnPause;
+
+        // Play Again Button Clicks
+        //canvas.Instance.ClickedYes += PlayAgainYes;
+        //canvas.Instance.ClickedNo += PlayAgainNo;
     }
 
     void OnDisable()
@@ -112,6 +116,21 @@ public class ball : MonoBehaviour
         //Debug.Log("in OnDisable in Ball");
         GameManager.Instance.OnGameStateChangedToPlaying -= OnPlaying;
         GameManager.Instance.OnGameStateChangedToPaused -= OnPause;
+
+        // Play Again Button Clicks
+        //canvas.Instance.ClickedYes -= PlayAgainYes;
+        //canvas.Instance.ClickedNo -= PlayAgainNo;        
+    }
+
+    void PlayAgainYes()
+    {
+        Debug.Log("Yes Button Clicked ball");
+    }
+
+    void PlayAgainNo()
+    {
+        
+        Debug.Log("No Button Clicked ball");
     }
 
     void OnPlaying()
