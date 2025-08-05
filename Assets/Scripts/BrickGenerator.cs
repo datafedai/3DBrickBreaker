@@ -1,6 +1,7 @@
 using System.Data;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class BrickGenerator : MonoBehaviour
@@ -69,6 +70,66 @@ public class BrickGenerator : MonoBehaviour
 
     }
 
+    void createWinBricks(Transform refPos)
+    {
+        bool[,] myBoolMatrix = new bool[,] {
+        {true, false, false, false, true, false, true, false, true, false, false, false, true}, // row1
+        {true, false, false, false, true, false, true, false, true, true, false, false, true},  // row2
+        {true, false, false, false, true, false, true, false, true, true, false, false, true},  // row3
+        {true, false, false, false, true, false, true, false, true, false, true, false, true},  // row4
+        {true, false, true, false, true, false, true, false, true, false, true, false, true},  // row5        
+        {true, false, true, false, true, false, true, false, true, false, false, true, true},  // row6 
+        {true, false, true, false, true, false, true, false, true, false, false, true, true},  // row7 
+        {false, true, false, true, false, false, true, false, true, false, false, false, true},  // row8         
+        };
+
+        Vector3 currentPos = refPos.position; // position of the (middle = original) object
+        //int count = 0;
+
+        for (int R = 0; R < numRows; R++) // rows: j=0~7 
+        {
+            for (int i = -6; i <= 6; i++) // columns: jj=0~12
+            {
+                // column layout: 1,2,3,4,5,6,[7],8,9,10,11,12,13
+                // order of creation: (jj, col) = (0, 7th), (1, 6th), (2, 8th), (3, 5th), (4, 9th), (5, 4th), ....
+                // shift index i from the middle as jj changes 0~12:
+                // (jj, i) = (0, 0), (1, -1), (2, 1), (3, -2), (4, 2), (5, -3), ....
+                // In short, the shift index changes 0, -1, 1, -2, 2, -3, 3, -4, ....
+                //int i = (int)(Mathf.Pow(-1, jj) * Mathf.Floor((jj + 1) / 2));
+                //Debug.Log("jj:i = " + jj + ":" + i);
+
+                // j=0 top row, j=1 2nd row from top, j=2 3rd row from top, etc.
+                // As i changes in the order of 0, -1, 1, -2, 2, -3, 3,.... 
+                // object is created first in the middle(7th=0*brickWidth), 
+                // then 1st left(6th=-1*brickWidth) of middle, then 1st right(8th=1*brickWidth) of middle
+                // then 2nd left(5th=-2*brickWidth) of middle, then 2nd right(9th=2*brickWidth) of middle, .....
+                //currentPos = refPos.position + new Vector3(i * brickWidth, -j * brickHeight, 0);
+
+
+
+                //GameObject instantiatedObject = Instantiate(brickObject, currentPos, Quaternion.identity);
+                //Renderer brickRenderer = instantiatedObject.GetComponent<Renderer>();
+                //brickRenderer.material = materials[chooseMaterial(j)];
+                int C = i + 6;
+                if (myBoolMatrix[R, C] == true)
+                {
+                    Debug.Log("(" + R + " , " + C + ")");
+
+                    //int i = (int)(Mathf.Pow(-1, jj) * Mathf.Floor((jj + 1) / 2));
+                    currentPos = refPos.position + new Vector3(i * brickWidth, -R * brickHeight, 0);
+                    GameObject instantiatedObject = Instantiate(brickObject, currentPos, Quaternion.identity);
+                    Renderer brickRenderer = instantiatedObject.GetComponent<Renderer>();
+                    brickRenderer.material = materials[chooseMaterial(R)];
+                }
+
+                //count++;
+                //Debug.Log(count + " : " + Random.Range(0, 8));
+
+            }
+        }
+    }
+
+
     // Method2:
     // create bricks starting from left and right,
     // but brick positions are symetrical to the middle column.
@@ -105,7 +166,16 @@ public class BrickGenerator : MonoBehaviour
         brickWidth = 2f;
 
         // creeate bricks in 8 rows x 13 columns using Method1
-        createBricks(brickObject.transform);
+        //Debug.Log("creating bricks in current scene: " + SceneManager.GetActiveScene().name);
+        if (SceneManager.GetActiveScene().name == "Win_Scene")
+        {
+            createWinBricks(brickObject.transform);
+        }
+        else
+        {
+            createBricks(brickObject.transform);            
+        }
+
     }
 
 
