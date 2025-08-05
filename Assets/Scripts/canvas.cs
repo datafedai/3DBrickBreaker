@@ -41,7 +41,7 @@ public class canvas : MonoBehaviour
         {
             // Assign this instance as the Singleton.
             Instance = this;
-            Debug.Log("this is " + this);
+            //Debug.Log("this is " + this);
             // Optionally, prevent the Singleton from being destroyed on scene changes.
             // DontDestroyOnLoad(gameObject);
         }
@@ -55,6 +55,7 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPaused += OnPause;
         GameManager.Instance.OnGameStateChangedToMenu += OnMenu;
         GameManager.Instance.OnGameStateChangedToOver += OnOver;
+        GameManager.Instance.WonGame += YouWonGame;
 
         // score update
         ball.Instance.BrickDestroyed += UpdateScore;
@@ -68,12 +69,13 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPaused -= OnPause;
         GameManager.Instance.OnGameStateChangedToMenu -= OnMenu;
         GameManager.Instance.OnGameStateChangedToOver -= OnOver;
-
+        GameManager.Instance.WonGame -= YouWonGame;
         // score
         ball.Instance.BrickDestroyed -= UpdateScore;
         ball.Instance.BallLives -= UpdateBallLives;
         //ball.Instance.BallLives -= UpdateLives;
     }
+
 
 
     void UpdateScore(int bricksDestroyed)
@@ -144,6 +146,19 @@ public class canvas : MonoBehaviour
         //Debug.Log(SceneManager.GetActiveScene().name);
     }
 
+
+    void YouWonGame()
+    {
+        //Debug.Log("You have won game!");
+        //SceneManager.LoadScene("Over_Scene");
+        displayState.text = "Congratulations!";
+        displayState2.text = "<color=Red>You</color>\n<size=50><color=Blue>Won!</color></size>";
+        //displayState2.text = "Play Again?";
+        displayScore.text = "Score: " + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
+
+        //displayInstruction.text = "Press Space Bar to restart game";
+        displayInstruction.text = "Press Space Bar to play again.\nPress Q to return to Main Menu";        
+    }
     void YesClicked()
     {
         Debug.Log("Yes Clicked");

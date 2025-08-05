@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     public event Action OnGameStateChangedToPaused;
     public event Action OnGameStateChangedToMenu;
     public event Action OnGameStateChangedToOver;
+    public event Action WonGame;
 
     public GameObject ballObject;
     ball ballScript;
@@ -123,7 +124,7 @@ public class GameManager : MonoBehaviour
 
     void PlayAgainNo()
     {
-        
+
         Debug.Log("No Button Clicked GM");
     }
 
@@ -135,9 +136,15 @@ public class GameManager : MonoBehaviour
         switch (currentGameState)
         {
             case GameState.Menu:
-                if (SceneManager.GetActiveScene().name == "Main_Scene")
+                //Debug.Log("playing from main menu");
+
+                if (SceneManager.GetActiveScene().name == "Win_Scene")
                 {
-                    //Debug.Log("playing from main menu");
+                    SceneManager.LoadScene("Main_Scene");
+                    newGameState = GameState.Playing;
+                }
+                else if (SceneManager.GetActiveScene().name == "Main_Scene")
+                {
                     OnGameStateChangedToPlaying?.Invoke();
                     currentGameState = GameState.Playing;
                 }
@@ -187,6 +194,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("Q pressed");
         switch (currentGameState)
         {
+            case GameState.Menu:
+                // win scene
+                Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
+                Debug.Log("current game state: " + currentGameState);
+
+                newGameState = GameState.Menu;
+                SceneManager.LoadScene("Main_Scene");
+                break;
+
             case GameState.Paused:
                 //Debug.Log("quitting game from pasue");
                 //OnGameStateChangedToOver?.Invoke();
@@ -234,7 +250,7 @@ public class GameManager : MonoBehaviour
                 currentGameState = GameState.Playing;
                 OnGameStateChangedToPlaying?.Invoke();
             }
-            else if(newGameState == GameState.Menu)
+            else if (newGameState == GameState.Menu)
             {
                 currentGameState = GameState.Menu;
                 OnGameStateChangedToMenu?.Invoke();
@@ -245,6 +261,11 @@ public class GameManager : MonoBehaviour
         {
             OnGameStateChangedToOver?.Invoke();
             currentGameState = GameState.Over;
+        }
+        else if (SceneManager.GetActiveScene().name == "Win_Scene")
+        {
+            WonGame?.Invoke();
+            //Debug.Log("current game state in Win_Scene: " + currentGameState);
         }
 
         //Debug.Log("newGameState: " + newGameState);
@@ -279,8 +300,9 @@ public class GameManager : MonoBehaviour
         // check if all the bricks are destroyed
         if (ballScript.getDestroyedBricksCount() == 105)
         {
-            //Debug.Log("You won!");
-            SceneManager.LoadScene("Main_Scene");
+            Debug.Log("You won!");
+            //WonGame?.Invoke();
+            SceneManager.LoadScene("Win_Scene");
         }
 
         //handleGameState();

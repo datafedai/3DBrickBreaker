@@ -14,7 +14,7 @@ public class ball : MonoBehaviour
     private Rigidbody ballRB;
     private bool gameOnPlaying;
     private bool gameOnPause;
-    public float initialForce;
+    public float initialForce = 200f;
     private bool isBallLaunched;
     public bool isBallMissed;
     private int ballLives;
@@ -210,7 +210,7 @@ public class ball : MonoBehaviour
 
         isBallLaunched = false;
         isBallMissed = false;
-        initialForce = 10f;
+        //initialForce = 10f;
 
         ballRB.transform.position = new Vector3(0f, 5f, 0f);
         ballRB.linearVelocity = Vector3.zero;
@@ -240,7 +240,7 @@ public class ball : MonoBehaviour
 
         isBallLaunched = false;
         isBallMissed = false;
-        initialForce = 10f;
+        //initialForce = 10f;
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
 
