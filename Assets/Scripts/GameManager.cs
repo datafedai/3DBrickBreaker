@@ -67,9 +67,6 @@ public class GameManager : MonoBehaviour
 
     void OnEnable()
     {
-
-
-
         //inputActions.Player.Confirm.performed += spacePerformedAction = ctx => handleSpacePressed();
         //inputActions.Player.Restart.performed += escPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Restart.performed += pPerformedAction = ctx => handleEscOrPPressed();
@@ -78,10 +75,10 @@ public class GameManager : MonoBehaviour
         // on Menu: space bar
         inputActions.Menu.PlayGame.performed += spacePerformedAction = ctx => handleSpacePressed();
 
-        // on Playing: P (not both P and ESC)
+        // on Playing: P only (not both P and ESC)
         inputActions.Playing.PauseGame.performed += pPerformedAction = ctx => handleEscOrPPressed();
 
-        // on Pause: esc, Q
+        // on Pause: esc only (Not both P and esc), Q
         inputActions.Paused.ContinueGame.performed += escPerformedAction = ctx => handleEscOrPPressed();
         inputActions.Paused.QuitGame.performed += qPerformedAction = ctx => handleQPressed();
 
