@@ -241,7 +241,7 @@ public class GameManager : MonoBehaviour
                 quitGame = InputSystem.actions.FindAction("Menu");      // Q
         */
 
-        // When newGameState and currentGameState are declared, they get the valueof the 1st enum, Menu
+        // When newGameState and currentGameState are declared, they get the value of the 1st enum, Menu
         // currentGameState = GameState.Menu, newGameState = GameState.Menu, 
         // so don't need to assign GameState.Menu at Start()
 

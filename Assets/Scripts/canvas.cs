@@ -184,8 +184,8 @@ public class canvas : MonoBehaviour
         // Add listeners to the buttons
         //ClickedYes?.Invoke();
         //ClickedNo?.Invoke();
-        yesButton.onClick.AddListener(YesClicked);
-        noButton.onClick.AddListener(NoClicked);
+        //yesButton.onClick.AddListener(YesClicked);
+        //noButton.onClick.AddListener(NoClicked);
     }
 
     // Update is called once per frame
