@@ -196,8 +196,8 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Menu:
                 // win scene
-                Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
-                Debug.Log("current game state: " + currentGameState);
+                //Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
+                //Debug.Log("current game state: " + currentGameState);
 
                 newGameState = GameState.Menu;
                 SceneManager.LoadScene("Main_Scene");
