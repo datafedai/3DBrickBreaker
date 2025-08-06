@@ -75,11 +75,11 @@ public class BrickGenerator : MonoBehaviour
         bool[,] WINBoolMatrix = new bool[,] {
         {true, false, false, false, true, false, true, false, true, false, false, false, true}, // row1
         {true, false, false, false, true, false, true, false, true, true, false, false, true},  // row2
-        {true, false, false, false, true, false, true, false, true, true, false, false, true},  // row3
-        {true, false, false, false, true, false, true, false, true, false, true, false, true},  // row4
+        {true, false, true, false, true, false, true, false, true, true, false, false, true},  // row3
+        {true, false, true, false, true, false, true, false, true, false, true, false, true},  // row4
         {true, false, true, false, true, false, true, false, true, false, true, false, true},  // row5        
         {true, false, true, false, true, false, true, false, true, false, false, true, true},  // row6 
-        {true, false, true, false, true, false, true, false, true, false, false, true, true},  // row7 
+        {false, true, false, true, false, false, true, false, true, false, false, true, true},  // row7 
         {false, true, false, true, false, false, true, false, true, false, false, false, true},  // row8         
         };
 

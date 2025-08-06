@@ -152,7 +152,7 @@ public class canvas : MonoBehaviour
         //Debug.Log("You have won game!");
         //SceneManager.LoadScene("Over_Scene");
         displayState.text = "Congratulations!";
-        displayState2.text = "<color=Red>You</color>\n<size=50><color=Blue>Won!</color></size>";
+        displayState2.text = "<color=Red>You</color>\n<size=70><color=Blue>W   N!</color></size>";
         //displayState2.text = "Play Again?";
         displayScore.text = "Score: " + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
 

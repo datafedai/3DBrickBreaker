@@ -14,7 +14,7 @@ public class ball : MonoBehaviour
     private Rigidbody ballRB;
     private bool gameOnPlaying;
     private bool gameOnPause;
-    public float initialForce = 200f;
+    public float initialForce = 100f;
     private bool isBallLaunched;
     public bool isBallMissed;
     private int ballLives;
