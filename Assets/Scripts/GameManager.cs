@@ -198,9 +198,12 @@ public class GameManager : MonoBehaviour
                 // win scene
                 //Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
                 //Debug.Log("current game state: " + currentGameState);
+                if (SceneManager.GetActiveScene().name == "Win_Scene")
+                {
+                    newGameState = GameState.Menu;
+                    SceneManager.LoadScene("Main_Scene");
+                }
 
-                newGameState = GameState.Menu;
-                SceneManager.LoadScene("Main_Scene");
                 break;
 
             case GameState.Paused:

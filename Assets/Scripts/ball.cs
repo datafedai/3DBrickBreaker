@@ -228,6 +228,29 @@ public class ball : MonoBehaviour
     }
 
 
+    bool isBallNotWithinGameSpace()
+    {
+        //Debug.Log(transform.position);
+
+        // ball missed by paddle
+        if (transform.position.y < -5f)
+        {
+            //Debug.Log("hey");
+            return true;
+        }
+        // ball escaped through between wall and ceiling
+        else if (transform.position.x < -15f || transform.position.x > 15f)
+        {
+            //Debug.Log("hey2");
+            return true;
+        }
+        // ball is still inside playing space
+        else
+        {
+            //Debug.Log("hey3");
+            return false;
+        }
+    }
 
 
 
@@ -280,7 +303,11 @@ public class ball : MonoBehaviour
 
         }
 
-        if (ballRB.transform.position.y < -5f) // if ball is under paddle position
+        //Vector3 newPos = transform.position;
+        //newPos.x = Mathf.Clamp(newPos.x, -14f, 14f);
+        //transform.position = newPos;
+
+        if (isBallNotWithinGameSpace()) // check if ball is not inside game playing space
         {
             if (ballLives > 0)
             {
@@ -288,7 +315,7 @@ public class ball : MonoBehaviour
             }
             else
             {
-                isBallMissed = true;
+                isBallMissed = true; // ball missed or escaped
                 //gameOnPlaying = true;
             }
             //Debug.Log("The ball is missed. Game Over");
