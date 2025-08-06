@@ -67,27 +67,31 @@ public class GameManager : MonoBehaviour
 
     void OnEnable()
     {
+        OnGameStateChangedToPlaying += SwitchToPlayingState;
+        OnGameStateChangedToPaused += SwitchToPausedState;
+        OnGameStateChangedToMenu += SwitchToMenuState;
+        OnGameStateChangedToOver += SwitchToOverState;
         //inputActions.Player.Confirm.performed += spacePerformedAction = ctx => handleSpacePressed();
         //inputActions.Player.Restart.performed += escPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Restart.performed += pPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Menu.performed += qPerformedAction = ctx => handleQPressed();
 
         // on Menu: space bar
-        inputActions.Menu.PlayGame.performed += spacePerformedAction = ctx => handleSpacePressed();
+        inputActions.Menu.PlayGame.performed += spacePerformedAction = ctx => StartGameInMenu();
 
         // on Playing: P only (not both P and ESC)
-        inputActions.Playing.PauseGame.performed += pPerformedAction = ctx => handleEscOrPPressed();
+        inputActions.Playing.PauseGame.performed += pPerformedAction = ctx => PauseGame();
 
         // on Pause: esc only (Not both P and esc), Q
-        inputActions.Paused.ContinueGame.performed += escPerformedAction = ctx => handleEscOrPPressed();
-        inputActions.Paused.QuitGame.performed += qPerformedAction = ctx => handleQPressed();
+        inputActions.Paused.ContinueGame.performed += escPerformedAction = ctx => ResumeGame();
+        inputActions.Paused.QuitGame.performed += qPerformedAction = ctx => ForfeitGame();
 
         // on Over: Q, space bar
-        inputActions.Over.ReturnToMenu.performed += qPerformedAction = ctx => handleQPressed();
-        inputActions.Over.PlayAgain.performed += spacePerformedAction = ctx => handleSpacePressed();
+        inputActions.Over.ReturnToMenu.performed += qPerformedAction = ctx => ReturnToMenuFromGameFinished();
+        inputActions.Over.PlayAgain.performed += spacePerformedAction = ctx => RestartGameInMenu();
 
         // enable input action map
-        inputActions.Enable();
+        inputActions.Menu.Enable(); // This enables menu controls
 
         // Play Again Button Clicks
         //canvas.Instance.ClickedYes += PlayAgainYes;
@@ -101,12 +105,12 @@ public class GameManager : MonoBehaviour
         //canvas.Instance.ClickedNo -= PlayAgainNo;
 
         inputActions.Disable();
-        inputActions.Menu.PlayGame.performed -= spacePerformedAction = ctx => handleSpacePressed();
-        inputActions.Playing.PauseGame.performed -= pPerformedAction = ctx => handleEscOrPPressed();
-        inputActions.Paused.ContinueGame.performed -= escPerformedAction = ctx => handleEscOrPPressed();
-        inputActions.Paused.QuitGame.performed -= qPerformedAction = ctx => handleQPressed();
-        inputActions.Over.ReturnToMenu.performed -= qPerformedAction = ctx => handleQPressed();
-        inputActions.Over.PlayAgain.performed -= spacePerformedAction = ctx => handleSpacePressed();
+        inputActions.Menu.PlayGame.performed -= spacePerformedAction = ctx => StartGameInMenu();
+        inputActions.Playing.PauseGame.performed -= pPerformedAction = ctx => PauseGame();
+        inputActions.Paused.ContinueGame.performed -= escPerformedAction = ctx => ResumeGame();
+        inputActions.Paused.QuitGame.performed -= qPerformedAction = ctx => ForfeitGame();
+        inputActions.Over.ReturnToMenu.performed -= qPerformedAction = ctx => ReturnToMenuFromGameFinished();
+        inputActions.Over.PlayAgain.performed -= spacePerformedAction = ctx =>RestartGameInMenu();
 
         //inputActions.Player.Confirm.performed -= spacePerformedAction = ctx => handleSpacePressed();
         //inputActions.Player.Restart.performed -= escPerformedAction = ctx => handleEscOrPPressed();
@@ -114,6 +118,29 @@ public class GameManager : MonoBehaviour
         //inputActions.Player.Menu.performed -= qPerformedAction = ctx => handleQPressed();
     }
 
+    void SwitchToPlayingState()
+    {
+        inputActions.Disable(); // Disables ALL other states
+        inputActions.Playing.Enable(); // The only enables playing, so that only one state is active a time
+    }
+
+    void SwitchToPausedState()
+    {
+        inputActions.Disable(); // Disables ALL other states
+        inputActions.Paused.Enable(); // The only enables playing, so that only one state is active a time
+    }
+
+    void SwitchToMenuState()
+    {
+        inputActions.Disable(); // Disables ALL other states
+        inputActions.Menu.Enable(); // The only enables playing, so that only one state is active a time
+    }
+
+    void SwitchToOverState()
+    {
+        inputActions.Disable(); // Disables ALL other states
+        inputActions.Over.Enable(); // The only enables playing, so that only one state is active a time
+    }
     void PlayAgainYes()
     {
         Debug.Log("Yes Button Clicked GM");
@@ -125,103 +152,62 @@ public class GameManager : MonoBehaviour
         Debug.Log("No Button Clicked GM");
     }
 
-
-    void handleSpacePressed()
+    void StartGameInMenu()
     {
-        Debug.Log("Space Bar pressed");
-
-        switch (currentGameState)
+        if (SceneManager.GetActiveScene().name == "Win_Scene")
         {
-            case GameState.Menu:
-                //Debug.Log("playing from main menu");
-
-                if (SceneManager.GetActiveScene().name == "Win_Scene")
-                {
-                    SceneManager.LoadScene("Main_Scene");
-                    newGameState = GameState.Playing;
-                }
-                else if (SceneManager.GetActiveScene().name == "Main_Scene")
-                {
-                    OnGameStateChangedToPlaying?.Invoke();
-                    currentGameState = GameState.Playing;
-                }
-                break;
-
-            case GameState.Over:
-                //Debug.Log("changing scenes: from Over to Main");
-                OnGameStateChangedToPlaying?.Invoke();
-                currentGameState = GameState.Playing;
-                newGameState = GameState.Playing;
-                SceneManager.LoadScene("main_Scene");
-                break;
-
-            default:
-                break;
+            SceneManager.LoadScene("Main_Scene");
+            newGameState = GameState.Playing;
         }
-
-
-    }
-
-
-    void handleEscOrPPressed()
-    {
-        Debug.Log("ESC or P pressed");
-        switch (currentGameState)
+        else if (SceneManager.GetActiveScene().name == "Main_Scene")
         {
-            case GameState.Playing:
-                //Debug.Log("pausing game from playing");
-                OnGameStateChangedToPaused?.Invoke();
-                currentGameState = GameState.Paused;
-                break;
-
-            case GameState.Paused:
-                //Debug.Log("replaying game from pause");
-                OnGameStateChangedToPlaying?.Invoke();
-                currentGameState = GameState.Playing;
-                break;
-
-            default:
-                break;
+            OnGameStateChangedToPlaying?.Invoke();
+            currentGameState = GameState.Playing;
         }
     }
 
-
-    void handleQPressed()
+    void RestartGameInMenu()
     {
-        Debug.Log("Q pressed");
-        switch (currentGameState)
+        OnGameStateChangedToPlaying?.Invoke();
+        currentGameState = GameState.Playing;
+        newGameState = GameState.Playing;
+        SceneManager.LoadScene("main_Scene");
+    }
+
+
+    void PauseGame()
+    {
+        OnGameStateChangedToPaused?.Invoke();
+        currentGameState = GameState.Paused;
+    }
+
+    void ResumeGame()
+    {
+        OnGameStateChangedToPlaying?.Invoke();
+        currentGameState = GameState.Playing;
+    }
+
+    void ReturnToMenuFromGameFinished() // A finished game can either be Game Win or Game Over
+    {
+        if (SceneManager.GetActiveScene().name == "Win_Scene")
         {
-            case GameState.Menu:
-                // win scene
-                //Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
-                //Debug.Log("current game state: " + currentGameState);
-                if (SceneManager.GetActiveScene().name == "Win_Scene")
-                {
-                    newGameState = GameState.Menu;
-                    SceneManager.LoadScene("Main_Scene");
-                }
-
-                break;
-
-            case GameState.Paused:
-                //Debug.Log("quitting game from pasue");
-                //OnGameStateChangedToOver?.Invoke();
-                //currentGameState = GameState.Over;
-                SceneManager.LoadScene("Over_Scene");
-                break;
-
-            case GameState.Over:
-                //Debug.Log("returning to main menu");
-                //OnGameStateChangedToMenu?.Invoke();
-                newGameState = GameState.Menu;
-                SceneManager.LoadScene("Main_Scene");
-                break;
-
-            default:
-                break;
+            newGameState = GameState.Menu;
+            SceneManager.LoadScene("Main_Scene");
+        }
+        else if (SceneManager.GetActiveScene().name == "Over_Scene")
+        {
+            newGameState = GameState.Menu;
+            SceneManager.LoadScene("Main_Scene");
         }
     }
 
+    void ForfeitGame()
+    {
+        //Debug.Log("quitting game from pasue");
+        //OnGameStateChangedToOver?.Invoke();
+        //currentGameState = GameState.Over;
+        SceneManager.LoadScene("Over_Scene");
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
