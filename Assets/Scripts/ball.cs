@@ -14,7 +14,7 @@ public class ball : MonoBehaviour
     private Rigidbody ballRB;
     private bool gameOnPlaying;
     private bool gameOnPause;
-    public float initialForce = 100f;
+    public float initialForce;
     private bool isBallLaunched;
     public bool isBallMissed;
     private int ballLives;
@@ -264,7 +264,7 @@ public class ball : MonoBehaviour
 
         isBallLaunched = false;
         isBallMissed = false;
-        //initialForce = 10f;
+        initialForce = 20f;
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
 

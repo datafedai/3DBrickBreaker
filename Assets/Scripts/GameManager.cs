@@ -14,13 +14,13 @@ public class GameManager : MonoBehaviour
     GameState currentGameState;
     static GameState newGameState; // game state after loading special menu scene 
 
-    InputAction playGame;
-    InputAction pauseGame;
-    InputAction quitGame;
+    //InputAction playGame;
+    //InputAction pauseGame;
+    //InputAction quitGame;
     public InputSystem_Actions inputActions;
     private Action<InputAction.CallbackContext> spacePerformedAction;
-    private Action<InputAction.CallbackContext> escPerformedAction;
-    private Action<InputAction.CallbackContext> pPerformedAction;
+    //private Action<InputAction.CallbackContext> escPerformedAction;
+    private Action<InputAction.CallbackContext> pEscPerformedAction;
     private Action<InputAction.CallbackContext> qPerformedAction;
 
     // cheat
@@ -28,24 +28,26 @@ public class GameManager : MonoBehaviour
 
 
     public static GameManager Instance { get; private set; }
+    public event Action OnGameStateChangedToMenu;
     public event Action OnGameStateChangedToPlaying;
     public event Action OnGameStateChangedToPaused;
-    public event Action OnGameStateChangedToMenu;
-    public event Action OnGameStateChangedToOver;
+    public event Action OnGameStateChangedToWin;
+    public event Action OnGameStateChangedToLose;
     public event Action WonGame;
-    public event Action DestroyAllBricks;
+    //public event Action DestroyAllBricks;
 
     public GameObject ballObject;
     ball ballScript;
     //public GameObject brickGeneratorObject;
-    BrickGenerator brickGeneratorScript;
+    //BrickGenerator brickGeneratorScript;
 
     private enum GameState
     {
         Menu,       // main menu: menu only scene
         Playing,    // playing game: can move paddle
         Paused,       // game paused: can't move paddle
-        Over        // Experimental: game over when ball is lost downward
+        Win,        // game won: destroyed all the bricks
+        Lose        // game over: when ball is missed 3 times or game is quitted.
     }
 
 
@@ -75,10 +77,11 @@ public class GameManager : MonoBehaviour
         // win
         //ball.Instance.GameWon += YouWonGame;
 
+        OnGameStateChangedToMenu += SwitchToMenuState;
         OnGameStateChangedToPlaying += SwitchToPlayingState;
         OnGameStateChangedToPaused += SwitchToPausedState;
-        OnGameStateChangedToMenu += SwitchToMenuState;
-        OnGameStateChangedToOver += SwitchToOverState;
+        OnGameStateChangedToWin += SwitchToWinState;
+        OnGameStateChangedToLose += SwitchToLoseState;
         //inputActions.Player.Confirm.performed += spacePerformedAction = ctx => handleSpacePressed();
         //inputActions.Player.Restart.performed += escPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Restart.performed += pPerformedAction = ctx => handleEscOrPPressed();
@@ -90,19 +93,19 @@ public class GameManager : MonoBehaviour
         inputActions.Menu.PlayGame.performed += spacePerformedAction = ctx => StartGameInMenu();
 
         // on Playing: P or ESC to pause, B to cheat
-        inputActions.Playing.PauseGame.performed += pPerformedAction = ctx => PauseGame();
-        inputActions.Playing.Cheat.performed += bPerformedAction = ctx => CheatGame(); ;
+        inputActions.Playing.PauseGame.performed += pEscPerformedAction = ctx => PauseGame();
+        inputActions.Playing.Cheat.performed += bPerformedAction = ctx => CheatGame(); 
 
         // on Pause: P or esc, Q to quit
-        inputActions.Paused.ContinueGame.performed += escPerformedAction = ctx => ResumeGame();
+        inputActions.Paused.ContinueGame.performed += pEscPerformedAction = ctx => ResumeGame();
         inputActions.Paused.QuitGame.performed += qPerformedAction = ctx => ForfeitGame();
 
         // on Over: Q for main menu, space bar to play again
         inputActions.Over.ReturnToMenu.performed += qPerformedAction = ctx => ReturnToMenuFromGameFinished();
         inputActions.Over.PlayAgain.performed += spacePerformedAction = ctx => RestartGameInMenu();
 
-        // enable input action map
-        inputActions.Menu.Enable(); // This enables menu controls
+        // enable input action Menu map
+        inputActions.Enable(); // This enables menu controls
 
         // Play Again Button Clicks
         //canvas.Instance.ClickedYes += PlayAgainYes;
@@ -120,8 +123,9 @@ public class GameManager : MonoBehaviour
 
         inputActions.Disable();
         inputActions.Menu.PlayGame.performed -= spacePerformedAction = ctx => StartGameInMenu();
-        inputActions.Playing.PauseGame.performed -= pPerformedAction = ctx => PauseGame();
-        inputActions.Paused.ContinueGame.performed -= escPerformedAction = ctx => ResumeGame();
+        inputActions.Playing.PauseGame.performed -= pEscPerformedAction = ctx => PauseGame();
+        inputActions.Playing.Cheat.performed += bPerformedAction = ctx => CheatGame(); 
+        inputActions.Paused.ContinueGame.performed -= pEscPerformedAction = ctx => ResumeGame();
         inputActions.Paused.QuitGame.performed -= qPerformedAction = ctx => ForfeitGame();
         inputActions.Over.ReturnToMenu.performed -= qPerformedAction = ctx => ReturnToMenuFromGameFinished();
         inputActions.Over.PlayAgain.performed -= spacePerformedAction = ctx => RestartGameInMenu();
@@ -137,14 +141,14 @@ public class GameManager : MonoBehaviour
         Debug.Log("You will won! Destroying all bricks.");
         //DestroyAllBricks?.Invoke();
         //SceneManager.LoadScene("Win_Scene");
-        GameObject[] foundObject = GameObject.FindGameObjectsWithTag("BrickClone");
+        GameObject[] foundBrickObject = GameObject.FindGameObjectsWithTag("BrickClone");
         //Debug.Log("Found " + foundObject.Length + " bricks in the scene.");
-        if (foundObject != null)
+        if (foundBrickObject != null)
         {
-            for (int i = 0; i < foundObject.Length; i++)
+            for (int i = 0; i < foundBrickObject.Length; i++)
             {
-                Debug.Log("Destroying object: " + foundObject[i].name + " : " + i);
-                Destroy(foundObject[i]);
+                //Debug.Log("Destroying object: " + foundObject[i].name + " : " + i);
+                Destroy(foundBrickObject[i]);
             }
         }
         else
@@ -154,6 +158,12 @@ public class GameManager : MonoBehaviour
     }
 
 
+
+    void SwitchToMenuState()
+    {
+        inputActions.Disable(); // Disables ALL other states
+        inputActions.Menu.Enable(); // The only enables playing, so that only one state is active a time
+    }
 
     void SwitchToPlayingState()
     {
@@ -167,49 +177,37 @@ public class GameManager : MonoBehaviour
         inputActions.Paused.Enable(); // The only enables playing, so that only one state is active a time
     }
 
-    void SwitchToMenuState()
-    {
-        inputActions.Disable(); // Disables ALL other states
-        inputActions.Menu.Enable(); // The only enables playing, so that only one state is active a time
-    }
-
-    void SwitchToOverState()
+    void SwitchToWinState()
     {
         inputActions.Disable(); // Disables ALL other states
         inputActions.Over.Enable(); // The only enables playing, so that only one state is active a time
     }
-    void PlayAgainYes()
+
+    void SwitchToLoseState()
     {
-        Debug.Log("Yes Button Clicked GM");
+        inputActions.Disable(); // Disables ALL other states
+        inputActions.Over.Enable(); // The only enables playing, so that only one state is active a time
     }
 
-    void PlayAgainNo()
-    {
 
-        Debug.Log("No Button Clicked GM");
-    }
 
     void StartGameInMenu()
     {
-        if (SceneManager.GetActiveScene().name == "Win_Scene")
+        if (SceneManager.GetActiveScene().name == "Main_Scene")
         {
-            SceneManager.LoadScene("Main_Scene");
-            newGameState = GameState.Playing;
-        }
-        else if (SceneManager.GetActiveScene().name == "Main_Scene")
-        {
+            Debug.Log("in startgameinmenu 1");
             OnGameStateChangedToPlaying?.Invoke();
             currentGameState = GameState.Playing;
         }
+        else if (SceneManager.GetActiveScene().name == "Win_Scene" || SceneManager.GetActiveScene().name == "Lose_Scene")
+        {
+            Debug.Log("in startgameinmenu 2");
+            SceneManager.LoadScene("Main_Scene");
+            newGameState = GameState.Playing;
+        }
+
     }
 
-    void RestartGameInMenu()
-    {
-        OnGameStateChangedToPlaying?.Invoke();
-        currentGameState = GameState.Playing;
-        newGameState = GameState.Playing;
-        SceneManager.LoadScene("main_Scene");
-    }
 
 
     void PauseGame()
@@ -224,27 +222,33 @@ public class GameManager : MonoBehaviour
         currentGameState = GameState.Playing;
     }
 
+    void ForfeitGame()
+    {
+        Debug.Log("Q pressed 2");
+        OnGameStateChangedToLose?.Invoke();
+        //currentGameState = GameState.Over;
+        SceneManager.LoadScene("Lose_Scene");
+    }
+
+
+    void RestartGameInMenu()
+    {
+        OnGameStateChangedToPlaying?.Invoke();
+        currentGameState = GameState.Playing;
+        newGameState = GameState.Playing;
+        SceneManager.LoadScene("Main_Scene");
+    }
+
     void ReturnToMenuFromGameFinished() // A finished game can either be Game Win or Game Over
     {
-        if (SceneManager.GetActiveScene().name == "Win_Scene")
-        {
-            newGameState = GameState.Menu;
-            SceneManager.LoadScene("Main_Scene");
-        }
-        else if (SceneManager.GetActiveScene().name == "Over_Scene")
+        Debug.Log("Q pressed 1");
+        if (SceneManager.GetActiveScene().name == "Win_Scene" || SceneManager.GetActiveScene().name == "Lose_Scene")
         {
             newGameState = GameState.Menu;
             SceneManager.LoadScene("Main_Scene");
         }
     }
 
-    void ForfeitGame()
-    {
-        //Debug.Log("quitting game from pasue");
-        //OnGameStateChangedToOver?.Invoke();
-        //currentGameState = GameState.Over;
-        SceneManager.LoadScene("Over_Scene");
-    }
 
     void findBrickClone()
     {
@@ -277,6 +281,7 @@ public class GameManager : MonoBehaviour
     {
 
         //Debug.Log("starting... a new scene");
+        //Debug.Log("new game state: " + newGameState);
         //Debug.Log("current state: " + currentGameState);
 
         //isInvoked = true;
@@ -295,27 +300,39 @@ public class GameManager : MonoBehaviour
         //Debug.Log("current scene: " + SceneManager.GetActiveScene().name);
         if (SceneManager.GetActiveScene().name == "Main_Scene")
         {
-            if (newGameState == GameState.Playing)
+            // initial game start
+            if (newGameState == GameState.Menu)
+            {
+                currentGameState = GameState.Menu;
+                Debug.Log("Invoking OnGameStateChangedToMenu");
+                OnGameStateChangedToMenu?.Invoke();
+            }
+            // restart from Win_Scene or Lose_Scene
+            else if (newGameState == GameState.Playing)
+            {
+                Debug.Log("Invoking OnGameStateChangedToPlaying");
+                OnGameStateChangedToPlaying?.Invoke();
+                currentGameState = GameState.Playing;
+            }
+            /*
+            else if (newGameState == GameState.Playing)
             {
                 currentGameState = GameState.Playing;
                 OnGameStateChangedToPlaying?.Invoke();
-            }
-            else if (newGameState == GameState.Menu)
-            {
-                currentGameState = GameState.Menu;
-                OnGameStateChangedToMenu?.Invoke();
-            }
-
+            }*/
         }
-        else if (SceneManager.GetActiveScene().name == "Over_Scene")
+        else if (SceneManager.GetActiveScene().name == "Lose_Scene")
         {
-            OnGameStateChangedToOver?.Invoke();
-            currentGameState = GameState.Over;
+            OnGameStateChangedToLose?.Invoke();
+            currentGameState = GameState.Lose;
         }
         else if (SceneManager.GetActiveScene().name == "Win_Scene")
         {
             WonGame?.Invoke();
-            //Debug.Log("current game state in Win_Scene: " + currentGameState);
+            OnGameStateChangedToWin?.Invoke();
+            //currentGameState = GameState.Over;
+            Debug.Log("current game state in Win_Scene: " + currentGameState);
+            Debug.Log("new game state in Win_Scene: " + newGameState);
         }
 
         //Debug.Log("newGameState: " + newGameState);
@@ -336,7 +353,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("current state: " + currentGameState);
 
         // if ball is missed while game is not over, that is on playing
-        if (currentGameState != GameState.Over && ballScript.isBallMissed)
+        if (currentGameState != GameState.Lose && ballScript.isBallMissed)
         {
             if (ballScript.canContinueToPlay())
             {
@@ -345,8 +362,8 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                currentGameState = GameState.Over;
-                SceneManager.LoadScene("Over_Scene");
+                currentGameState = GameState.Lose;
+                SceneManager.LoadScene("Lose_Scene");
                 //Debug.Log("Total " + ballScript.getDestroyedBricksCount() + " brickes destroyed.");
             }
 
@@ -358,7 +375,7 @@ public class GameManager : MonoBehaviour
         if(remainingBricksCount() == 0)
         {
             Debug.Log("You won!");
-            //WonGame?.Invoke();
+            //OnGameStateChangedToPlaying?.Invoke();
             SceneManager.LoadScene("Win_Scene");
         }
 

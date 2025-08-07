@@ -1839,7 +1839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956246258445589488df60f340720513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialForce: 100
+  initialForce: 20
   isBallMissed: 0
   collisionAudioSource: {fileID: 1389977439}
 --- !u!82 &1389977439
@@ -2700,7 +2700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11dade036ea41e24d8a1ca30a3e1f477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 100
+  moveSpeed: 20
 --- !u!1 &1970107002
 GameObject:
   m_ObjectHideFlags: 0

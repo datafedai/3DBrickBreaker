@@ -12,7 +12,7 @@ public class GameStateObserver : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPlaying += OnConsolePlaying;
         GameManager.Instance.OnGameStateChangedToPaused += OnConsolePaused;
         GameManager.Instance.OnGameStateChangedToMenu += OnConsoleMenu;
-        GameManager.Instance.OnGameStateChangedToOver += OnConsoleOver;
+        GameManager.Instance.OnGameStateChangedToLose += OnConsoleOver;
     }
 
     void OnDisable()
@@ -20,10 +20,16 @@ public class GameStateObserver : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPlaying -= OnConsolePlaying;
         GameManager.Instance.OnGameStateChangedToPaused -= OnConsolePaused;
         GameManager.Instance.OnGameStateChangedToMenu -= OnConsoleMenu;
-        GameManager.Instance.OnGameStateChangedToOver -= OnConsoleOver;
+        GameManager.Instance.OnGameStateChangedToLose -= OnConsoleOver;
     }
 
 
+
+    void OnConsoleMenu()
+    {
+        Debug.Log("On Main Menu");
+    }
+    
     void OnConsolePlaying()
     {
         //Debug.Log("This is console output");
@@ -35,11 +41,6 @@ public class GameStateObserver : MonoBehaviour
         Debug.Log("On Game Paused");
     }
 
-
-    void OnConsoleMenu()
-    {
-        Debug.Log("On Main Menu");
-    }
 
     void OnConsoleOver()
     {

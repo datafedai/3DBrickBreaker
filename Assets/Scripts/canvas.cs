@@ -54,7 +54,7 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPlaying += OnPlaying;
         GameManager.Instance.OnGameStateChangedToPaused += OnPause;
         GameManager.Instance.OnGameStateChangedToMenu += OnMenu;
-        GameManager.Instance.OnGameStateChangedToOver += OnOver;
+        GameManager.Instance.OnGameStateChangedToLose += OnOver;
         GameManager.Instance.WonGame += YouWonGame;
 
         // score update
@@ -68,7 +68,7 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPlaying -= OnPlaying;
         GameManager.Instance.OnGameStateChangedToPaused -= OnPause;
         GameManager.Instance.OnGameStateChangedToMenu -= OnMenu;
-        GameManager.Instance.OnGameStateChangedToOver -= OnOver;
+        GameManager.Instance.OnGameStateChangedToLose -= OnOver;
         GameManager.Instance.WonGame -= YouWonGame;
         // score
         ball.Instance.BrickDestroyed -= UpdateScore;
@@ -106,9 +106,10 @@ public class canvas : MonoBehaviour
 
     void OnMenu()
     {
+        Debug.Log(" I am on Menu");
         displayState.text = "Main Menu";
         displayInstruction.text = "Press Space Bar to play";
-        //Debug.Log(" I am on Menu");
+
         //Debug.Log(SceneManager.GetActiveScene().name);
     }
 
@@ -117,7 +118,7 @@ public class canvas : MonoBehaviour
         //Debug.Log("setting gameOnPlaying to true");
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
-        //Debug.Log(" I am on Playing");
+        Debug.Log(" I am on Playing");
         displayInstruction.text = "";
         displayState.text = "Playing";
     }
@@ -127,7 +128,7 @@ public class canvas : MonoBehaviour
         //Debug.Log("setting gameOnPause to true");
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
-        //Debug.Log("I am on Pause");
+        Debug.Log("I am on Pause");
 
         displayState.text = "Paused";
     }
@@ -141,7 +142,7 @@ public class canvas : MonoBehaviour
 
         //displayInstruction.text = "Press Space Bar to restart game";
         displayInstruction.text = "Press Space Bar to play again.\nPress Q to return to Main Menu";
-        //Debug.Log(" I am on Game Over");
+        Debug.Log(" I am on Game Over");
         //SceneManager.LoadScene("Menu_Scene");
         //Debug.Log(SceneManager.GetActiveScene().name);
     }
