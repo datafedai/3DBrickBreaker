@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     private Action<InputAction.CallbackContext> pPerformedAction;
     private Action<InputAction.CallbackContext> qPerformedAction;
 
+    // cheat
+    private Action<InputAction.CallbackContext> bPerformedAction;
+
 
     public static GameManager Instance { get; private set; }
     public event Action OnGameStateChangedToPlaying;
@@ -30,10 +33,12 @@ public class GameManager : MonoBehaviour
     public event Action OnGameStateChangedToMenu;
     public event Action OnGameStateChangedToOver;
     public event Action WonGame;
+    public event Action DestroyAllBricks;
 
     public GameObject ballObject;
     ball ballScript;
-    //private bool isInvoked;
+    //public GameObject brickGeneratorObject;
+    BrickGenerator brickGeneratorScript;
 
     private enum GameState
     {
@@ -67,6 +72,9 @@ public class GameManager : MonoBehaviour
 
     void OnEnable()
     {
+        // win
+        //ball.Instance.GameWon += YouWonGame;
+
         OnGameStateChangedToPlaying += SwitchToPlayingState;
         OnGameStateChangedToPaused += SwitchToPausedState;
         OnGameStateChangedToMenu += SwitchToMenuState;
@@ -76,17 +84,20 @@ public class GameManager : MonoBehaviour
         //inputActions.Player.Restart.performed += pPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Menu.performed += qPerformedAction = ctx => handleQPressed();
 
+
+
         // on Menu: space bar
         inputActions.Menu.PlayGame.performed += spacePerformedAction = ctx => StartGameInMenu();
 
-        // on Playing: P only (not both P and ESC)
+        // on Playing: P or ESC to pause, B to cheat
         inputActions.Playing.PauseGame.performed += pPerformedAction = ctx => PauseGame();
+        inputActions.Playing.Cheat.performed += bPerformedAction = ctx => CheatGame(); ;
 
-        // on Pause: esc only (Not both P and esc), Q
+        // on Pause: P or esc, Q to quit
         inputActions.Paused.ContinueGame.performed += escPerformedAction = ctx => ResumeGame();
         inputActions.Paused.QuitGame.performed += qPerformedAction = ctx => ForfeitGame();
 
-        // on Over: Q, space bar
+        // on Over: Q for main menu, space bar to play again
         inputActions.Over.ReturnToMenu.performed += qPerformedAction = ctx => ReturnToMenuFromGameFinished();
         inputActions.Over.PlayAgain.performed += spacePerformedAction = ctx => RestartGameInMenu();
 
@@ -100,6 +111,9 @@ public class GameManager : MonoBehaviour
     }
     void OnDisable()
     {
+        // win
+        //ball.Instance.GameWon -= YouWonGame;
+
         // Play Again Button Clicks
         //canvas.Instance.ClickedYes -= PlayAgainYes;
         //canvas.Instance.ClickedNo -= PlayAgainNo;
@@ -110,13 +124,36 @@ public class GameManager : MonoBehaviour
         inputActions.Paused.ContinueGame.performed -= escPerformedAction = ctx => ResumeGame();
         inputActions.Paused.QuitGame.performed -= qPerformedAction = ctx => ForfeitGame();
         inputActions.Over.ReturnToMenu.performed -= qPerformedAction = ctx => ReturnToMenuFromGameFinished();
-        inputActions.Over.PlayAgain.performed -= spacePerformedAction = ctx =>RestartGameInMenu();
+        inputActions.Over.PlayAgain.performed -= spacePerformedAction = ctx => RestartGameInMenu();
 
         //inputActions.Player.Confirm.performed -= spacePerformedAction = ctx => handleSpacePressed();
         //inputActions.Player.Restart.performed -= escPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Restart.performed -= pPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Menu.performed -= qPerformedAction = ctx => handleQPressed();
     }
+
+    void CheatGame()
+    {
+        Debug.Log("You will won! Destroying all bricks.");
+        //DestroyAllBricks?.Invoke();
+        //SceneManager.LoadScene("Win_Scene");
+        GameObject[] foundObject = GameObject.FindGameObjectsWithTag("BrickClone");
+        //Debug.Log("Found " + foundObject.Length + " bricks in the scene.");
+        if (foundObject != null)
+        {
+            for (int i = 0; i < foundObject.Length; i++)
+            {
+                Debug.Log("Destroying object: " + foundObject[i].name + " : " + i);
+                Destroy(foundObject[i]);
+            }
+        }
+        else
+        {
+            Debug.Log("Object not found!");
+        }           
+    }
+
+
 
     void SwitchToPlayingState()
     {
@@ -209,9 +246,36 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Over_Scene");
     }
 
+    void findBrickClone()
+    {
+        GameObject[] foundObject = GameObject.FindGameObjectsWithTag("BrickClone");
+        if(foundObject != null)
+        {
+            for (int i = 0; i < foundObject.Length; i++)
+            {
+                Debug.Log("Found object: " + foundObject[i].name);
+            }
+            //Debug.Log("Found the object: " + foundObject[0].name);
+        }
+        else
+        {
+            Debug.Log("Object not found!");
+        }        
+    }
+
+    int remainingBricksCount()
+    {
+        GameObject[] foundObject = GameObject.FindGameObjectsWithTag("BrickClone");
+        //Debug.Log("Found " + foundObject.Length + " bricks in the scene.");
+        return foundObject.Length;
+    }
+    
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
         //Debug.Log("starting... a new scene");
         //Debug.Log("current state: " + currentGameState);
 
@@ -258,11 +322,16 @@ public class GameManager : MonoBehaviour
         //Debug.Log("currentGameState: " + currentGameState);
 
         ballScript = ballObject.GetComponent<ball>();
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        // find brick clones
+        //findBrickClone();
+
         //Debug.Log(ballObject.transform.position.y);
         //Debug.Log("current state: " + currentGameState);
 
@@ -284,14 +353,16 @@ public class GameManager : MonoBehaviour
         }
 
         // check if all the bricks are destroyed
-        if (ballScript.getDestroyedBricksCount() == 105)
+
+        //if (ballScript.getDestroyedBricksCount() == 105)
+        if(remainingBricksCount() == 0)
         {
             Debug.Log("You won!");
             //WonGame?.Invoke();
             SceneManager.LoadScene("Win_Scene");
         }
 
-        //handleGameState();
+
     }
 }
 

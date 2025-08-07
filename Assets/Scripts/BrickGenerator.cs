@@ -131,32 +131,85 @@ public class BrickGenerator : MonoBehaviour
 
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        numRows = 8;
-        numCols = 13;
-        brickHeight = 0.6f;
-        brickWidth = 2f;
 
-        // creeate bricks in 8 rows x 13 columns using Method1
-        //Debug.Log("creating bricks in current scene: " + SceneManager.GetActiveScene().name);
-        if (SceneManager.GetActiveScene().name == "Win_Scene")
+    void findBrickClone()
+    {
+        GameObject[] foundObject = GameObject.FindGameObjectsWithTag("BrickClone");
+        if (foundObject != null)
         {
-            createWINBricks(brickObject.transform);
+
+            for (int i = 0; i < foundObject.Length; i++)
+            {
+                Debug.Log("Found object: " + foundObject[i].name + " : " + i);
+
+                //Debug.Log("Found the object: " + foundObject[0].name);
+            }
         }
         else
         {
-            createBricks(brickObject.transform);            
+            Debug.Log("Object not found!");
         }
 
+        Destroy(foundObject[1]);
+        Destroy(foundObject[11]);
+        Destroy(foundObject[50]);
+        Destroy(foundObject[33]);
+        Destroy(foundObject[70]);
+        Destroy(foundObject[90]);
+        
     }
 
-
-
-    // Update is called once per frame
-    void Update()
+    public void cheatToDestroyAllBricks()
     {
+        Debug.Log("Cheat: destroy all bricks");
+        GameObject[] foundObject = GameObject.FindGameObjectsWithTag("BrickClone");
+        if (foundObject != null)
+        {
 
+            for (int i = 0; i < foundObject.Length; i++)
+            {
+                Debug.Log("Found object: " + foundObject[i].name + " : " + i);
+
+                //Debug.Log("Found the object: " + foundObject[0].name);
+            }
+        }
+        else
+        {
+            Debug.Log("Object not found!");
+        }   
     }
+    
+
+
+
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+        {
+            numRows = 8;
+            numCols = 13;
+            brickHeight = 0.6f;
+            brickWidth = 2f;
+
+            // creeate bricks in 8 rows x 13 columns using Method1
+            //Debug.Log("creating bricks in current scene: " + SceneManager.GetActiveScene().name);
+            if (SceneManager.GetActiveScene().name == "Win_Scene")
+            {
+                createWINBricks(brickObject.transform);
+            }
+            else
+            {
+                createBricks(brickObject.transform);
+            }
+
+            // find brick clones
+            //findBrickClone();
+        }
+
+
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
 }

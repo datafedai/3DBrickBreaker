@@ -559,6 +559,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cheat"",
+                    ""type"": ""Button"",
+                    ""id"": ""9c34eef4-d86f-42f6-af4c-fefbee505fb9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -581,6 +590,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""PauseGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""17bce83f-6ff8-4e0e-9953-ecb0aa81a962"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cheat"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1373,6 +1393,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         // Playing
         m_Playing = asset.FindActionMap("Playing", throwIfNotFound: true);
         m_Playing_PauseGame = m_Playing.FindAction("PauseGame", throwIfNotFound: true);
+        m_Playing_Cheat = m_Playing.FindAction("Cheat", throwIfNotFound: true);
         // Paused
         m_Paused = asset.FindActionMap("Paused", throwIfNotFound: true);
         m_Paused_ContinueGame = m_Paused.FindAction("ContinueGame", throwIfNotFound: true);
@@ -1625,11 +1646,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Playing;
     private List<IPlayingActions> m_PlayingActionsCallbackInterfaces = new List<IPlayingActions>();
     private readonly InputAction m_Playing_PauseGame;
+    private readonly InputAction m_Playing_Cheat;
     public struct PlayingActions
     {
         private @InputSystem_Actions m_Wrapper;
         public PlayingActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
         public InputAction @PauseGame => m_Wrapper.m_Playing_PauseGame;
+        public InputAction @Cheat => m_Wrapper.m_Playing_Cheat;
         public InputActionMap Get() { return m_Wrapper.m_Playing; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1642,6 +1665,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PauseGame.started += instance.OnPauseGame;
             @PauseGame.performed += instance.OnPauseGame;
             @PauseGame.canceled += instance.OnPauseGame;
+            @Cheat.started += instance.OnCheat;
+            @Cheat.performed += instance.OnCheat;
+            @Cheat.canceled += instance.OnCheat;
         }
 
         private void UnregisterCallbacks(IPlayingActions instance)
@@ -1649,6 +1675,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PauseGame.started -= instance.OnPauseGame;
             @PauseGame.performed -= instance.OnPauseGame;
             @PauseGame.canceled -= instance.OnPauseGame;
+            @Cheat.started -= instance.OnCheat;
+            @Cheat.performed -= instance.OnCheat;
+            @Cheat.canceled -= instance.OnCheat;
         }
 
         public void RemoveCallbacks(IPlayingActions instance)
@@ -2002,6 +2031,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     public interface IPlayingActions
     {
         void OnPauseGame(InputAction.CallbackContext context);
+        void OnCheat(InputAction.CallbackContext context);
     }
     public interface IPausedActions
     {

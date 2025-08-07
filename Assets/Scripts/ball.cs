@@ -23,6 +23,7 @@ public class ball : MonoBehaviour
     public static ball Instance { get; private set; }
     public event Action<int> BrickDestroyed;
     public event Action<int> BallLives;
+    //public event Action GameWon;
     private float delayTime;
     private float timer;
     private bool timerStarted = false;
@@ -277,6 +278,16 @@ public class ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        // win
+        /*
+        if (destroyedBrickCount >= 105)
+        {
+            GameWon?.Invoke();
+        }
+        */
+        
+
         //Debug.Log("timer:1 " + timer);
         if (!isBallLaunched && gameOnPlaying)
         {
