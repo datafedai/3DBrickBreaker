@@ -3,7 +3,7 @@ using UnityEngine;
 public class GameStateObserver : MonoBehaviour
 {
 
-
+    //private SortedList<int, string> highScores;
 
 
     void OnEnable()
@@ -59,6 +59,8 @@ public class GameStateObserver : MonoBehaviour
     {
         Debug.Log("On Game Over");
     }
+
+
 
 
 

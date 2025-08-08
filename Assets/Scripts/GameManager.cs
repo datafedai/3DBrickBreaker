@@ -34,13 +34,15 @@ public class GameManager : MonoBehaviour
     public event Action OnGameStateChangedToWin;
     public event Action OnGameStateChangedToWinStats;
     public event Action OnGameStateChangedToLose;
-    //public event Action WonGame;
+    public event Action OnGameMenuPanel;
     public event Action BrickSelfDestruct;
 
     public GameObject ballObject;
     ball ballScript;
     //public GameObject brickGeneratorObject;
     //BrickGenerator brickGeneratorScript;
+
+    //public GameObject mainPanel;
 
     private enum GameState
     {
@@ -204,13 +206,33 @@ public class GameManager : MonoBehaviour
     {
         inputActions.Disable(); // Disables ALL other states
         inputActions.Menu.Enable(); // The only enables playing, so that only one state is active a time
+
+        OnGameMenuPanel?.Invoke(); // Notify that the game menu panel should be hidden
     }
 
-    void SwitchToPlayingState()
+    public void SwitchToPlayingState()
     {
         inputActions.Disable(); // Disables ALL other states
         inputActions.Playing.Enable(); // The only enables playing, so that only one state is active a time
+
+        //handlePanel();
     }
+
+
+    void handlePanel()
+    {
+        if (SceneManager.GetActiveScene().name == "Main_Scene")
+        {
+            //mainPanel.SetActive(false);
+        }
+        else
+        {
+            //Debug.Log("in SwitchToPlayingState, setting mainPanel to false");
+        }     
+
+
+    }
+
 
     void SwitchToPausedState()
     {
@@ -328,7 +350,6 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
         //Debug.Log("starting... a new scene");
         //Debug.Log("new game state: " + newGameState);
         //Debug.Log("current state: " + currentGameState);

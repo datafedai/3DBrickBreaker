@@ -19,10 +19,10 @@ public class canvas : MonoBehaviour
     public Image[] displayLivesImage;
 
     // experimental
-    public GameObject buttonPanel; // Reference to the panel containing the dialog
-    public TextMeshProUGUI questionText; // Or public Text questionText;
-    public Button yesButton;
-    public Button noButton;
+    public GameObject gameMenuPanel; // Reference to the panel containing the dialog
+    public TextMeshProUGUI titleText; // Or public Text questionText;
+    public Button playButton;
+    public Button exitButton;
     public static canvas Instance { get; private set; }
     //public event Action ClickedYes;
     //public event Action ClickedNo;
@@ -58,7 +58,7 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToWin += OnWin;
         GameManager.Instance.OnGameStateChangedToWinStats += OnWinStats;
         GameManager.Instance.OnGameStateChangedToLose += OnLose;
-        //GameManager.Instance.WonGame += YouWonGame;
+        GameManager.Instance.OnGameMenuPanel += OnGameMenuPanel;
 
         // score update
         ball.Instance.BrickDestroyed += UpdateScore;
@@ -73,7 +73,8 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToMenu -= OnMenu;
         GameManager.Instance.OnGameStateChangedToWin -= OnWin;
         GameManager.Instance.OnGameStateChangedToWinStats -= OnWinStats;
-        GameManager.Instance.OnGameStateChangedToLose -= OnLose;    
+        GameManager.Instance.OnGameStateChangedToLose -= OnLose;
+        GameManager.Instance.OnGameMenuPanel -= OnGameMenuPanel;            
         //GameManager.Instance.WonGame -= YouWonGame;
         // score
         ball.Instance.BrickDestroyed -= UpdateScore;
@@ -81,6 +82,31 @@ public class canvas : MonoBehaviour
         //ball.Instance.BallLives -= UpdateLives;
     }
 
+
+    void OnGameMenuPanel()
+    {
+        Debug.Log("in OnGameMenuPanel in Canvas");
+        
+        titleText.text = "Brick Breaker 3D";
+        playButton.onClick.RemoveAllListeners();
+        playButton.onClick.AddListener(() =>
+        {
+            //Debug.Log("Play button clicked");
+            GameManager.Instance.SwitchToPlayingState();
+            gameMenuPanel.SetActive(false); // Hide the menu panel
+        });
+
+        exitButton.onClick.RemoveAllListeners();
+
+        /*
+        exitButton.onClick.AddListener(() =>
+        {
+            //Debug.Log("Exit button clicked");
+            GameManager.Instance.SwitchToMenuState();
+            gameMenuPanel.SetActive(false); // Hide the menu panel
+        }); */
+        
+    }
 
 
     void UpdateScore(int bricksDestroyed)
@@ -120,6 +146,19 @@ public class canvas : MonoBehaviour
 
     void OnPlaying()
     {
+        if(SceneManager.GetActiveScene().name == "Main_Scene")
+        {
+            //Debug.Log("in OnPlaying, setting mainPanel to false");
+            gameMenuPanel.SetActive(false);
+        }
+        else
+        {
+            //Debug.Log("in OnPlaying, setting mainPanel to true");
+            gameMenuPanel.SetActive(true);
+        }   
+
+
+
         //Debug.Log("setting gameOnPlaying to true");
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
