@@ -13,6 +13,7 @@ public class canvas : MonoBehaviour
     public TextMeshProUGUI displayState2; // for special menu
     public TextMeshProUGUI displayInstruction; // special menu scene text
     public TextMeshProUGUI displayScore; // current score
+    public TextMeshProUGUI displayHighScores; // high score
     public TextMeshProUGUI displayLives; // lives left
     public Sprite[] lifeSprites;
     public Image[] displayLivesImage;
@@ -55,6 +56,7 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPaused += OnPause;
         GameManager.Instance.OnGameStateChangedToMenu += OnMenu;
         GameManager.Instance.OnGameStateChangedToWin += OnWin;
+        GameManager.Instance.OnGameStateChangedToWinStats += OnWinStats;
         GameManager.Instance.OnGameStateChangedToLose += OnLose;
         //GameManager.Instance.WonGame += YouWonGame;
 
@@ -70,6 +72,7 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPaused -= OnPause;
         GameManager.Instance.OnGameStateChangedToMenu -= OnMenu;
         GameManager.Instance.OnGameStateChangedToWin -= OnWin;
+        GameManager.Instance.OnGameStateChangedToWinStats -= OnWinStats;
         GameManager.Instance.OnGameStateChangedToLose -= OnLose;    
         //GameManager.Instance.WonGame -= YouWonGame;
         // score
@@ -108,7 +111,7 @@ public class canvas : MonoBehaviour
 
     void OnMenu()
     {
-        Debug.Log(" I am on Menu");
+        //Debug.Log(" I am on Menu");
         displayState.text = "Main Menu";
         displayInstruction.text = "Press Space Bar to play";
 
@@ -120,7 +123,7 @@ public class canvas : MonoBehaviour
         //Debug.Log("setting gameOnPlaying to true");
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
-        Debug.Log(" I am on Playing");
+        //Debug.Log(" I am on Playing");
         displayInstruction.text = "";
         displayState.text = "Playing";
     }
@@ -130,7 +133,7 @@ public class canvas : MonoBehaviour
         //Debug.Log("setting gameOnPause to true");
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
-        Debug.Log("I am on Pause");
+        //Debug.Log("I am on Pause");
 
         displayState.text = "Paused";
     }
@@ -144,7 +147,7 @@ public class canvas : MonoBehaviour
 
         //displayInstruction.text = "Press Space Bar to restart game";
         displayInstruction.text = "Press Space Bar to play again.\nPress Q to return to Main Menu";
-        Debug.Log(" I am on Game Over");
+        //Debug.Log(" I am on Game Over");
         //SceneManager.LoadScene("Menu_Scene");
         //Debug.Log(SceneManager.GetActiveScene().name);
     }
@@ -158,10 +161,31 @@ public class canvas : MonoBehaviour
         displayState2.text = "<color=Blue>You</color>\n<size=70><color=Red>W   N!</color></size>";
         //displayState2.text = "Play Again?";
         displayScore.text = "Score: " + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
+        displayHighScores.text = "";
 
         //displayInstruction.text = "Press Space Bar to restart game";
-        displayInstruction.text = "Press Space Bar to play again.\nPress Q to return to Main Menu";        
+        displayInstruction.text = "Press Space to see high scores.\nPress Q to return to Main Menu";        
     }
+
+    void OnWinStats()
+    {
+        //Debug.Log("You have won game!");
+        //SceneManager.LoadScene("Over_Scene");
+        displayState.text = "";
+        //displayState2.text = "<color=Blue>You</color>\n<size=70><color=Red>W   N!</color></size>";
+        displayState2.text = "";
+        displayScore.text = "";
+        displayHighScores.text = "Score Rankings\n\n";
+        //displayHighScores.text += "1. " + GameManager.Instance.GetHighScore(0) + "\n";
+        //displayHighScores.text += "2. " + GameManager.Instance.GetHighScore(1) + "\n";
+
+
+        //displayInstruction.text = "Press Space Bar to restart game";
+        displayInstruction.text = "Press Space to play again.\nPress Q to return to Main Menu";        
+    }
+
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

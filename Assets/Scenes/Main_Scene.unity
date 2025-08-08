@@ -2111,6 +2111,7 @@ MonoBehaviour:
   displayState2: {fileID: 778964045}
   displayInstruction: {fileID: 1892660417}
   displayScore: {fileID: 1970107004}
+  displayHighScores: {fileID: 0}
   displayLives: {fileID: 1263773637}
   lifeSprites:
   - {fileID: 21300000, guid: b1b34f83a987b4218835429db886f398, type: 3}

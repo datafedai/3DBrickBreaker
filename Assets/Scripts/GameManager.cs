@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public event Action OnGameStateChangedToPlaying;
     public event Action OnGameStateChangedToPaused;
     public event Action OnGameStateChangedToWin;
+    public event Action OnGameStateChangedToWinStats;
     public event Action OnGameStateChangedToLose;
     //public event Action WonGame;
     public event Action BrickSelfDestruct;
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
         Playing,    // playing game: can move paddle
         Paused,       // game paused: can't move paddle
         Win,        // game won: destroyed all the bricks
+        WinStats,   // game won stats: after winning, before going back to main menu or playing again
         Lose        // game over: when ball is missed 3 times or game is quitted.
     }
 
@@ -81,6 +83,7 @@ public class GameManager : MonoBehaviour
         OnGameStateChangedToPlaying += SwitchToPlayingState;
         OnGameStateChangedToPaused += SwitchToPausedState;
         OnGameStateChangedToWin += SwitchToWinState;
+        OnGameStateChangedToWinStats += SwitchToWinStatsState;
         OnGameStateChangedToLose += SwitchToLoseState;
         //inputActions.Player.Confirm.performed += spacePerformedAction = ctx => handleSpacePressed();
         //inputActions.Player.Restart.performed += escPerformedAction = ctx => handleEscOrPPressed();
@@ -100,9 +103,17 @@ public class GameManager : MonoBehaviour
         inputActions.Paused.ContinueGame.performed += pEscPerformedAction = ctx => ResumeGame();
         inputActions.Paused.QuitGame.performed += qPerformedAction = ctx => ForfeitGame();
 
-        // on Over: Q for main menu, space bar to play again
-        inputActions.Over.ReturnToMenu.performed += qPerformedAction = ctx => ReturnToMenuFromGameFinished();
-        inputActions.Over.PlayAgain.performed += spacePerformedAction = ctx => RestartGameInMenu();
+        // on Lose: Q for main menu, space bar to play again
+        inputActions.Lose.ReturnToMenu.performed += qPerformedAction = ctx => ReturnToMenuFromGameFinished();
+        inputActions.Lose.PlayAgain.performed += spacePerformedAction = ctx => RestartGameInMenu();
+
+        // on Win: Q for main menu, space bar to display game stats
+        inputActions.Win.ReturnToMenu.performed += qPerformedAction = ctx => ReturnToMenuFromGameFinished();
+        inputActions.Win.PlayAgain.performed += spacePerformedAction = ctx => DisplayGameStats();
+
+        // on WinStats: space bar to play again
+        inputActions.WinStats.PlayAgain.performed += spacePerformedAction = ctx => RestartGameInMenu();
+        inputActions.WinStats.ReturnToMenu.performed += qPerformedAction = ctx => ReturnToMenuFromGameFinished();
 
         // enable input action Menu map
         inputActions.Enable(); // This enables menu controls
@@ -124,17 +135,39 @@ public class GameManager : MonoBehaviour
         inputActions.Disable();
         inputActions.Menu.PlayGame.performed -= spacePerformedAction = ctx => StartGameInMenu();
         inputActions.Playing.PauseGame.performed -= pEscPerformedAction = ctx => PauseGame();
-        inputActions.Playing.Cheat.performed -= bPerformedAction = ctx => CheatGame_SelfDestruct(); 
+        inputActions.Playing.Cheat.performed -= bPerformedAction = ctx => CheatGame_SelfDestruct();
         inputActions.Paused.ContinueGame.performed -= pEscPerformedAction = ctx => ResumeGame();
         inputActions.Paused.QuitGame.performed -= qPerformedAction = ctx => ForfeitGame();
-        inputActions.Over.ReturnToMenu.performed -= qPerformedAction = ctx => ReturnToMenuFromGameFinished();
-        inputActions.Over.PlayAgain.performed -= spacePerformedAction = ctx => RestartGameInMenu();
 
+        // on Lose: Q for main menu, space bar to play again
+        inputActions.Lose.ReturnToMenu.performed -= qPerformedAction = ctx => ReturnToMenuFromGameFinished();
+        inputActions.Lose.PlayAgain.performed -= spacePerformedAction = ctx => RestartGameInMenu();
+
+        // on Win: Q for main menu, space bar to display game stats
+        inputActions.Win.ReturnToMenu.performed -= qPerformedAction = ctx => ReturnToMenuFromGameFinished();
+        inputActions.Win.PlayAgain.performed -= spacePerformedAction = ctx => DisplayGameStats();
+
+        // on WinStats: space bar to play again
+        inputActions.WinStats.PlayAgain.performed -= spacePerformedAction = ctx => RestartGameInMenu();
+        inputActions.WinStats.ReturnToMenu.performed -= qPerformedAction = ctx => ReturnToMenuFromGameFinished();
+        
         //inputActions.Player.Confirm.performed -= spacePerformedAction = ctx => handleSpacePressed();
         //inputActions.Player.Restart.performed -= escPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Restart.performed -= pPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Menu.performed -= qPerformedAction = ctx => handleQPressed();
     }
+
+
+    void DisplayGameStats()
+    {
+        Debug.Log("Displaying game stats");
+        if (SceneManager.GetActiveScene().name == "Win_Scene")
+        {
+            OnGameStateChangedToWinStats?.Invoke();
+        }
+
+    }
+
 
     void CheatGame_SelfDestruct()
     {
@@ -188,13 +221,21 @@ public class GameManager : MonoBehaviour
     void SwitchToWinState()
     {
         inputActions.Disable(); // Disables ALL other states
-        inputActions.Over.Enable(); // The only enables playing, so that only one state is active a time
+        inputActions.Win.Enable(); // The only enables playing, so that only one state is active a time
+        //inputActions.WinStats.Enable(); 
     }
+
+    void SwitchToWinStatsState()
+    {
+        inputActions.Disable();
+        inputActions.WinStats.Enable(); // The only enables playing, so that only one state is active a time
+    }
+
 
     void SwitchToLoseState()
     {
         inputActions.Disable(); // Disables ALL other states
-        inputActions.Over.Enable(); // The only enables playing, so that only one state is active a time
+        inputActions.Lose.Enable(); // The only enables playing, so that only one state is active a time
     }
 
 
@@ -203,13 +244,13 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Main_Scene")
         {
-            Debug.Log("in startgameinmenu 1");
+            //Debug.Log("in startgameinmenu 1");
             OnGameStateChangedToPlaying?.Invoke();
             currentGameState = GameState.Playing;
         }
         else if (SceneManager.GetActiveScene().name == "Win_Scene" || SceneManager.GetActiveScene().name == "Lose_Scene")
         {
-            Debug.Log("in startgameinmenu 2");
+            //Debug.Log("in startgameinmenu 2");
             SceneManager.LoadScene("Main_Scene");
             newGameState = GameState.Playing;
         }
@@ -232,7 +273,7 @@ public class GameManager : MonoBehaviour
 
     void ForfeitGame()
     {
-        Debug.Log("Q pressed 2");
+        //Debug.Log("Q pressed 2");
         OnGameStateChangedToLose?.Invoke();
         //currentGameState = GameState.Over;
         SceneManager.LoadScene("Lose_Scene");
@@ -249,7 +290,7 @@ public class GameManager : MonoBehaviour
 
     void ReturnToMenuFromGameFinished() // A finished game can either be Game Win or Game Over
     {
-        Debug.Log("Q pressed 1");
+        //Debug.Log("Q pressed 1");
         if (SceneManager.GetActiveScene().name == "Win_Scene" || SceneManager.GetActiveScene().name == "Lose_Scene")
         {
             newGameState = GameState.Menu;
@@ -312,13 +353,13 @@ public class GameManager : MonoBehaviour
             if (newGameState == GameState.Menu)
             {
                 currentGameState = GameState.Menu;
-                Debug.Log("Invoking OnGameStateChangedToMenu");
+                //Debug.Log("Invoking OnGameStateChangedToMenu");
                 OnGameStateChangedToMenu?.Invoke();
             }
             // restart from Win_Scene or Lose_Scene
             else if (newGameState == GameState.Playing)
             {
-                Debug.Log("Invoking OnGameStateChangedToPlaying");
+                //Debug.Log("Invoking OnGameStateChangedToPlaying");
                 OnGameStateChangedToPlaying?.Invoke();
                 currentGameState = GameState.Playing;
             }
@@ -339,8 +380,8 @@ public class GameManager : MonoBehaviour
             //WonGame?.Invoke();
             OnGameStateChangedToWin?.Invoke();
             //currentGameState = GameState.Over;
-            Debug.Log("current game state in Win_Scene: " + currentGameState);
-            Debug.Log("new game state in Win_Scene: " + newGameState);
+            //Debug.Log("current game state in Win_Scene: " + currentGameState);
+            //Debug.Log("new game state in Win_Scene: " + newGameState);
         }
 
         //Debug.Log("newGameState: " + newGameState);
@@ -382,7 +423,7 @@ public class GameManager : MonoBehaviour
         //if (ballScript.getDestroyedBricksCount() == 105)
         if (remainingBricksCount() == 0)
         {
-            Debug.Log("You won!");
+            //Debug.Log("You won!");
             //OnGameStateChangedToPlaying?.Invoke();
             SceneManager.LoadScene("Win_Scene");
         }

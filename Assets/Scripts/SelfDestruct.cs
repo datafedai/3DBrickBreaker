@@ -16,7 +16,7 @@ public class SelfDestruct : MonoBehaviour
 
     void OnBrickSelfDestruct()
     {
-        Debug.Log("SelfDestruct called. Destroying a brickself one by one");
+        //Debug.Log("SelfDestruct called. Destroying a brickself one by one");
         // Destroy this game object
         Destroy(gameObject);
     }

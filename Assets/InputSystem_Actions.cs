@@ -688,7 +688,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Over"",
+            ""name"": ""Lose"",
             ""id"": ""51acfb6c-22c2-4769-8284-9148e9a3db7c"",
             ""actions"": [
                 {
@@ -725,6 +725,102 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3de1af3e-ba61-477c-a467-8a2bbb0bcc87"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ReturnToMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Win"",
+            ""id"": ""69e9f418-a9d9-4df8-894d-a02127744a09"",
+            ""actions"": [
+                {
+                    ""name"": ""PlayAgain"",
+                    ""type"": ""Button"",
+                    ""id"": ""5e65b6c3-ac92-40cd-ace2-a370829db5ce"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ReturnToMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""5c762586-9bcd-44b9-9c45-ff397257f799"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""36641d98-b9b9-4038-a14f-5d78e4266a30"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""PlayAgain"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16fae3fc-2eec-4a88-a33f-ccf76577f5e4"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ReturnToMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""WinStats"",
+            ""id"": ""32f26374-7a3e-4831-b5c0-2f3f28afe4d7"",
+            ""actions"": [
+                {
+                    ""name"": ""PlayAgain"",
+                    ""type"": ""Button"",
+                    ""id"": ""217291f9-5588-4a7b-a9c9-ecf4ce381ac1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ReturnToMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""d9405336-9dcc-4b13-8d8b-55035aaa10d7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""853c47d6-2768-4fe8-8ee1-c55f0499c240"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""PlayAgain"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef7b4abb-1c7b-4bf5-aa3c-0657d501616e"",
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -1420,10 +1516,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Paused = asset.FindActionMap("Paused", throwIfNotFound: true);
         m_Paused_ContinueGame = m_Paused.FindAction("ContinueGame", throwIfNotFound: true);
         m_Paused_QuitGame = m_Paused.FindAction("QuitGame", throwIfNotFound: true);
-        // Over
-        m_Over = asset.FindActionMap("Over", throwIfNotFound: true);
-        m_Over_PlayAgain = m_Over.FindAction("PlayAgain", throwIfNotFound: true);
-        m_Over_ReturnToMenu = m_Over.FindAction("ReturnToMenu", throwIfNotFound: true);
+        // Lose
+        m_Lose = asset.FindActionMap("Lose", throwIfNotFound: true);
+        m_Lose_PlayAgain = m_Lose.FindAction("PlayAgain", throwIfNotFound: true);
+        m_Lose_ReturnToMenu = m_Lose.FindAction("ReturnToMenu", throwIfNotFound: true);
+        // Win
+        m_Win = asset.FindActionMap("Win", throwIfNotFound: true);
+        m_Win_PlayAgain = m_Win.FindAction("PlayAgain", throwIfNotFound: true);
+        m_Win_ReturnToMenu = m_Win.FindAction("ReturnToMenu", throwIfNotFound: true);
+        // WinStats
+        m_WinStats = asset.FindActionMap("WinStats", throwIfNotFound: true);
+        m_WinStats_PlayAgain = m_WinStats.FindAction("PlayAgain", throwIfNotFound: true);
+        m_WinStats_ReturnToMenu = m_WinStats.FindAction("ReturnToMenu", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1447,7 +1551,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_Menu.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Menu.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Playing.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Playing.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Paused.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Paused.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_Over.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Over.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Lose.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Lose.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Win.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Win.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_WinStats.enabled, "This will cause a leak and performance issues, InputSystem_Actions.WinStats.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputSystem_Actions.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Newactionmap.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Newactionmap.Disable() has not been called.");
     }
@@ -1772,26 +1878,26 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     }
     public PausedActions @Paused => new PausedActions(this);
 
-    // Over
-    private readonly InputActionMap m_Over;
-    private List<IOverActions> m_OverActionsCallbackInterfaces = new List<IOverActions>();
-    private readonly InputAction m_Over_PlayAgain;
-    private readonly InputAction m_Over_ReturnToMenu;
-    public struct OverActions
+    // Lose
+    private readonly InputActionMap m_Lose;
+    private List<ILoseActions> m_LoseActionsCallbackInterfaces = new List<ILoseActions>();
+    private readonly InputAction m_Lose_PlayAgain;
+    private readonly InputAction m_Lose_ReturnToMenu;
+    public struct LoseActions
     {
         private @InputSystem_Actions m_Wrapper;
-        public OverActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @PlayAgain => m_Wrapper.m_Over_PlayAgain;
-        public InputAction @ReturnToMenu => m_Wrapper.m_Over_ReturnToMenu;
-        public InputActionMap Get() { return m_Wrapper.m_Over; }
+        public LoseActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PlayAgain => m_Wrapper.m_Lose_PlayAgain;
+        public InputAction @ReturnToMenu => m_Wrapper.m_Lose_ReturnToMenu;
+        public InputActionMap Get() { return m_Wrapper.m_Lose; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(OverActions set) { return set.Get(); }
-        public void AddCallbacks(IOverActions instance)
+        public static implicit operator InputActionMap(LoseActions set) { return set.Get(); }
+        public void AddCallbacks(ILoseActions instance)
         {
-            if (instance == null || m_Wrapper.m_OverActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_OverActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_LoseActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_LoseActionsCallbackInterfaces.Add(instance);
             @PlayAgain.started += instance.OnPlayAgain;
             @PlayAgain.performed += instance.OnPlayAgain;
             @PlayAgain.canceled += instance.OnPlayAgain;
@@ -1800,7 +1906,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ReturnToMenu.canceled += instance.OnReturnToMenu;
         }
 
-        private void UnregisterCallbacks(IOverActions instance)
+        private void UnregisterCallbacks(ILoseActions instance)
         {
             @PlayAgain.started -= instance.OnPlayAgain;
             @PlayAgain.performed -= instance.OnPlayAgain;
@@ -1810,21 +1916,129 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ReturnToMenu.canceled -= instance.OnReturnToMenu;
         }
 
-        public void RemoveCallbacks(IOverActions instance)
+        public void RemoveCallbacks(ILoseActions instance)
         {
-            if (m_Wrapper.m_OverActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_LoseActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IOverActions instance)
+        public void SetCallbacks(ILoseActions instance)
         {
-            foreach (var item in m_Wrapper.m_OverActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_LoseActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_OverActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_LoseActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public OverActions @Over => new OverActions(this);
+    public LoseActions @Lose => new LoseActions(this);
+
+    // Win
+    private readonly InputActionMap m_Win;
+    private List<IWinActions> m_WinActionsCallbackInterfaces = new List<IWinActions>();
+    private readonly InputAction m_Win_PlayAgain;
+    private readonly InputAction m_Win_ReturnToMenu;
+    public struct WinActions
+    {
+        private @InputSystem_Actions m_Wrapper;
+        public WinActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PlayAgain => m_Wrapper.m_Win_PlayAgain;
+        public InputAction @ReturnToMenu => m_Wrapper.m_Win_ReturnToMenu;
+        public InputActionMap Get() { return m_Wrapper.m_Win; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(WinActions set) { return set.Get(); }
+        public void AddCallbacks(IWinActions instance)
+        {
+            if (instance == null || m_Wrapper.m_WinActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_WinActionsCallbackInterfaces.Add(instance);
+            @PlayAgain.started += instance.OnPlayAgain;
+            @PlayAgain.performed += instance.OnPlayAgain;
+            @PlayAgain.canceled += instance.OnPlayAgain;
+            @ReturnToMenu.started += instance.OnReturnToMenu;
+            @ReturnToMenu.performed += instance.OnReturnToMenu;
+            @ReturnToMenu.canceled += instance.OnReturnToMenu;
+        }
+
+        private void UnregisterCallbacks(IWinActions instance)
+        {
+            @PlayAgain.started -= instance.OnPlayAgain;
+            @PlayAgain.performed -= instance.OnPlayAgain;
+            @PlayAgain.canceled -= instance.OnPlayAgain;
+            @ReturnToMenu.started -= instance.OnReturnToMenu;
+            @ReturnToMenu.performed -= instance.OnReturnToMenu;
+            @ReturnToMenu.canceled -= instance.OnReturnToMenu;
+        }
+
+        public void RemoveCallbacks(IWinActions instance)
+        {
+            if (m_Wrapper.m_WinActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IWinActions instance)
+        {
+            foreach (var item in m_Wrapper.m_WinActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_WinActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public WinActions @Win => new WinActions(this);
+
+    // WinStats
+    private readonly InputActionMap m_WinStats;
+    private List<IWinStatsActions> m_WinStatsActionsCallbackInterfaces = new List<IWinStatsActions>();
+    private readonly InputAction m_WinStats_PlayAgain;
+    private readonly InputAction m_WinStats_ReturnToMenu;
+    public struct WinStatsActions
+    {
+        private @InputSystem_Actions m_Wrapper;
+        public WinStatsActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PlayAgain => m_Wrapper.m_WinStats_PlayAgain;
+        public InputAction @ReturnToMenu => m_Wrapper.m_WinStats_ReturnToMenu;
+        public InputActionMap Get() { return m_Wrapper.m_WinStats; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(WinStatsActions set) { return set.Get(); }
+        public void AddCallbacks(IWinStatsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_WinStatsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_WinStatsActionsCallbackInterfaces.Add(instance);
+            @PlayAgain.started += instance.OnPlayAgain;
+            @PlayAgain.performed += instance.OnPlayAgain;
+            @PlayAgain.canceled += instance.OnPlayAgain;
+            @ReturnToMenu.started += instance.OnReturnToMenu;
+            @ReturnToMenu.performed += instance.OnReturnToMenu;
+            @ReturnToMenu.canceled += instance.OnReturnToMenu;
+        }
+
+        private void UnregisterCallbacks(IWinStatsActions instance)
+        {
+            @PlayAgain.started -= instance.OnPlayAgain;
+            @PlayAgain.performed -= instance.OnPlayAgain;
+            @PlayAgain.canceled -= instance.OnPlayAgain;
+            @ReturnToMenu.started -= instance.OnReturnToMenu;
+            @ReturnToMenu.performed -= instance.OnReturnToMenu;
+            @ReturnToMenu.canceled -= instance.OnReturnToMenu;
+        }
+
+        public void RemoveCallbacks(IWinStatsActions instance)
+        {
+            if (m_Wrapper.m_WinStatsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IWinStatsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_WinStatsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_WinStatsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public WinStatsActions @WinStats => new WinStatsActions(this);
 
     // UI
     private readonly InputActionMap m_UI;
@@ -2060,7 +2274,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnContinueGame(InputAction.CallbackContext context);
         void OnQuitGame(InputAction.CallbackContext context);
     }
-    public interface IOverActions
+    public interface ILoseActions
+    {
+        void OnPlayAgain(InputAction.CallbackContext context);
+        void OnReturnToMenu(InputAction.CallbackContext context);
+    }
+    public interface IWinActions
+    {
+        void OnPlayAgain(InputAction.CallbackContext context);
+        void OnReturnToMenu(InputAction.CallbackContext context);
+    }
+    public interface IWinStatsActions
     {
         void OnPlayAgain(InputAction.CallbackContext context);
         void OnReturnToMenu(InputAction.CallbackContext context);

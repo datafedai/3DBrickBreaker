@@ -13,6 +13,7 @@ public class GameStateObserver : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPlaying += OnConsolePlaying;
         GameManager.Instance.OnGameStateChangedToPaused += OnConsolePaused;
         GameManager.Instance.OnGameStateChangedToWin += OnConsoleWin;
+        GameManager.Instance.OnGameStateChangedToWinStats += OnConsoleWinStats;
         GameManager.Instance.OnGameStateChangedToLose += OnConsoleLose;
     }
 
@@ -22,6 +23,7 @@ public class GameStateObserver : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPlaying -= OnConsolePlaying;
         GameManager.Instance.OnGameStateChangedToPaused -= OnConsolePaused;
         GameManager.Instance.OnGameStateChangedToWin -= OnConsoleWin;
+        GameManager.Instance.OnGameStateChangedToWinStats -= OnConsoleWinStats;
         GameManager.Instance.OnGameStateChangedToLose -= OnConsoleLose;
     }
 
@@ -48,6 +50,10 @@ public class GameStateObserver : MonoBehaviour
         Debug.Log("On Game Win");
     }
 
+    void OnConsoleWinStats()
+    {
+        Debug.Log("On Game WinStats");
+    }
 
     void OnConsoleLose()
     {

@@ -38,12 +38,6 @@ public class paddle : MonoBehaviour
         //ballController.Instance.BrickDestroyed -= sayHello;
     }
 
-    // test
-    void sayHello()
-    {
-        Debug.Log("hello dude");
-    }
-
     void OnPlaying()
     {
         canMove = true;

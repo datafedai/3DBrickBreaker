@@ -666,7 +666,7 @@
             ]
         },
         {
-            "name": "Over",
+            "name": "Lose",
             "id": "51acfb6c-22c2-4769-8284-9148e9a3db7c",
             "actions": [
                 {
@@ -703,6 +703,102 @@
                 {
                     "name": "",
                     "id": "3de1af3e-ba61-477c-a467-8a2bbb0bcc87",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ReturnToMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Win",
+            "id": "69e9f418-a9d9-4df8-894d-a02127744a09",
+            "actions": [
+                {
+                    "name": "PlayAgain",
+                    "type": "Button",
+                    "id": "5e65b6c3-ac92-40cd-ace2-a370829db5ce",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ReturnToMenu",
+                    "type": "Button",
+                    "id": "5c762586-9bcd-44b9-9c45-ff397257f799",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "36641d98-b9b9-4038-a14f-5d78e4266a30",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "PlayAgain",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "16fae3fc-2eec-4a88-a33f-ccf76577f5e4",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ReturnToMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "WinStats",
+            "id": "32f26374-7a3e-4831-b5c0-2f3f28afe4d7",
+            "actions": [
+                {
+                    "name": "PlayAgain",
+                    "type": "Button",
+                    "id": "217291f9-5588-4a7b-a9c9-ecf4ce381ac1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ReturnToMenu",
+                    "type": "Button",
+                    "id": "d9405336-9dcc-4b13-8d8b-55035aaa10d7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "853c47d6-2768-4fe8-8ee1-c55f0499c240",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "PlayAgain",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ef7b4abb-1c7b-4bf5-aa3c-0657d501616e",
                     "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
