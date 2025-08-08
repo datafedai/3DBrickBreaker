@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class BrickGenerator : MonoBehaviour
 {
     public GameObject brickObject;
+    //private GameObject[,] brickClones = new GameObject[8, 13]; // 13 columns, 8 rows 
     private int numRows;
     private int numCols;
     private float brickHeight;
@@ -63,11 +64,8 @@ public class BrickGenerator : MonoBehaviour
 
                 count++;
                 //Debug.Log(count + " : " + Random.Range(0, 8));
-
             }
-
         }
-
     }
 
     void createWINBricks(Transform refPos)
@@ -150,13 +148,6 @@ public class BrickGenerator : MonoBehaviour
             Debug.Log("Object not found!");
         }
 
-        Destroy(foundObject[1]);
-        Destroy(foundObject[11]);
-        Destroy(foundObject[50]);
-        Destroy(foundObject[33]);
-        Destroy(foundObject[70]);
-        Destroy(foundObject[90]);
-        
     }
 
     public void cheatToDestroyAllBricks()
@@ -176,40 +167,39 @@ public class BrickGenerator : MonoBehaviour
         else
         {
             Debug.Log("Object not found!");
-        }   
+        }
     }
-    
 
 
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
+    {
+        numRows = 8;
+        numCols = 13;
+        brickHeight = 0.6f;
+        brickWidth = 2f;
+
+        // creeate bricks in 8 rows x 13 columns using Method1
+        //Debug.Log("creating bricks in current scene: " + SceneManager.GetActiveScene().name);
+        if (SceneManager.GetActiveScene().name == "Win_Scene")
         {
-            numRows = 8;
-            numCols = 13;
-            brickHeight = 0.6f;
-            brickWidth = 2f;
-
-            // creeate bricks in 8 rows x 13 columns using Method1
-            //Debug.Log("creating bricks in current scene: " + SceneManager.GetActiveScene().name);
-            if (SceneManager.GetActiveScene().name == "Win_Scene")
-            {
-                createWINBricks(brickObject.transform);
-            }
-            else
-            {
-                createBricks(brickObject.transform);
-            }
-
-            // find brick clones
-            //findBrickClone();
+            createWINBricks(brickObject.transform);
+        }
+        else
+        {
+            createBricks(brickObject.transform);
         }
 
 
+    }
 
-        // Update is called once per frame
-        void Update()
-        {
 
-        }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 }

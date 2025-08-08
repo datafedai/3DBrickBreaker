@@ -23,8 +23,8 @@ public class canvas : MonoBehaviour
     public Button yesButton;
     public Button noButton;
     public static canvas Instance { get; private set; }
-    public event Action ClickedYes;
-    public event Action ClickedNo;
+    //public event Action ClickedYes;
+    //public event Action ClickedNo;
 
 
 

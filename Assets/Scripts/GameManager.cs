@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     public event Action OnGameStateChangedToWin;
     public event Action OnGameStateChangedToLose;
     //public event Action WonGame;
-    //public event Action DestroyAllBricks;
+    public event Action BrickSelfDestruct;
 
     public GameObject ballObject;
     ball ballScript;
@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
 
         // on Playing: P or ESC to pause, B to cheat
         inputActions.Playing.PauseGame.performed += pEscPerformedAction = ctx => PauseGame();
-        inputActions.Playing.Cheat.performed += bPerformedAction = ctx => CheatGame(); 
+        inputActions.Playing.Cheat.performed += bPerformedAction = ctx => CheatGame_SelfDestruct();
 
         // on Pause: P or esc, Q to quit
         inputActions.Paused.ContinueGame.performed += pEscPerformedAction = ctx => ResumeGame();
@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
         inputActions.Disable();
         inputActions.Menu.PlayGame.performed -= spacePerformedAction = ctx => StartGameInMenu();
         inputActions.Playing.PauseGame.performed -= pEscPerformedAction = ctx => PauseGame();
-        inputActions.Playing.Cheat.performed += bPerformedAction = ctx => CheatGame(); 
+        inputActions.Playing.Cheat.performed -= bPerformedAction = ctx => CheatGame_SelfDestruct(); 
         inputActions.Paused.ContinueGame.performed -= pEscPerformedAction = ctx => ResumeGame();
         inputActions.Paused.QuitGame.performed -= qPerformedAction = ctx => ForfeitGame();
         inputActions.Over.ReturnToMenu.performed -= qPerformedAction = ctx => ReturnToMenuFromGameFinished();
@@ -136,7 +136,15 @@ public class GameManager : MonoBehaviour
         //inputActions.Player.Menu.performed -= qPerformedAction = ctx => handleQPressed();
     }
 
-    void CheatGame()
+    void CheatGame_SelfDestruct()
+    {
+        Debug.Log("Invoking to destroy all bricks.");
+        BrickSelfDestruct?.Invoke();
+
+    }
+
+
+    void CheatGame_FoundObjects()
     {
         Debug.Log("You will won! Destroying all bricks.");
         //DestroyAllBricks?.Invoke();
@@ -372,12 +380,14 @@ public class GameManager : MonoBehaviour
         // check if all the bricks are destroyed
 
         //if (ballScript.getDestroyedBricksCount() == 105)
-        if(remainingBricksCount() == 0)
+        if (remainingBricksCount() == 0)
         {
             Debug.Log("You won!");
             //OnGameStateChangedToPlaying?.Invoke();
             SceneManager.LoadScene("Win_Scene");
         }
+
+
 
 
     }

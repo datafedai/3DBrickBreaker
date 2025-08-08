@@ -1689,6 +1689,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1263773635}
   m_CullTransparentMesh: 1
+--- !u!1 &1322716167 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7872368346859609066, guid: eff6e10d18b63a24b9bc03ddd8011d68, type: 3}
+  m_PrefabInstance: {fileID: 1952701836431360026}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1322716174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322716167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bca2b77bcd18d5b44b164c4e259ac7c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1389977432
 GameObject:
   m_ObjectHideFlags: 0
@@ -3049,10 +3066,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Brick
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -736427870363614512, guid: eff6e10d18b63a24b9bc03ddd8011d68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7872368346859609066, guid: eff6e10d18b63a24b9bc03ddd8011d68, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1322716174}
   m_SourcePrefab: {fileID: 100100000, guid: eff6e10d18b63a24b9bc03ddd8011d68, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
