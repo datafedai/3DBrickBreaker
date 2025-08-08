@@ -6,8 +6,8 @@ public class GameStats : MonoBehaviour
 
     void OnEnable()
     {
-        GameManager.Instance.OnGameStateChangedToWin += OnWin;
-        GameManager.Instance.OnGameStateChangedToWinStats += OnWinStats;
+        GameManager.Instance.OnGameStateChangedToWin += OnWin1;
+        GameManager.Instance.OnGameStateChangedToWinStats += OnWinStats1;
         GameManager.Instance.OnGameStateChangedToLose += OnLose;
         //GameManager.Instance.OnGameStateChangedToLose += OnConsoleLose;
     }
@@ -17,17 +17,17 @@ public class GameStats : MonoBehaviour
     void OnDisable()
     {
         // Unsubscribe from events if necessary
-        GameManager.Instance.OnGameStateChangedToWin -= OnWin;
-        GameManager.Instance.OnGameStateChangedToWinStats -= OnWinStats;
+        GameManager.Instance.OnGameStateChangedToWin -= OnWin1;
+        GameManager.Instance.OnGameStateChangedToWinStats -= OnWinStats1;
         GameManager.Instance.OnGameStateChangedToLose -= OnLose;
     }
 
-    void OnWin()
+    void OnWin1()
     {
         Debug.Log("saving win stats");
     }
 
-    void OnWinStats()
+    void OnWinStats1()
     {
         Debug.Log("displaying win stats");
     }
@@ -51,6 +51,6 @@ public class GameStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //Debug.Log("GameStats is being updated");
     }
 }
