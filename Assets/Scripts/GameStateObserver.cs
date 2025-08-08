@@ -9,18 +9,20 @@ public class GameStateObserver : MonoBehaviour
     void OnEnable()
     {
         //Debug.Log("in OnEnable in Canvas");
+        GameManager.Instance.OnGameStateChangedToMenu += OnConsoleMenu;        
         GameManager.Instance.OnGameStateChangedToPlaying += OnConsolePlaying;
         GameManager.Instance.OnGameStateChangedToPaused += OnConsolePaused;
-        GameManager.Instance.OnGameStateChangedToMenu += OnConsoleMenu;
-        GameManager.Instance.OnGameStateChangedToLose += OnConsoleOver;
+        GameManager.Instance.OnGameStateChangedToWin += OnConsoleWin;
+        GameManager.Instance.OnGameStateChangedToLose += OnConsoleLose;
     }
 
     void OnDisable()
     {
+        GameManager.Instance.OnGameStateChangedToMenu -= OnConsoleMenu;
         GameManager.Instance.OnGameStateChangedToPlaying -= OnConsolePlaying;
         GameManager.Instance.OnGameStateChangedToPaused -= OnConsolePaused;
-        GameManager.Instance.OnGameStateChangedToMenu -= OnConsoleMenu;
-        GameManager.Instance.OnGameStateChangedToLose -= OnConsoleOver;
+        GameManager.Instance.OnGameStateChangedToWin -= OnConsoleWin;
+        GameManager.Instance.OnGameStateChangedToLose -= OnConsoleLose;
     }
 
 
@@ -41,8 +43,13 @@ public class GameStateObserver : MonoBehaviour
         Debug.Log("On Game Paused");
     }
 
+    void OnConsoleWin()
+    {
+        Debug.Log("On Game Win");
+    }
 
-    void OnConsoleOver()
+
+    void OnConsoleLose()
     {
         Debug.Log("On Game Over");
     }

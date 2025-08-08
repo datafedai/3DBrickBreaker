@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     public event Action OnGameStateChangedToPaused;
     public event Action OnGameStateChangedToWin;
     public event Action OnGameStateChangedToLose;
-    public event Action WonGame;
+    //public event Action WonGame;
     //public event Action DestroyAllBricks;
 
     public GameObject ballObject;
@@ -328,7 +328,7 @@ public class GameManager : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "Win_Scene")
         {
-            WonGame?.Invoke();
+            //WonGame?.Invoke();
             OnGameStateChangedToWin?.Invoke();
             //currentGameState = GameState.Over;
             Debug.Log("current game state in Win_Scene: " + currentGameState);

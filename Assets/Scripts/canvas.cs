@@ -54,8 +54,9 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPlaying += OnPlaying;
         GameManager.Instance.OnGameStateChangedToPaused += OnPause;
         GameManager.Instance.OnGameStateChangedToMenu += OnMenu;
-        GameManager.Instance.OnGameStateChangedToLose += OnOver;
-        GameManager.Instance.WonGame += YouWonGame;
+        GameManager.Instance.OnGameStateChangedToWin += OnWin;
+        GameManager.Instance.OnGameStateChangedToLose += OnLose;
+        //GameManager.Instance.WonGame += YouWonGame;
 
         // score update
         ball.Instance.BrickDestroyed += UpdateScore;
@@ -68,8 +69,9 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToPlaying -= OnPlaying;
         GameManager.Instance.OnGameStateChangedToPaused -= OnPause;
         GameManager.Instance.OnGameStateChangedToMenu -= OnMenu;
-        GameManager.Instance.OnGameStateChangedToLose -= OnOver;
-        GameManager.Instance.WonGame -= YouWonGame;
+        GameManager.Instance.OnGameStateChangedToWin -= OnWin;
+        GameManager.Instance.OnGameStateChangedToLose -= OnLose;    
+        //GameManager.Instance.WonGame -= YouWonGame;
         // score
         ball.Instance.BrickDestroyed -= UpdateScore;
         ball.Instance.BallLives -= UpdateBallLives;
@@ -133,7 +135,7 @@ public class canvas : MonoBehaviour
         displayState.text = "Paused";
     }
 
-    void OnOver()
+    void OnLose()
     {
         displayState.text = "Game Over";
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
@@ -148,7 +150,7 @@ public class canvas : MonoBehaviour
     }
 
 
-    void YouWonGame()
+    void OnWin()
     {
         //Debug.Log("You have won game!");
         //SceneManager.LoadScene("Over_Scene");
@@ -160,21 +162,6 @@ public class canvas : MonoBehaviour
         //displayInstruction.text = "Press Space Bar to restart game";
         displayInstruction.text = "Press Space Bar to play again.\nPress Q to return to Main Menu";        
     }
-    void YesClicked()
-    {
-        Debug.Log("Yes Clicked");
-        ClickedYes?.Invoke();
-        //buttonPanel.SetActive(false); // Hide the dialog
-    }
-
-    void NoClicked()
-    {
-        Debug.Log("No Clicked");
-        ClickedNo?.Invoke();
-        //buttonPanel.SetActive(false); // Hide the dialog
-    }
-
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
