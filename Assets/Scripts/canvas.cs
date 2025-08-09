@@ -88,23 +88,22 @@ public class canvas : MonoBehaviour
         Debug.Log("in OnGameMenuPanel in Canvas");
         
         titleText.text = "Brick Breaker 3D";
+
         playButton.onClick.RemoveAllListeners();
         playButton.onClick.AddListener(() =>
         {
-            //Debug.Log("Play button clicked");
-            GameManager.Instance.SwitchToPlayingState();
+            Debug.Log("Play button clicked");
+            GameManager.Instance.StartGameInMenu();
             gameMenuPanel.SetActive(false); // Hide the menu panel
         });
 
         exitButton.onClick.RemoveAllListeners();
-
-        /*
         exitButton.onClick.AddListener(() =>
         {
-            //Debug.Log("Exit button clicked");
-            GameManager.Instance.SwitchToMenuState();
-            gameMenuPanel.SetActive(false); // Hide the menu panel
-        }); */
+            Debug.Log("Exit button clicked");
+            Application.Quit();
+            //gameMenuPanel.SetActive(false); // Hide the menu panel
+        }); 
         
     }
 

@@ -262,7 +262,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    void StartGameInMenu()
+    public void StartGameInMenu()
     {
         if (SceneManager.GetActiveScene().name == "Main_Scene")
         {
