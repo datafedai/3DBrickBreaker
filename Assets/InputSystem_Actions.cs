@@ -531,6 +531,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NavigateUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""56f5137b-db37-4a8c-893e-051888258ca3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NavigateDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""b06c32d0-4cfe-452a-8fdc-81db7b45ab90"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -542,6 +560,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""PlayGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aad0dbd6-a06b-4f65-8de8-9f9cda4150ad"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ec940500-1964-4730-9250-5fbc71bd57f4"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1508,6 +1548,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_PlayGame = m_Menu.FindAction("PlayGame", throwIfNotFound: true);
+        m_Menu_NavigateUp = m_Menu.FindAction("NavigateUp", throwIfNotFound: true);
+        m_Menu_NavigateDown = m_Menu.FindAction("NavigateDown", throwIfNotFound: true);
         // Playing
         m_Playing = asset.FindActionMap("Playing", throwIfNotFound: true);
         m_Playing_PauseGame = m_Playing.FindAction("PauseGame", throwIfNotFound: true);
@@ -1728,11 +1770,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Menu;
     private List<IMenuActions> m_MenuActionsCallbackInterfaces = new List<IMenuActions>();
     private readonly InputAction m_Menu_PlayGame;
+    private readonly InputAction m_Menu_NavigateUp;
+    private readonly InputAction m_Menu_NavigateDown;
     public struct MenuActions
     {
         private @InputSystem_Actions m_Wrapper;
         public MenuActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
         public InputAction @PlayGame => m_Wrapper.m_Menu_PlayGame;
+        public InputAction @NavigateUp => m_Wrapper.m_Menu_NavigateUp;
+        public InputAction @NavigateDown => m_Wrapper.m_Menu_NavigateDown;
         public InputActionMap Get() { return m_Wrapper.m_Menu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1745,6 +1791,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PlayGame.started += instance.OnPlayGame;
             @PlayGame.performed += instance.OnPlayGame;
             @PlayGame.canceled += instance.OnPlayGame;
+            @NavigateUp.started += instance.OnNavigateUp;
+            @NavigateUp.performed += instance.OnNavigateUp;
+            @NavigateUp.canceled += instance.OnNavigateUp;
+            @NavigateDown.started += instance.OnNavigateDown;
+            @NavigateDown.performed += instance.OnNavigateDown;
+            @NavigateDown.canceled += instance.OnNavigateDown;
         }
 
         private void UnregisterCallbacks(IMenuActions instance)
@@ -1752,6 +1804,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PlayGame.started -= instance.OnPlayGame;
             @PlayGame.performed -= instance.OnPlayGame;
             @PlayGame.canceled -= instance.OnPlayGame;
+            @NavigateUp.started -= instance.OnNavigateUp;
+            @NavigateUp.performed -= instance.OnNavigateUp;
+            @NavigateUp.canceled -= instance.OnNavigateUp;
+            @NavigateDown.started -= instance.OnNavigateDown;
+            @NavigateDown.performed -= instance.OnNavigateDown;
+            @NavigateDown.canceled -= instance.OnNavigateDown;
         }
 
         public void RemoveCallbacks(IMenuActions instance)
@@ -2263,6 +2321,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     public interface IMenuActions
     {
         void OnPlayGame(InputAction.CallbackContext context);
+        void OnNavigateUp(InputAction.CallbackContext context);
+        void OnNavigateDown(InputAction.CallbackContext context);
     }
     public interface IPlayingActions
     {

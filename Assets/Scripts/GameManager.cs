@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviour
     // cheat
     private Action<InputAction.CallbackContext> bPerformedAction;
 
+    // menu navigation
+    private Action<InputAction.CallbackContext> upPerformanceAction;
+    private Action<InputAction.CallbackContext> downPerformanceAction;
+     
 
     public static GameManager Instance { get; private set; }
     public event Action OnGameStateChangedToMenu;
@@ -96,6 +100,8 @@ public class GameManager : MonoBehaviour
 
         // on Menu: space bar
         inputActions.Menu.PlayGame.performed += spacePerformedAction = ctx => StartGameInMenu();
+        inputActions.Menu.NavigateUp.performed += upPerformanceAction = ctx => Debug.Log("Up key pressed in Menu");
+        inputActions.Menu.NavigateDown.performed += downPerformanceAction = ctx => Debug.Log("Down key pressed in Menu");
 
         // on Playing: P or ESC to pause, B to cheat
         inputActions.Playing.PauseGame.performed += pEscPerformedAction = ctx => PauseGame();
@@ -136,8 +142,12 @@ public class GameManager : MonoBehaviour
 
         inputActions.Disable();
         inputActions.Menu.PlayGame.performed -= spacePerformedAction = ctx => StartGameInMenu();
+        inputActions.Menu.NavigateUp.performed += upPerformanceAction = ctx => Debug.Log("Up key pressed in Menu");
+        inputActions.Menu.NavigateDown.performed += downPerformanceAction = ctx => Debug.Log("Down key pressed in Menu");
+
         inputActions.Playing.PauseGame.performed -= pEscPerformedAction = ctx => PauseGame();
         inputActions.Playing.Cheat.performed -= bPerformedAction = ctx => CheatGame_SelfDestruct();
+        
         inputActions.Paused.ContinueGame.performed -= pEscPerformedAction = ctx => ResumeGame();
         inputActions.Paused.QuitGame.performed -= qPerformedAction = ctx => ForfeitGame();
 
