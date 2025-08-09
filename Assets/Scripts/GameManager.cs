@@ -101,7 +101,8 @@ public class GameManager : MonoBehaviour
 
 
         // on Menu: space bar
-        inputActions.Menu.PlayGame.performed += spacePerformedAction = ctx => StartGameInMenu();
+        //inputActions.Menu.PlayGame.performed += spacePerformedAction = ctx => StartGameInMenu();
+        inputActions.Menu.PlayGame.performed += spacePerformedAction = ctx => ExecuteSelectionInMenu();        
         inputActions.Menu.NavigateUp.performed += upPerformanceAction = ctx => UpArrowPressed();
         inputActions.Menu.NavigateDown.performed += downPerformanceAction = ctx => DownArrowPressed();
 
@@ -143,7 +144,8 @@ public class GameManager : MonoBehaviour
         //canvas.Instance.ClickedNo -= PlayAgainNo;
 
         inputActions.Disable();
-        inputActions.Menu.PlayGame.performed -= spacePerformedAction = ctx => StartGameInMenu();
+        //inputActions.Menu.PlayGame.performed -= spacePerformedAction = ctx => StartGameInMenu();
+        inputActions.Menu.PlayGame.performed -= spacePerformedAction = ctx => ExecuteSelectionInMenu();
         inputActions.Menu.NavigateUp.performed += upPerformanceAction = ctx => UpArrowPressed();
         inputActions.Menu.NavigateDown.performed += downPerformanceAction = ctx => DownArrowPressed();
 
@@ -171,6 +173,12 @@ public class GameManager : MonoBehaviour
         //inputActions.Player.Menu.performed -= qPerformedAction = ctx => handleQPressed();
     }
 
+
+    void ExecuteSelectionInMenu()
+    {
+        Debug.Log("Execute selection in Menu");
+        canvas.Instance.ExecuteSelection();
+    }   
 
     void UpArrowPressed()
     {

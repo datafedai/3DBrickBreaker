@@ -31,6 +31,8 @@ public class canvas : MonoBehaviour
     public TextMeshProUGUI playText;
     public Image playheadImage2;
     public TextMeshProUGUI exitText;
+    private int playheadIndex = 0; // Index to track the current position of the playhead
+
 
 
     public static canvas Instance { get; private set; }
@@ -100,19 +102,72 @@ public class canvas : MonoBehaviour
 
     void MoveArrowUp()
     {
-        //Debug.Log("in MoveArrowUp in Canvas");
-        playheadImage1.transform.position += new Vector3(0f, 85f, 0f);
-        playText.color = Color.white;
-        exitText.color = Color.black;
+        Debug.Log("in MoveArrowUp in Canvas");
+        Debug.Log("playheadIndex: " + playheadIndex);
+        //playheadImage1.transform.position += new Vector3(0f, 85f, 0f);
+        //playText.color = Color.white;
+        //exitText.color = Color.black;
+        if (playheadIndex > 0)
+        {
+            playheadIndex--;            
+        }
+        else
+        {
+            playheadIndex = 0; // If already at the top, stay at 0  
+        }
+
+
+        playheadIndex = playheadIndex % 2; // Toggle between 0 and 1
+        Debug.Log("playheadIndex after decrement: " + playheadIndex);
+
+        if (playheadIndex == 0)
+        {
+            playheadImage1.enabled = true;
+            playheadImage2.enabled = false;
+            playText.color = Color.white;
+            exitText.color = Color.black;
+        }
+        else
+        {
+            playheadImage1.enabled = false;
+            playheadImage2.enabled = true;
+            playText.color = Color.black;
+            exitText.color = Color.white;
+        }
     }
 
     void MoveArrowDown()
     {
-        //Debug.Log("in MoveArrowDown in Canvas");
-        playheadImage1.transform.position += new Vector3(0f, -85f, 0f);
-        playText.color = Color.black;
-        exitText.color = Color.white;
+        Debug.Log("in MoveArrowDown in Canvas");
+        Debug.Log("playheadIndex: " + playheadIndex);
+        //playheadImage1.transform.position += new Vector3(0f, -85f, 0f);
+        //playText.color = Color.black;
+        //exitText.color = Color.white;
+        playheadIndex++;
+
+        if (playheadIndex > 1)
+        {
+            playheadIndex = 1; // Toggle between 0 and 1
+        }
+        playheadIndex = playheadIndex % 2; // Toggle between 0 and 1
+        Debug.Log("playheadIndex after increment: " + playheadIndex);
+
+        if (playheadIndex == 0)
+        {
+            playheadImage1.enabled = true;
+            playheadImage2.enabled = false;
+            playText.color = Color.white;
+            exitText.color = Color.black;
+        }
+        else
+        {
+            playheadImage1.enabled = false;
+            playheadImage2.enabled = true;
+            playText.color = Color.black;
+            exitText.color = Color.white;
+        }   
     }
+
 
 
     void OnGameMenuPanel()
@@ -147,6 +202,31 @@ public class canvas : MonoBehaviour
         }); 
         
     }
+
+    public void ExecuteSelection()
+    {
+        Debug.Log("in ExecuteSelection in Canvas");
+        if (playheadIndex == 0)
+        {
+            Debug.Log("Play selected");
+            GameManager.Instance.StartGameInMenu();
+            gameMenuPanel.SetActive(false); // Hide the menu panel
+        }
+        else
+        {
+            Debug.Log("Exit selected");
+            if (Application.isEditor)
+            {
+                //UnityEditor.EditorApplication.isPlaying = false; // Stop play mode in the editor
+                UnityEditor.EditorApplication.ExitPlaymode(); // Stop play mode in the editor
+            }
+            else
+            {
+                Debug.Log("Exiting application");
+                Application.Quit(); // Quit the application
+            }   
+        }
+    }   
 
 
     void UpdateScore(int bricksDestroyed)
@@ -271,6 +351,9 @@ public class canvas : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        playheadImage1.enabled = true;
+        playheadImage2.enabled = false;
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         //displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
         //buttonPanel.SetActive(true);
@@ -285,6 +368,7 @@ public class canvas : MonoBehaviour
     void Update()
     {
         //Debug.Log(SceneManager.GetActiveScene().name);
+        Debug.Log("playheadIndex: " + playheadIndex);
 
     }
     
