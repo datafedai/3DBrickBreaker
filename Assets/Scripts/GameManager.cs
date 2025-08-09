@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
     public event Action OnGameStateChangedToLose;
     public event Action OnGameMenuPanel;
     public event Action BrickSelfDestruct;
+    public event Action ArrowUp;
+    public event Action ArrowDown;
 
     public GameObject ballObject;
     ball ballScript;
@@ -100,8 +102,8 @@ public class GameManager : MonoBehaviour
 
         // on Menu: space bar
         inputActions.Menu.PlayGame.performed += spacePerformedAction = ctx => StartGameInMenu();
-        inputActions.Menu.NavigateUp.performed += upPerformanceAction = ctx => Debug.Log("Up key pressed in Menu");
-        inputActions.Menu.NavigateDown.performed += downPerformanceAction = ctx => Debug.Log("Down key pressed in Menu");
+        inputActions.Menu.NavigateUp.performed += upPerformanceAction = ctx => UpArrowPressed();
+        inputActions.Menu.NavigateDown.performed += downPerformanceAction = ctx => DownArrowPressed();
 
         // on Playing: P or ESC to pause, B to cheat
         inputActions.Playing.PauseGame.performed += pEscPerformedAction = ctx => PauseGame();
@@ -142,12 +144,12 @@ public class GameManager : MonoBehaviour
 
         inputActions.Disable();
         inputActions.Menu.PlayGame.performed -= spacePerformedAction = ctx => StartGameInMenu();
-        inputActions.Menu.NavigateUp.performed += upPerformanceAction = ctx => Debug.Log("Up key pressed in Menu");
-        inputActions.Menu.NavigateDown.performed += downPerformanceAction = ctx => Debug.Log("Down key pressed in Menu");
+        inputActions.Menu.NavigateUp.performed += upPerformanceAction = ctx => UpArrowPressed();
+        inputActions.Menu.NavigateDown.performed += downPerformanceAction = ctx => DownArrowPressed();
 
         inputActions.Playing.PauseGame.performed -= pEscPerformedAction = ctx => PauseGame();
         inputActions.Playing.Cheat.performed -= bPerformedAction = ctx => CheatGame_SelfDestruct();
-        
+
         inputActions.Paused.ContinueGame.performed -= pEscPerformedAction = ctx => ResumeGame();
         inputActions.Paused.QuitGame.performed -= qPerformedAction = ctx => ForfeitGame();
 
@@ -167,6 +169,21 @@ public class GameManager : MonoBehaviour
         //inputActions.Player.Restart.performed -= escPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Restart.performed -= pPerformedAction = ctx => handleEscOrPPressed();
         //inputActions.Player.Menu.performed -= qPerformedAction = ctx => handleQPressed();
+    }
+
+
+    void UpArrowPressed()
+    {
+        Debug.Log("Up arrow pressed in Menu");
+        // Handle up arrow key press
+        ArrowUp?.Invoke();
+    }
+
+    void DownArrowPressed()
+    {
+        Debug.Log("Down arrow pressed in Menu");
+        // Handle down arrow key press
+        ArrowDown?.Invoke();
     }
 
 

@@ -69,6 +69,8 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToWinStats += OnWinStats;
         GameManager.Instance.OnGameStateChangedToLose += OnLose;
         GameManager.Instance.OnGameMenuPanel += OnGameMenuPanel;
+        GameManager.Instance.ArrowUp += MoveArrowUp;
+        GameManager.Instance.ArrowDown += MoveArrowDown;
 
         // score update
         ball.Instance.BrickDestroyed += UpdateScore;
@@ -84,12 +86,32 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToWin -= OnWin;
         GameManager.Instance.OnGameStateChangedToWinStats -= OnWinStats;
         GameManager.Instance.OnGameStateChangedToLose -= OnLose;
-        GameManager.Instance.OnGameMenuPanel -= OnGameMenuPanel;            
+        GameManager.Instance.OnGameMenuPanel -= OnGameMenuPanel;    
+        GameManager.Instance.ArrowUp -= MoveArrowUp;
+        GameManager.Instance.ArrowDown -= MoveArrowDown;                
         //GameManager.Instance.WonGame -= YouWonGame;
         // score
         ball.Instance.BrickDestroyed -= UpdateScore;
         ball.Instance.BallLives -= UpdateBallLives;
         //ball.Instance.BallLives -= UpdateLives;
+    }
+
+
+
+    void MoveArrowUp()
+    {
+        //Debug.Log("in MoveArrowUp in Canvas");
+        playheadImage1.transform.position += new Vector3(0f, 85f, 0f);
+        playText.color = Color.white;
+        exitText.color = Color.black;
+    }
+
+    void MoveArrowDown()
+    {
+        //Debug.Log("in MoveArrowDown in Canvas");
+        playheadImage1.transform.position += new Vector3(0f, -85f, 0f);
+        playText.color = Color.black;
+        exitText.color = Color.white;
     }
 
 
