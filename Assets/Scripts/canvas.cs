@@ -18,11 +18,21 @@ public class canvas : MonoBehaviour
     public Sprite[] lifeSprites;
     public Image[] displayLivesImage;
 
-    // experimental
+    // panel1: for buttons
     public GameObject gameMenuPanel; // Reference to the panel containing the dialog
     public TextMeshProUGUI titleText; // Or public Text questionText;
     public Button playButton;
     public Button exitButton;
+
+    // panel2: for text and playhead
+    public GameObject gameMenuPanelText;
+    public TextMeshProUGUI titleText2;
+    public Image playheadImage1;
+    public TextMeshProUGUI playText;
+    public Image playheadImage2;
+    public TextMeshProUGUI exitText;
+
+
     public static canvas Instance { get; private set; }
     //public event Action ClickedYes;
     //public event Action ClickedNo;
@@ -154,15 +164,17 @@ public class canvas : MonoBehaviour
 
     void OnPlaying()
     {
-        if(SceneManager.GetActiveScene().name == "Main_Scene")
+        if (SceneManager.GetActiveScene().name == "Main_Scene")
         {
             //Debug.Log("in OnPlaying, setting mainPanel to false");
             gameMenuPanel.SetActive(false);
+            gameMenuPanelText.SetActive(false);
         }
         else
         {
             //Debug.Log("in OnPlaying, setting mainPanel to true");
             gameMenuPanel.SetActive(true);
+            gameMenuPanelText.SetActive(true);
         }   
 
 
