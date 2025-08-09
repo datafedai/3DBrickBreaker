@@ -101,8 +101,17 @@ public class canvas : MonoBehaviour
         exitButton.onClick.AddListener(() =>
         {
             Debug.Log("Exit button clicked");
-            Application.Quit();
-            //gameMenuPanel.SetActive(false); // Hide the menu panel
+
+            if (Application.isEditor)
+            {
+                //UnityEditor.EditorApplication.isPlaying = false; // Stop play mode in the editor
+                UnityEditor.EditorApplication.ExitPlaymode(); // Stop play mode in the editor
+            }
+            else
+            {
+                Debug.Log("Exiting application");
+                Application.Quit(); // Quit the application
+            }   
         }); 
         
     }
