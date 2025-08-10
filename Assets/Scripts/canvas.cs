@@ -324,7 +324,7 @@ public class canvas : MonoBehaviour
         displayState.text = "Congratulations!";
         displayState2.text = "<color=Blue>You</color>\n<size=70><color=Red>W   N!</color></size>";
         //displayState2.text = "Play Again?";
-        displayScore.text = "Score: " + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
+        //displayScore.text = "Score: " + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
         displayHighScores.text = "";
 
         //displayInstruction.text = "Press Space Bar to restart game";
@@ -332,8 +332,15 @@ public class canvas : MonoBehaviour
 
         // experimental
         int playerScore = 100 * ball.Instance.getDestroyedBricksCount();
-        HighScores.Instance.AddHighScore("Sung", playerScore);
-        HighScores.Instance.saveHighScores();   
+        int ballLivesLeft = 1 + ball.Instance.getBallLives();
+        //Debug.Log("Player Score: " + playerScore);
+        //Debug.Log("ball lives: " + ballLivesLeft);
+        //Debug.Log(ball.Instance.getBallLives() + playerScore);
+        int finalScore = playerScore + 1000 * ballLivesLeft;
+        displayScore.text = "Score: " + finalScore.ToString();
+
+        HighScores.Instance.AddHighScore("SungGak", finalScore); // added bonus score for ball lives
+        HighScores.Instance.saveHighScoresList();   
     }
 
     void OnWinStats()
@@ -358,8 +365,8 @@ public class canvas : MonoBehaviour
 
             int score = entry.score;
             string playerName = entry.playerName;
-            Debug.Log("Player: " + playerName + ", Score: " + score);
-            Debug.Log("High Scores ....");
+            //Debug.Log("Player: " + playerName + ", Score: " + score);
+            //Debug.Log("High Scores ....");
             displayHighScores.text += entry.score + "\t\t " + entry.playerName + "\n";
 
         }
@@ -408,7 +415,7 @@ public class canvas : MonoBehaviour
     {
         //Debug.Log(SceneManager.GetActiveScene().name);
         //Debug.Log("playheadIndex: " + playheadIndex);
-
+        //Debug.Log("ball lives: " + ball.Instance.getBallLives());
     }
     
 }

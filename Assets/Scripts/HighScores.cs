@@ -74,29 +74,29 @@ public class HighScores : MonoBehaviour
         }
     }
 
-    public void saveHighScores()
+    public void saveHighScoresArray()
     {
-        HighScoreData highScoreData = new HighScoreData { highScoreEntryList = highScores.ToArray() };
+        HighScoreDataArray highScoreData = new HighScoreDataArray { highScoreEntryList = highScores.ToArray() };
         string json = JsonUtility.ToJson(highScoreData, true);
         File.WriteAllText(Application.persistentDataPath + "/highscoreData.json", json);
         Debug.Log("High scores saved to " + Application.persistentDataPath + "/highscoreData.json");
         Debug.Log("High scores count: " + highScores.Count);
     }
 
-    public void saveHighScores2()
+    public void saveHighScoresList()
     {
-        //HighScoreData2 highScoreData = new HighScoreData2 { highScoreEntryList2 = highScores };
-        string json = JsonUtility.ToJson(highScores, true);
-        File.WriteAllText(Application.persistentDataPath + "/highscoreData2.json", json);
-        Debug.Log("High scores saved to " + Application.persistentDataPath + "/highscoreData2.json");
-        Debug.Log("High scores count: " + highScores.Count);
+        HighScoreDataList highScoreData = new HighScoreDataList { highScoreEntryList = highScores };
+        string json = JsonUtility.ToJson(highScoreData, true);
+        File.WriteAllText(Application.persistentDataPath + "/highscoreData.json", json);
+        //Debug.Log("High scores saved to " + Application.persistentDataPath + "/highscoreData2.json");
+        //Debug.Log("High scores count: " + highScores.Count);
     }
 
-    void loadHighScores()
+    void loadHighScoresArray()
     {
         string filePath = Application.persistentDataPath + "/highscoreData.json";
         string json = File.ReadAllText(filePath);
-        HighScoreData data = JsonUtility.FromJson<HighScoreData>(json);
+        HighScoreDataArray data = JsonUtility.FromJson<HighScoreDataArray>(json);
         //Debug.Log("Loaded high scores: " + data.highScoreEntryList.Length);
         //Debug.Log("Loaded high scores: " + data.highScoreEntryList.Length + " entries.");
         //highScores = data.highScoreEntryList.ToList();
@@ -112,15 +112,15 @@ public class HighScores : MonoBehaviour
 
 
 
-    void loadHighScores2()
+    void loadHighScoresList()
     {
-        string filePath = Application.persistentDataPath + "/highscoreData2.json";
+        string filePath = Application.persistentDataPath + "/highscoreData.json";
         string json = File.ReadAllText(filePath);
-        //HighScoreData2 data = JsonUtility.FromJson<HighScoreData2>(json);
-        List<HighScoreEntry> highScores = JsonUtility.FromJson<List<HighScoreEntry>>(json);
-        Debug.Log("Loaded high scores: " + highScores.Count);
+        HighScoreDataList data = JsonUtility.FromJson<HighScoreDataList>(json);
+        //List<HighScoreEntry> highScores = JsonUtility.FromJson<List<HighScoreEntry>>(json);
+        //Debug.Log("Loaded high scores: " + highScores.Count);
         //Debug.Log("Loaded high scores: " + data.highScoreEntryList.Length + " entries.");
-        //highScores = data.highScoreEntryList2;
+        highScores = data.highScoreEntryList;
         //highScores = data;
         //Debug.Log("highScores count after loading: " + highScores.Count);
         foreach (HighScoreEntry entry in highScores)
@@ -136,14 +136,14 @@ public class HighScores : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Debug.Log("HighScores Start");
+        //Debug.Log("HighScores Start");
         //PopulateScores();
         //AddHighScore("Anonimous", 5000);
         //Debug.Log(highScores.Count + " high scores populated.");
         //RetrieveHighScores();
 
         //saveHighScores();
-        loadHighScores();
+        loadHighScoresList();
         //Debug.Log(highScores.Count + " high scores loaded.");
     }
 
@@ -163,12 +163,12 @@ public class HighScoreEntry
 
 
 [Serializable]
-public class HighScoreData{
+public class HighScoreDataArray{
     public HighScoreEntry[] highScoreEntryList;
 }
 
 [Serializable]
-public class HighScoreData2
+public class HighScoreDataList
 {
-    public List<HighScoreEntry> highScoreEntryList2;
+    public List<HighScoreEntry> highScoreEntryList;
 }

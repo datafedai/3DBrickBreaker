@@ -18,7 +18,7 @@ public class ball : MonoBehaviour
     public float initialForce;
     private bool isBallLaunched;
     public bool isBallMissed;
-    private int ballLives;
+    private static int ballLives;
     static private int destroyedBrickCount;
 
     public static ball Instance { get; private set; }
