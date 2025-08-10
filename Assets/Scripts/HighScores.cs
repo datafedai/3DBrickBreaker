@@ -12,9 +12,10 @@ public class HighScores : MonoBehaviour
     public string playerName;
     public int score;
     //public HighScoreEntry[] highScoreEntryList;
-    List<HighScoreEntry> highScores = new List<HighScoreEntry>();
+
     List<HighScoreEntry> emptyHighScores = new List<HighScoreEntry>();
     public static HighScores Instance { get; private set; }
+    List<HighScoreEntry> highScores = new List<HighScoreEntry>();
 
     private void Awake()
     {
@@ -84,10 +85,10 @@ public class HighScores : MonoBehaviour
 
     public void saveHighScores2()
     {
-        HighScoreData2 highScoreData = new HighScoreData2 { highScoreEntryList2 = highScores };
-        string json = JsonUtility.ToJson(highScoreData, true);
+        //HighScoreData2 highScoreData = new HighScoreData2 { highScoreEntryList2 = highScores };
+        string json = JsonUtility.ToJson(highScores, true);
         File.WriteAllText(Application.persistentDataPath + "/highscoreData2.json", json);
-        Debug.Log("High scores saved to " + Application.persistentDataPath + "/highscoreData.json");
+        Debug.Log("High scores saved to " + Application.persistentDataPath + "/highscoreData2.json");
         Debug.Log("High scores count: " + highScores.Count);
     }
 
@@ -96,7 +97,7 @@ public class HighScores : MonoBehaviour
         string filePath = Application.persistentDataPath + "/highscoreData.json";
         string json = File.ReadAllText(filePath);
         HighScoreData data = JsonUtility.FromJson<HighScoreData>(json);
-        Debug.Log("Loaded high scores: " + data.highScoreEntryList.Length);
+        //Debug.Log("Loaded high scores: " + data.highScoreEntryList.Length);
         //Debug.Log("Loaded high scores: " + data.highScoreEntryList.Length + " entries.");
         //highScores = data.highScoreEntryList.ToList();
         highScores = data.highScoreEntryList.ToList();
@@ -115,11 +116,11 @@ public class HighScores : MonoBehaviour
     {
         string filePath = Application.persistentDataPath + "/highscoreData2.json";
         string json = File.ReadAllText(filePath);
-        HighScoreData2 data = JsonUtility.FromJson<HighScoreData2>(json);
-        //List<HighScoreEntry> highScores = JsonUtility.FromJson<List<HighScoreEntry>>(json);
+        //HighScoreData2 data = JsonUtility.FromJson<HighScoreData2>(json);
+        List<HighScoreEntry> highScores = JsonUtility.FromJson<List<HighScoreEntry>>(json);
         Debug.Log("Loaded high scores: " + highScores.Count);
         //Debug.Log("Loaded high scores: " + data.highScoreEntryList.Length + " entries.");
-        highScores = data.highScoreEntryList2;
+        //highScores = data.highScoreEntryList2;
         //highScores = data;
         //Debug.Log("highScores count after loading: " + highScores.Count);
         foreach (HighScoreEntry entry in highScores)
