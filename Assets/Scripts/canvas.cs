@@ -33,7 +33,7 @@ public class canvas : MonoBehaviour
     public TextMeshProUGUI exitText;
     private int playheadIndex = 0; // Index to track the current position of the playhead
 
-
+    public GameObject highScoresPanel; // Reference to the high scores panel
 
     public static canvas Instance { get; private set; }
     //public event Action ClickedYes;
@@ -316,6 +316,7 @@ public class canvas : MonoBehaviour
 
     void OnWin()
     {
+
         //Debug.Log("You have won game!");
         //SceneManager.LoadScene("Over_Scene");
         displayState.text = "Congratulations!";
@@ -330,6 +331,9 @@ public class canvas : MonoBehaviour
 
     void OnWinStats()
     {
+        highScoresPanel.SetActive(true);
+
+
         //Debug.Log("You have won game!");
         //SceneManager.LoadScene("Over_Scene");
         displayState.text = "";
@@ -351,6 +355,7 @@ public class canvas : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        highScoresPanel.SetActive(false); // Hide the high scores panel at the start
 
         playheadImage1.enabled = true;
         playheadImage2.enabled = false;
@@ -368,7 +373,7 @@ public class canvas : MonoBehaviour
     void Update()
     {
         //Debug.Log(SceneManager.GetActiveScene().name);
-        Debug.Log("playheadIndex: " + playheadIndex);
+        //Debug.Log("playheadIndex: " + playheadIndex);
 
     }
     
