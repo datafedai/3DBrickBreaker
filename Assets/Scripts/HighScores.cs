@@ -12,6 +12,7 @@ public class HighScores : MonoBehaviour
     public int score;
     //public HighScoreEntry[] highScoreEntryList;
     List<HighScoreEntry> highScores = new List<HighScoreEntry>();
+    List<HighScoreEntry> emptyHighScores = new List<HighScoreEntry>();
     public static HighScores Instance { get; private set; }
 
     private void Awake()
@@ -34,6 +35,12 @@ public class HighScores : MonoBehaviour
     }
 
 
+    public List<HighScoreEntry> getHighScores()
+    {
+        return highScores;
+    }
+
+
     public void AddHighScore(string playerName, int score)
     {
         highScores.Add(new HighScoreEntry { playerName = playerName, score = score });
@@ -42,15 +49,15 @@ public class HighScores : MonoBehaviour
     void PopulateScores()
     {
         // populate
-        highScores.Add(new HighScoreEntry { playerName = "SungGak", score = 7500 });
+        highScores.Add(new HighScoreEntry { playerName = "SungGak", score = 3700 });
         highScores.Add(new HighScoreEntry { playerName = "Pascal", score = 2500 });
-        highScores.Add(new HighScoreEntry { playerName = "Isaac", score = 5500 });
-        highScores.Add(new HighScoreEntry { playerName = "JungEun", score = 9500 });
-        highScores.Add(new HighScoreEntry { playerName = "SungGak", score = 7500 });
+        highScores.Add(new HighScoreEntry { playerName = "Isaac ", score = 4200 });
+        highScores.Add(new HighScoreEntry { playerName = "JungEun", score = 1600 });
+        highScores.Add(new HighScoreEntry { playerName = "SungGak", score = 7900 });
         highScores.Add(new HighScoreEntry { playerName = "SungGak", score = 4500 });
-        highScores.Add(new HighScoreEntry { playerName = "Pascal", score = 2500 });
-        highScores.Add(new HighScoreEntry { playerName = "Isaac", score = 4500 });
-        highScores.Add(new HighScoreEntry { playerName = "Pascal", score = 9500 });
+        highScores.Add(new HighScoreEntry { playerName = "Pascal", score = 2700 });
+        highScores.Add(new HighScoreEntry { playerName = "Isaac", score = 4100 });
+        highScores.Add(new HighScoreEntry { playerName = "Pascal", score = 6000 });
     }
 
     void RetrieveHighScores()
@@ -79,8 +86,9 @@ public class HighScores : MonoBehaviour
         highScores = data.highScoreEntryList.ToList();
         foreach (HighScoreEntry entry in highScores)
         {
-            Debug.Log("Player: " + entry.playerName + ", Score: " + entry.score);
+            //Debug.Log("Player: " + entry.playerName + ", Score: " + entry.score);
         }
+
     }
 
 
@@ -91,13 +99,13 @@ public class HighScores : MonoBehaviour
     void Start()
     {
         Debug.Log("HighScores Start");
-        //PopulateScores();
+        PopulateScores();
         //AddHighScore("Anonimous", 5000);
         //Debug.Log(highScores.Count + " high scores populated.");
         //RetrieveHighScores();
 
         //saveHighScores();
-        loadHighScores();
+        //loadHighScores();
         //Debug.Log(highScores.Count + " high scores loaded.");
     }
 

@@ -4,7 +4,9 @@ using UnityEngine.SceneManagement;
 using Microsoft.Unity.VisualStudio.Editor;
 using Image = UnityEngine.UI.Image;
 using UnityEngine.UI; // For UI elements like Button and Text
-using System; // for Action
+using System;
+using System.Linq; // for Action
+
 
 public class canvas : MonoBehaviour
 {
@@ -345,9 +347,23 @@ public class canvas : MonoBehaviour
         else
         {
             Debug.LogWarning("Middle circle not found!");
-        }   
-        
-    
+        }
+
+
+        displayHighScores.text = "Score Rankings\n\n";
+        HighScores.Instance.getHighScores().Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
+
+        foreach (HighScoreEntry entry in HighScores.Instance.getHighScores().Take(7))  // Display only top 10 scores
+        {
+
+            int score = entry.score;
+            string playerName = entry.playerName;
+            Debug.Log("Player: " + playerName + ", Score: " + score);
+            Debug.Log("High Scores ....");
+            displayHighScores.text += entry.score + "\t\t " + entry.playerName + "\n";
+
+        }
+
 
 
 
@@ -357,7 +373,7 @@ public class canvas : MonoBehaviour
         //displayState2.text = "<color=Blue>You</color>\n<size=70><color=Red>W   N!</color></size>";
         displayState2.text = "";
         displayScore.text = "";
-        displayHighScores.text = "Score Rankings\n\n";
+
         //displayHighScores.text += "1. " + GameManager.Instance.GetHighScore(0) + "\n";
         //displayHighScores.text += "2. " + GameManager.Instance.GetHighScore(1) + "\n";
 
