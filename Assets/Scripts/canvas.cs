@@ -326,7 +326,11 @@ public class canvas : MonoBehaviour
         displayHighScores.text = "";
 
         //displayInstruction.text = "Press Space Bar to restart game";
-        displayInstruction.text = "Press Space to see high scores.\nPress Q to return to Main Menu";        
+        displayInstruction.text = "Press Space to see high scores.\nPress Q to return to Main Menu";
+
+        // experimental
+        HighScores.Instance.AddHighScore("SKim", 11000);
+        HighScores.Instance.saveHighScores();   
     }
 
     void OnWinStats()
