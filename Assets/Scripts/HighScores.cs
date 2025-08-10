@@ -82,6 +82,15 @@ public class HighScores : MonoBehaviour
         Debug.Log("High scores count: " + highScores.Count);
     }
 
+    public void saveHighScores2()
+    {
+        HighScoreData2 highScoreData = new HighScoreData2 { highScoreEntryList2 = highScores };
+        string json = JsonUtility.ToJson(highScoreData, true);
+        File.WriteAllText(Application.persistentDataPath + "/highscoreData2.json", json);
+        Debug.Log("High scores saved to " + Application.persistentDataPath + "/highscoreData.json");
+        Debug.Log("High scores count: " + highScores.Count);
+    }
+
     void loadHighScores()
     {
         string filePath = Application.persistentDataPath + "/highscoreData.json";
@@ -100,24 +109,18 @@ public class HighScores : MonoBehaviour
 
     }
 
-    public void saveHighScores2()
-    {
-        HighScoreData2 highScoreData = new HighScoreData2 { highScoreEntryList2 = highScores };
-        string json = JsonUtility.ToJson(highScoreData, true);
-        File.WriteAllText(Application.persistentDataPath + "/highscoreData2.json", json);
-        Debug.Log("High scores saved to " + Application.persistentDataPath + "/highscoreData.json");
-        Debug.Log("High scores count: " + highScores.Count);
-    }
+
 
     void loadHighScores2()
     {
         string filePath = Application.persistentDataPath + "/highscoreData2.json";
         string json = File.ReadAllText(filePath);
         HighScoreData2 data = JsonUtility.FromJson<HighScoreData2>(json);
-        Debug.Log("Loaded high scores: " + data.highScoreEntryList2.Count);
+        //List<HighScoreEntry> highScores = JsonUtility.FromJson<List<HighScoreEntry>>(json);
+        Debug.Log("Loaded high scores: " + highScores.Count);
         //Debug.Log("Loaded high scores: " + data.highScoreEntryList.Length + " entries.");
-        //highScores = data.highScoreEntryList.ToList();
         highScores = data.highScoreEntryList2;
+        //highScores = data;
         //Debug.Log("highScores count after loading: " + highScores.Count);
         foreach (HighScoreEntry entry in highScores)
         {
