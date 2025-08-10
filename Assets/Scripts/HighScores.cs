@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using UnityEngine.UIElements;
 
 
 [Serializable]
@@ -37,6 +38,7 @@ public class HighScores : MonoBehaviour
 
     public List<HighScoreEntry> getHighScores()
     {
+        //loadHighScores();
         return highScores;
     }
 
@@ -45,6 +47,9 @@ public class HighScores : MonoBehaviour
     {
         highScores.Add(new HighScoreEntry { playerName = playerName, score = score });
     }
+
+
+
 
     void PopulateScores()
     {
@@ -83,9 +88,40 @@ public class HighScores : MonoBehaviour
         string json = File.ReadAllText(filePath);
         HighScoreData data = JsonUtility.FromJson<HighScoreData>(json);
         Debug.Log("Loaded high scores: " + data.highScoreEntryList.Length);
+        //Debug.Log("Loaded high scores: " + data.highScoreEntryList.Length + " entries.");
+        //highScores = data.highScoreEntryList.ToList();
         highScores = data.highScoreEntryList.ToList();
+        //Debug.Log("highScores count after loading: " + highScores.Count);
         foreach (HighScoreEntry entry in highScores)
         {
+            //highScores.Add(entry);        
+            //Debug.Log("Player: " + entry.playerName + ", Score: " + entry.score);
+        }
+
+    }
+
+    public void saveHighScores2()
+    {
+        HighScoreData2 highScoreData = new HighScoreData2 { highScoreEntryList2 = highScores };
+        string json = JsonUtility.ToJson(highScoreData, true);
+        File.WriteAllText(Application.persistentDataPath + "/highscoreData2.json", json);
+        Debug.Log("High scores saved to " + Application.persistentDataPath + "/highscoreData.json");
+        Debug.Log("High scores count: " + highScores.Count);
+    }
+
+    void loadHighScores2()
+    {
+        string filePath = Application.persistentDataPath + "/highscoreData2.json";
+        string json = File.ReadAllText(filePath);
+        HighScoreData2 data = JsonUtility.FromJson<HighScoreData2>(json);
+        Debug.Log("Loaded high scores: " + data.highScoreEntryList2.Count);
+        //Debug.Log("Loaded high scores: " + data.highScoreEntryList.Length + " entries.");
+        //highScores = data.highScoreEntryList.ToList();
+        highScores = data.highScoreEntryList2;
+        //Debug.Log("highScores count after loading: " + highScores.Count);
+        foreach (HighScoreEntry entry in highScores)
+        {
+            //highScores.Add(entry);        
             //Debug.Log("Player: " + entry.playerName + ", Score: " + entry.score);
         }
 
@@ -93,19 +129,17 @@ public class HighScores : MonoBehaviour
 
 
 
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Debug.Log("HighScores Start");
-        PopulateScores();
+        //PopulateScores();
         //AddHighScore("Anonimous", 5000);
         //Debug.Log(highScores.Count + " high scores populated.");
         //RetrieveHighScores();
 
         //saveHighScores();
-        //loadHighScores();
+        loadHighScores();
         //Debug.Log(highScores.Count + " high scores loaded.");
     }
 
@@ -125,8 +159,12 @@ public class HighScoreEntry
 
 
 [Serializable]
-public class HighScoreData
-{
+public class HighScoreData{
     public HighScoreEntry[] highScoreEntryList;
 }
 
+[Serializable]
+public class HighScoreData2
+{
+    public List<HighScoreEntry> highScoreEntryList2;
+}
