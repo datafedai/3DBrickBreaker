@@ -329,7 +329,8 @@ public class canvas : MonoBehaviour
         displayInstruction.text = "Press Space to see high scores.\nPress Q to return to Main Menu";
 
         // experimental
-        HighScores.Instance.AddHighScore("SKim", 11000);
+        int playerScore = 100 * ball.Instance.getDestroyedBricksCount();
+        HighScores.Instance.AddHighScore("Sung", playerScore);
         HighScores.Instance.saveHighScores();   
     }
 
@@ -346,6 +347,10 @@ public class canvas : MonoBehaviour
             Debug.LogWarning("Middle circle not found!");
         }   
         
+    
+
+
+
         //Debug.Log("You have won game!");
         //SceneManager.LoadScene("Over_Scene");
         displayState.text = "";
