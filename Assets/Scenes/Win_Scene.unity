@@ -5311,7 +5311,7 @@ GameObject:
   - component: {fileID: 1389977438}
   m_Layer: 0
   m_Name: Ball
-  m_TagString: Untagged
+  m_TagString: ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6110,7 +6110,7 @@ GameObject:
   - component: {fileID: 1519468578}
   m_Layer: 0
   m_Name: middle
-  m_TagString: Untagged
+  m_TagString: winCircle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

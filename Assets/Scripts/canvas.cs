@@ -102,8 +102,8 @@ public class canvas : MonoBehaviour
 
     void MoveArrowUp()
     {
-        Debug.Log("in MoveArrowUp in Canvas");
-        Debug.Log("playheadIndex: " + playheadIndex);
+        //Debug.Log("in MoveArrowUp in Canvas");
+        //Debug.Log("playheadIndex: " + playheadIndex);
         //playheadImage1.transform.position += new Vector3(0f, 85f, 0f);
         //playText.color = Color.white;
         //exitText.color = Color.black;
@@ -118,28 +118,28 @@ public class canvas : MonoBehaviour
 
 
         playheadIndex = playheadIndex % 2; // Toggle between 0 and 1
-        Debug.Log("playheadIndex after decrement: " + playheadIndex);
+        //Debug.Log("playheadIndex after decrement: " + playheadIndex);
 
         if (playheadIndex == 0)
         {
             playheadImage1.enabled = true;
             playheadImage2.enabled = false;
-            playText.color = Color.white;
-            exitText.color = Color.black;
+            //playText.color = Color.red;
+            //exitText.color = Color.white;
         }
         else
         {
             playheadImage1.enabled = false;
             playheadImage2.enabled = true;
-            playText.color = Color.black;
-            exitText.color = Color.white;
+            //playText.color = Color.white;
+            //exitText.color = Color.red;
         }
     }
 
     void MoveArrowDown()
     {
-        Debug.Log("in MoveArrowDown in Canvas");
-        Debug.Log("playheadIndex: " + playheadIndex);
+        //Debug.Log("in MoveArrowDown in Canvas");
+        //Debug.Log("playheadIndex: " + playheadIndex);
         //playheadImage1.transform.position += new Vector3(0f, -85f, 0f);
         //playText.color = Color.black;
         //exitText.color = Color.white;
@@ -150,21 +150,21 @@ public class canvas : MonoBehaviour
             playheadIndex = 1; // Toggle between 0 and 1
         }
         playheadIndex = playheadIndex % 2; // Toggle between 0 and 1
-        Debug.Log("playheadIndex after increment: " + playheadIndex);
+        //Debug.Log("playheadIndex after increment: " + playheadIndex);
 
         if (playheadIndex == 0)
         {
             playheadImage1.enabled = true;
             playheadImage2.enabled = false;
-            playText.color = Color.white;
-            exitText.color = Color.black;
+            //playText.color = Color.red;
+            //exitText.color = Color.white;
         }
         else
         {
             playheadImage1.enabled = false;
             playheadImage2.enabled = true;
-            playText.color = Color.black;
-            exitText.color = Color.white;
+            //playText.color = Color.white;
+            //exitText.color = Color.red;
         }   
     }
 
@@ -332,8 +332,16 @@ public class canvas : MonoBehaviour
     void OnWinStats()
     {
         highScoresPanel.SetActive(true);
-
-
+        GameObject middleCircle = GameObject.FindGameObjectWithTag("winCircle");
+        if (middleCircle != null)
+        {
+            middleCircle.SetActive(false); // Hide the middle circle
+        }
+        else
+        {
+            Debug.LogWarning("Middle circle not found!");
+        }   
+        
         //Debug.Log("You have won game!");
         //SceneManager.LoadScene("Over_Scene");
         displayState.text = "";
@@ -358,6 +366,7 @@ public class canvas : MonoBehaviour
         highScoresPanel.SetActive(false); // Hide the high scores panel at the start
 
         playheadImage1.enabled = true;
+        //playText.color = Color.red;
         playheadImage2.enabled = false;
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         //displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
