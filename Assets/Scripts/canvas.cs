@@ -33,6 +33,8 @@ public class canvas : MonoBehaviour
     public TextMeshProUGUI playText;
     public Image playheadImage2;
     public TextMeshProUGUI exitText;
+    public Image playheadImage3;
+    public TextMeshProUGUI settingText;    
     private int playheadIndex = 0; // Index to track the current position of the playhead
 
     public GameObject highScoresPanel1; // Reference to the high scores panel
@@ -120,20 +122,30 @@ public class canvas : MonoBehaviour
         }
 
 
-        playheadIndex = playheadIndex % 2; // Toggle between 0 and 1
+        playheadIndex = playheadIndex % 3; // Toggle between 0 and 1
         //Debug.Log("playheadIndex after decrement: " + playheadIndex);
 
         if (playheadIndex == 0)
         {
             playheadImage1.enabled = true;
             playheadImage2.enabled = false;
+            playheadImage3.enabled = false;
             //playText.color = Color.red;
             //exitText.color = Color.white;
+        }
+        else if (playheadIndex == 1)
+        {
+            playheadImage1.enabled = false;
+            playheadImage2.enabled = true;
+            playheadImage3.enabled = false;
+            //playText.color = Color.white;
+            //exitText.color = Color.red;
         }
         else
         {
             playheadImage1.enabled = false;
-            playheadImage2.enabled = true;
+            playheadImage2.enabled = false;
+            playheadImage3.enabled = true;
             //playText.color = Color.white;
             //exitText.color = Color.red;
         }
@@ -146,26 +158,41 @@ public class canvas : MonoBehaviour
         //playheadImage1.transform.position += new Vector3(0f, -85f, 0f);
         //playText.color = Color.black;
         //exitText.color = Color.white;
-        playheadIndex++;
+        //playheadIndex++;
 
-        if (playheadIndex > 1)
+        if (playheadIndex < 2)
         {
-            playheadIndex = 1; // Toggle between 0 and 1
+            playheadIndex++; // Toggle between 0 and 1
         }
-        playheadIndex = playheadIndex % 2; // Toggle between 0 and 1
+        else
+        {
+            playheadIndex = 2; // If already at the bottom, stay at 2
+        }
+
+        playheadIndex = playheadIndex % 3; // Toggle between 0 and 1
         //Debug.Log("playheadIndex after increment: " + playheadIndex);
 
         if (playheadIndex == 0)
         {
             playheadImage1.enabled = true;
             playheadImage2.enabled = false;
+            playheadImage3.enabled = false;
             //playText.color = Color.red;
             //exitText.color = Color.white;
+        }
+        else if (playheadIndex == 1)
+        {
+            playheadImage1.enabled = false;
+            playheadImage2.enabled = true;
+            playheadImage3.enabled = false;
+            //playText.color = Color.white;
+            //exitText.color = Color.red;
         }
         else
         {
             playheadImage1.enabled = false;
-            playheadImage2.enabled = true;
+            playheadImage2.enabled = false;
+            playheadImage3.enabled = true;
             //playText.color = Color.white;
             //exitText.color = Color.red;
         }
@@ -206,6 +233,7 @@ public class canvas : MonoBehaviour
 
     }
 
+    // left side menu with red arrow
     public void ExecuteSelection()
     {
         Debug.Log("in ExecuteSelection in Canvas");
@@ -341,7 +369,7 @@ public class canvas : MonoBehaviour
         displayScore.text = "Score: " + finalScore.ToString();
 
         // Save the final score to high scores
-        HighScores.Instance.AddHighScore("SungGak", finalScore); // added bonus score for ball lives
+        HighScores.Instance.AddHighScore("JungEun", finalScore); // added bonus score for ball lives
         HighScores.Instance.saveHighScoresList();
     }
 
@@ -474,6 +502,7 @@ public class canvas : MonoBehaviour
         playheadImage1.enabled = true;
         //playText.color = Color.red;
         playheadImage2.enabled = false;
+        playheadImage3.enabled = false;
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         //displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
         //buttonPanel.SetActive(true);
