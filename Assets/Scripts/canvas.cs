@@ -348,7 +348,7 @@ public class canvas : MonoBehaviour
     {
         highScoresPanel1.SetActive(true);
         highScoresPanel2.SetActive(false);
-        
+
         GameObject middleCircle = GameObject.FindGameObjectWithTag("winCircle");
         if (middleCircle != null)
         {
@@ -395,6 +395,22 @@ public class canvas : MonoBehaviour
         {
             Debug.Log("Found rank object: " + rank.name);
             //rank.SetActive(false); // Hide the rank objects
+            TextMeshProUGUI[] allTextMeshPros = rank.GetComponentsInChildren<TextMeshProUGUI>();
+            foreach (TextMeshProUGUI each in allTextMeshPros)
+            {
+                Debug.Log("Found TextMeshProUGUI: " + each.name);
+                //each.text = "";
+                if (each.name == "score")
+                {
+                    each.text = "888";
+                }
+                else if (each.name == "name")
+                {
+                    each.text = "SungGak";
+                }   
+       
+            }   
+            
         }   
 
 
