@@ -8,6 +8,8 @@ TagManager:
   - winCircle
   - ball
   - rank
+  - settingsPanel
+  - inputName
   layers:
   - Default
   - TransparentFX

@@ -34,11 +34,15 @@ public class canvas : MonoBehaviour
     public Image playheadImage2;
     public TextMeshProUGUI exitText;
     public Image playheadImage3;
-    public TextMeshProUGUI settingText;    
+    public TextMeshProUGUI settingText;
     private int playheadIndex = 0; // Index to track the current position of the playhead
 
     public GameObject highScoresPanel1; // Reference to the high scores panel
     public GameObject highScoresPanel2; // Reference to the high scores panel
+    public GameObject settingsPanel; // Reference to the settings panel
+    public TMP_InputField myInputField; 
+    private static string playerName = "Player"; // Default player name
+    public TextMeshProUGUI outputText; 
 
     public static canvas Instance { get; private set; }
     //public event Action ClickedYes;
@@ -243,7 +247,7 @@ public class canvas : MonoBehaviour
             GameManager.Instance.StartGameInMenu();
             gameMenuPanel.SetActive(false); // Hide the menu panel
         }
-        else
+        else if (playheadIndex == 1)
         {
             Debug.Log("Exit selected");
             if (Application.isEditor)
@@ -257,6 +261,34 @@ public class canvas : MonoBehaviour
                 Application.Quit(); // Quit the application
             }
         }
+        else if (playheadIndex == 2)
+        {
+            Debug.Log("Settings selected");
+            // Here you can implement the settings functionality
+            //Debug.Log("Settings functionality not implemented yet.");
+
+            settingsPanel.SetActive(true); // Show the settings panel
+
+            // get user input for player name
+            outputText.text = "Enter your name and press Space Bar";
+            Debug.Log("You enetered: " + myInputField.text);
+
+            while (string.IsNullOrEmpty(myInputField.text))
+            {
+                return; // wait until user enters name
+            }
+
+
+            if (!string.IsNullOrEmpty(myInputField.text))
+            {
+                outputText.text = "Hello, " + myInputField.text + "!";
+            }
+            settingsPanel.SetActive(false);
+            Debug.Log(myInputField.text);
+            displayState.text = "Player: " + myInputField.text;
+            playerName = myInputField.text; // Update the static playerName variable
+        }
+
     }
 
 
@@ -369,7 +401,8 @@ public class canvas : MonoBehaviour
         displayScore.text = "Score: " + finalScore.ToString();
 
         // Save the final score to high scores
-        HighScores.Instance.AddHighScore("JungEun", finalScore); // added bonus score for ball lives
+        //string playerName = myInputField.text; // Get the player name from the input field
+        HighScores.Instance.AddHighScore(playerName, finalScore); // added bonus score for ball lives
         HighScores.Instance.saveHighScoresList();
     }
 
@@ -497,6 +530,9 @@ public class canvas : MonoBehaviour
     {
         highScoresPanel1.SetActive(false); // Hide the high scores panel at the start
         highScoresPanel2.SetActive(false); // Hide the high scores panel at the start
+
+        //GameObject settingsPanel = GameObject.FindGameObjectWithTag("settingsPanel");
+        settingsPanel.SetActive(false); // hide the settings panel
 
 
         playheadImage1.enabled = true;
