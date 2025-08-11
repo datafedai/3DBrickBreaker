@@ -322,7 +322,9 @@ public class canvas : MonoBehaviour
     {
         //Debug.Log(" I am on Menu");
         displayState.text = "Main Menu";
-        displayInstruction.text = "Press Space Bar to play";
+        displayInstruction.text = "Left Menu:\nUse Up and Down arrows to choose an option.";
+        displayInstruction.text += "\nPress Space Bar to confirm your choice.";
+        displayInstruction.text += "\n\nRight Menu:\nUse mouse to click on buttons.";
 
         //Debug.Log(SceneManager.GetActiveScene().name);
     }
@@ -349,7 +351,7 @@ public class canvas : MonoBehaviour
         //Debug.Log("gameOnpause: " + gameOnPause);
         //Debug.Log(" I am on Playing");
         displayInstruction.text = "";
-        displayState.text = "Playing";
+        displayState.text = playerName + " is playing";
     }
 
     void OnPause()
