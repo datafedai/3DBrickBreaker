@@ -331,9 +331,9 @@ public class GameManager : MonoBehaviour
     void ForfeitGame()
     {
         //Debug.Log("Q pressed 2");
-        OnGameStateChangedToLose?.Invoke();
         //currentGameState = GameState.Over;
         SceneManager.LoadScene("Lose_Scene");
+        //OnGameStateChangedToLose?.Invoke();
     }
 
 
@@ -430,6 +430,7 @@ public class GameManager : MonoBehaviour
         {
             OnGameStateChangedToLose?.Invoke();
             currentGameState = GameState.Lose;
+
         }
         else if (SceneManager.GetActiveScene().name == "Win_Scene")
         {

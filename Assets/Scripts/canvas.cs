@@ -388,6 +388,9 @@ public class canvas : MonoBehaviour
 
     void OnLose()
     {
+        Debug.Log(SceneManager.GetActiveScene().name);
+
+
         displayState.text = "Game Over";
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         displayState2.text = "Play Again?";
@@ -400,6 +403,19 @@ public class canvas : MonoBehaviour
         //Debug.Log(SceneManager.GetActiveScene().name);
         int finalScore = 100 * ball.Instance.getDestroyedBricksCount();
         saveScore(finalScore);
+
+        highScoresPanel1.SetActive(true);
+        displayHighScoresPanel1(); // Display high scores in panel on left
+
+        // display score rankings
+        /*
+        highScoresPanel1.SetActive(true);
+        highScoresPanel2.SetActive(true);
+        displayHighScores.text = "Score Rankings\n\n";
+        HighScores.Instance.getHighScores().Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
+        displayHighScoresPanel1(); // Display high scores in panel on left
+        displayHighScoresPanel2(); // Display high scores in panel in the middle
+        */
     }
 
     void saveScore(int finalScore)
@@ -458,7 +474,6 @@ public class canvas : MonoBehaviour
 
         displayHighScores.text = "Score Rankings\n\n";
         HighScores.Instance.getHighScores().Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
-
 
         displayHighScoresPanel1(); // Display high scores in panel on left
         displayHighScoresPanel2(); // Display high scores in panel in the middle
@@ -562,7 +577,16 @@ public class canvas : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        highScoresPanel1.SetActive(false); // Hide the high scores panel at the start
+        //highScoresPanel1.SetActive(false); // Hide the high scores panel at the start
+        if(SceneManager.GetActiveScene().name == "Lose_Scene")
+        {
+            highScoresPanel1.SetActive(true); // Show the game menu panel in the main scene
+        }
+        else
+        {
+            highScoresPanel1.SetActive(false); // Hide the game menu panel in other scenes
+        }
+
         highScoresPanel2.SetActive(false); // Hide the high scores panel at the start
 
         //GameObject settingsPanel = GameObject.FindGameObjectWithTag("settingsPanel");
