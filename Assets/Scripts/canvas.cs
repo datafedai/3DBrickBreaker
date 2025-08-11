@@ -35,7 +35,8 @@ public class canvas : MonoBehaviour
     public TextMeshProUGUI exitText;
     private int playheadIndex = 0; // Index to track the current position of the playhead
 
-    public GameObject highScoresPanel; // Reference to the high scores panel
+    public GameObject highScoresPanel1; // Reference to the high scores panel
+    public GameObject highScoresPanel2; // Reference to the high scores panel
 
     public static canvas Instance { get; private set; }
     //public event Action ClickedYes;
@@ -345,7 +346,9 @@ public class canvas : MonoBehaviour
 
     void OnWinStats()
     {
-        highScoresPanel.SetActive(true);
+        highScoresPanel1.SetActive(true);
+        highScoresPanel2.SetActive(false);
+        
         GameObject middleCircle = GameObject.FindGameObjectWithTag("winCircle");
         if (middleCircle != null)
         {
@@ -380,13 +383,21 @@ public class canvas : MonoBehaviour
         //displayState2.text = "<color=Blue>You</color>\n<size=70><color=Red>W   N!</color></size>";
         displayState2.text = "";
         displayScore.text = "";
-
         //displayHighScores.text += "1. " + GameManager.Instance.GetHighScore(0) + "\n";
         //displayHighScores.text += "2. " + GameManager.Instance.GetHighScore(1) + "\n";
-
-
         //displayInstruction.text = "Press Space Bar to restart game";
-        displayInstruction.text = "Press Space to play again.\nPress Q to return to Main Menu";        
+        displayInstruction.text = "Press Space to play again.\nPress Q to return to Main Menu";
+
+        // gameobject rank*
+        GameObject[] ranks = GameObject.FindGameObjectsWithTag("rank");
+
+        foreach (GameObject rank in ranks)
+        {
+            Debug.Log("Found rank object: " + rank.name);
+            //rank.SetActive(false); // Hide the rank objects
+        }   
+
+
     }
 
 
@@ -395,7 +406,9 @@ public class canvas : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        highScoresPanel.SetActive(false); // Hide the high scores panel at the start
+        highScoresPanel1.SetActive(false); // Hide the high scores panel at the start
+        highScoresPanel2.SetActive(false); // Hide the high scores panel at the start
+
 
         playheadImage1.enabled = true;
         //playText.color = Color.red;
