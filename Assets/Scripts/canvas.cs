@@ -347,7 +347,7 @@ public class canvas : MonoBehaviour
     void OnWinStats()
     {
         highScoresPanel1.SetActive(true);
-        highScoresPanel2.SetActive(false);
+        highScoresPanel2.SetActive(true);
 
         GameObject middleCircle = GameObject.FindGameObjectWithTag("winCircle");
         if (middleCircle != null)
@@ -363,7 +363,8 @@ public class canvas : MonoBehaviour
         displayHighScores.text = "Score Rankings\n\n";
         HighScores.Instance.getHighScores().Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
 
-        foreach (HighScoreEntry entry in HighScores.Instance.getHighScores().Take(7))  // Display only top 10 scores
+        // panel2: middle
+        foreach (HighScoreEntry entry in HighScores.Instance.getHighScores().Take(5))  // Display only top 10 scores
         {
 
             int score = entry.score;
@@ -374,8 +375,29 @@ public class canvas : MonoBehaviour
 
         }
 
+        // panel1: left
 
+        // gameobject rank
+        
+        GameObject[] ranks = GameObject.FindGameObjectsWithTag("rank");
+        int index = 0;
 
+        foreach (HighScoreEntry entry in HighScores.Instance.getHighScores().Take(5))  // Display only top 10 scores
+        {
+            TextMeshProUGUI[] allTextMeshPros = ranks[index].GetComponentsInChildren<TextMeshProUGUI>();
+
+            int score = entry.score;
+            string playerName = entry.playerName;
+            //Debug.Log("Player: " + playerName + ", Score: " + score);
+            //Debug.Log("High Scores ....");
+            //displayHighScores.text += entry.score + "\t\t " + entry.playerName + "\n";
+
+            allTextMeshPros[0].text = score.ToString(); // Set the score text
+            allTextMeshPros[1].text = playerName; // Set the player name text
+
+            index++;
+        }
+        
 
         //Debug.Log("You have won game!");
         //SceneManager.LoadScene("Over_Scene");
@@ -388,14 +410,16 @@ public class canvas : MonoBehaviour
         //displayInstruction.text = "Press Space Bar to restart game";
         displayInstruction.text = "Press Space to play again.\nPress Q to return to Main Menu";
 
-        // gameobject rank*
-        GameObject[] ranks = GameObject.FindGameObjectsWithTag("rank");
-
+        //GameObject[] ranks = GameObject.FindGameObjectsWithTag("rank");
         foreach (GameObject rank in ranks)
         {
             Debug.Log("Found rank object: " + rank.name);
             //rank.SetActive(false); // Hide the rank objects
             TextMeshProUGUI[] allTextMeshPros = rank.GetComponentsInChildren<TextMeshProUGUI>();
+            Debug.Log("score: " + allTextMeshPros[0].name);
+            Debug.Log("name: " + allTextMeshPros[1].name);
+
+            /*
             foreach (TextMeshProUGUI each in allTextMeshPros)
             {
                 Debug.Log("Found TextMeshProUGUI: " + each.name);
@@ -407,10 +431,10 @@ public class canvas : MonoBehaviour
                 else if (each.name == "name")
                 {
                     each.text = "SungGak";
-                }   
-       
-            }   
-            
+                }
+
+            } */
+
         }   
 
 
