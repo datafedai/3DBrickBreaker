@@ -91,9 +91,9 @@ public class canvas : MonoBehaviour
         GameManager.Instance.OnGameStateChangedToWin -= OnWin;
         GameManager.Instance.OnGameStateChangedToWinStats -= OnWinStats;
         GameManager.Instance.OnGameStateChangedToLose -= OnLose;
-        GameManager.Instance.OnGameMenuPanel -= OnGameMenuPanel;    
+        GameManager.Instance.OnGameMenuPanel -= OnGameMenuPanel;
         GameManager.Instance.ArrowUp -= MoveArrowUp;
-        GameManager.Instance.ArrowDown -= MoveArrowDown;                
+        GameManager.Instance.ArrowDown -= MoveArrowDown;
         //GameManager.Instance.WonGame -= YouWonGame;
         // score
         ball.Instance.BrickDestroyed -= UpdateScore;
@@ -112,7 +112,7 @@ public class canvas : MonoBehaviour
         //exitText.color = Color.black;
         if (playheadIndex > 0)
         {
-            playheadIndex--;            
+            playheadIndex--;
         }
         else
         {
@@ -168,7 +168,7 @@ public class canvas : MonoBehaviour
             playheadImage2.enabled = true;
             //playText.color = Color.white;
             //exitText.color = Color.red;
-        }   
+        }
     }
 
 
@@ -176,7 +176,7 @@ public class canvas : MonoBehaviour
     void OnGameMenuPanel()
     {
         Debug.Log("in OnGameMenuPanel in Canvas");
-        
+
         titleText.text = "Brick Breaker 3D";
 
         playButton.onClick.RemoveAllListeners();
@@ -201,9 +201,9 @@ public class canvas : MonoBehaviour
             {
                 Debug.Log("Exiting application");
                 Application.Quit(); // Quit the application
-            }   
-        }); 
-        
+            }
+        });
+
     }
 
     public void ExecuteSelection()
@@ -227,15 +227,15 @@ public class canvas : MonoBehaviour
             {
                 Debug.Log("Exiting application");
                 Application.Quit(); // Quit the application
-            }   
+            }
         }
-    }   
+    }
 
 
     void UpdateScore(int bricksDestroyed)
     {
         //Debug.Log("score updated");
-        displayScore.text = (100*bricksDestroyed).ToString();
+        displayScore.text = (100 * bricksDestroyed).ToString();
     }
 
     void UpdateBallLives(int lives)
@@ -250,7 +250,7 @@ public class canvas : MonoBehaviour
         displayLivesImage[2].sprite = lifeSprites[1];   // solid white
 
         // replace solid circle with empty circle when ball is out for playing
-        for (int i = 2; i > lives-1 ; i--)
+        for (int i = 2; i > lives - 1; i--)
         {
             //Debug.Log(i);
             displayLivesImage[i].sprite = lifeSprites[0];   // white lined circle or none
@@ -280,7 +280,7 @@ public class canvas : MonoBehaviour
             //Debug.Log("in OnPlaying, setting mainPanel to true");
             gameMenuPanel.SetActive(true);
             gameMenuPanelText.SetActive(true);
-        }   
+        }
 
 
 
@@ -340,8 +340,9 @@ public class canvas : MonoBehaviour
         int finalScore = playerScore + 1000 * ballLivesLeft;
         displayScore.text = "Score: " + finalScore.ToString();
 
+        // Save the final score to high scores
         HighScores.Instance.AddHighScore("SungGak", finalScore); // added bonus score for ball lives
-        HighScores.Instance.saveHighScoresList();   
+        HighScores.Instance.saveHighScoresList();
     }
 
     void OnWinStats()
@@ -363,22 +364,64 @@ public class canvas : MonoBehaviour
         displayHighScores.text = "Score Rankings\n\n";
         HighScores.Instance.getHighScores().Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
 
-        // panel2: middle
-        foreach (HighScoreEntry entry in HighScores.Instance.getHighScores().Take(5))  // Display only top 10 scores
+
+        displayHighScoresPanel1(); // Display high scores in panel on left
+        displayHighScoresPanel2(); // Display high scores in panel in the middle
+
+
+
+        //Debug.Log("You have won game!");
+        //SceneManager.LoadScene("Over_Scene");
+        displayState.text = "";
+        //displayState2.text = "<color=Blue>You</color>\n<size=70><color=Red>W   N!</color></size>";
+        displayState2.text = "";
+        displayScore.text = "";
+        //displayHighScores.text += "1. " + GameManager.Instance.GetHighScore(0) + "\n";
+        //displayHighScores.text += "2. " + GameManager.Instance.GetHighScore(1) + "\n";
+        //displayInstruction.text = "Press Space Bar to restart game";
+        displayInstruction.text = "Press Space to play again.\nPress Q to return to Main Menu";
+
+
+        //GameObject[] ranks = GameObject.FindGameObjectsWithTag("rank");
+        /*
+        foreach (GameObject rank in ranks)
         {
+            Debug.Log("Found rank object: " + rank.name);
+            //rank.SetActive(false); // Hide the rank objects
+            TextMeshProUGUI[] allTextMeshPros = rank.GetComponentsInChildren<TextMeshProUGUI>();
+            Debug.Log("score: " + allTextMeshPros[0].name);
+            Debug.Log("name: " + allTextMeshPros[1].name);
 
-            int score = entry.score;
-            string playerName = entry.playerName;
-            //Debug.Log("Player: " + playerName + ", Score: " + score);
-            //Debug.Log("High Scores ....");
-            displayHighScores.text += entry.score + "\t\t " + entry.playerName + "\n";
 
-        }
+            foreach (TextMeshProUGUI each in allTextMeshPros)
+            {
+                Debug.Log("Found TextMeshProUGUI: " + each.name);
+                //each.text = "";
+                if (each.name == "score")
+                {
+                    each.text = "888";
+                }
+                else if (each.name == "name")
+                {
+                    each.text = "SungGak";
+                }
 
+            } 
+
+        }   
+        */
+
+    }
+
+
+
+
+    void displayHighScoresPanel1()
+    {
         // panel1: left
 
         // gameobject rank
-        
+
         GameObject[] ranks = GameObject.FindGameObjectsWithTag("rank");
         int index = 0;
 
@@ -397,46 +440,24 @@ public class canvas : MonoBehaviour
 
             index++;
         }
-        
 
-        //Debug.Log("You have won game!");
-        //SceneManager.LoadScene("Over_Scene");
-        displayState.text = "";
-        //displayState2.text = "<color=Blue>You</color>\n<size=70><color=Red>W   N!</color></size>";
-        displayState2.text = "";
-        displayScore.text = "";
-        //displayHighScores.text += "1. " + GameManager.Instance.GetHighScore(0) + "\n";
-        //displayHighScores.text += "2. " + GameManager.Instance.GetHighScore(1) + "\n";
-        //displayInstruction.text = "Press Space Bar to restart game";
-        displayInstruction.text = "Press Space to play again.\nPress Q to return to Main Menu";
+    }
 
-        //GameObject[] ranks = GameObject.FindGameObjectsWithTag("rank");
-        foreach (GameObject rank in ranks)
+
+    void displayHighScoresPanel2()
+    {
+
+        // panel2: middle
+        foreach (HighScoreEntry entry in HighScores.Instance.getHighScores().Take(5))  // Display only top 10 scores
         {
-            Debug.Log("Found rank object: " + rank.name);
-            //rank.SetActive(false); // Hide the rank objects
-            TextMeshProUGUI[] allTextMeshPros = rank.GetComponentsInChildren<TextMeshProUGUI>();
-            Debug.Log("score: " + allTextMeshPros[0].name);
-            Debug.Log("name: " + allTextMeshPros[1].name);
 
-            /*
-            foreach (TextMeshProUGUI each in allTextMeshPros)
-            {
-                Debug.Log("Found TextMeshProUGUI: " + each.name);
-                //each.text = "";
-                if (each.name == "score")
-                {
-                    each.text = "888";
-                }
-                else if (each.name == "name")
-                {
-                    each.text = "SungGak";
-                }
+            int score = entry.score;
+            string playerName = entry.playerName;
+            //Debug.Log("Player: " + playerName + ", Score: " + score);
+            //Debug.Log("High Scores ....");
+            displayHighScores.text += entry.score + "\t\t " + entry.playerName + "\n";
 
-            } */
-
-        }   
-
+        }
 
     }
 
@@ -470,5 +491,5 @@ public class canvas : MonoBehaviour
         //Debug.Log("playheadIndex: " + playheadIndex);
         //Debug.Log("ball lives: " + ball.Instance.getBallLives());
     }
-    
+
 }
