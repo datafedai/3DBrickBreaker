@@ -17,16 +17,18 @@ public class canvas : MonoBehaviour
     public TextMeshProUGUI displayScore; // current score
     public TextMeshProUGUI displayHighScores; // high score
     public TextMeshProUGUI displayLives; // lives left
+
+    // to display ball lives
     public Sprite[] lifeSprites;
     public Image[] displayLivesImage;
 
-    // panel1: for buttons
+    // panel1(right side): for buttons
     public GameObject gameMenuPanel; // Reference to the panel containing the dialog
     public TextMeshProUGUI titleText; // Or public Text questionText;
     public Button playButton;
     public Button exitButton;
 
-    // panel2: for text and playhead
+    // panel2(left side): for text and playhead
     public GameObject gameMenuPanelText;
     public TextMeshProUGUI titleText2;
     public Image playheadImage1;
@@ -35,15 +37,19 @@ public class canvas : MonoBehaviour
     public TextMeshProUGUI exitText;
     public Image playheadImage3;
     public TextMeshProUGUI settingText;
+
+    // settings panel displayed after clicking Settings on the left side menu
+    public GameObject settingsPanel; // Reference to the settings panel
+    public TMP_InputField myInputField;
+    private static string playerName = "Anonymous"; // Default player name
+    public TextMeshProUGUI outputText;
     private int playheadIndex = 0; // Index to track the current position of the playhead
 
+    // high scores panels displayed after winning
     public GameObject highScoresPanel1; // Reference to the high scores panel
     public GameObject highScoresPanel2; // Reference to the high scores panel
-    public GameObject settingsPanel; // Reference to the settings panel
-    public TMP_InputField myInputField; 
-    private static string playerName = "Player"; // Default player name
-    public TextMeshProUGUI outputText; 
 
+    // Singleton instance
     public static canvas Instance { get; private set; }
     //public event Action ClickedYes;
     //public event Action ClickedNo;
@@ -127,32 +133,10 @@ public class canvas : MonoBehaviour
 
 
         playheadIndex = playheadIndex % 3; // Toggle between 0 and 1
-        //Debug.Log("playheadIndex after decrement: " + playheadIndex);
+                                           //Debug.Log("playheadIndex after decrement: " + playheadIndex);
 
-        if (playheadIndex == 0)
-        {
-            playheadImage1.enabled = true;
-            playheadImage2.enabled = false;
-            playheadImage3.enabled = false;
-            //playText.color = Color.red;
-            //exitText.color = Color.white;
-        }
-        else if (playheadIndex == 1)
-        {
-            playheadImage1.enabled = false;
-            playheadImage2.enabled = true;
-            playheadImage3.enabled = false;
-            //playText.color = Color.white;
-            //exitText.color = Color.red;
-        }
-        else
-        {
-            playheadImage1.enabled = false;
-            playheadImage2.enabled = false;
-            playheadImage3.enabled = true;
-            //playText.color = Color.white;
-            //exitText.color = Color.red;
-        }
+        movePlayhead(playheadIndex);
+
     }
 
     void MoveArrowDown()
@@ -174,8 +158,48 @@ public class canvas : MonoBehaviour
         }
 
         playheadIndex = playheadIndex % 3; // Toggle between 0 and 1
-        //Debug.Log("playheadIndex after increment: " + playheadIndex);
+                                           //Debug.Log("playheadIndex after increment: " + playheadIndex);
 
+        movePlayhead(playheadIndex);
+
+    }
+
+
+
+    void movePlayhead(int playheadIndex)
+    {
+        switch (playheadIndex)
+        {
+            case 0:
+                playheadImage1.enabled = true;
+                playheadImage2.enabled = false;
+                playheadImage3.enabled = false;
+                //playText.color = Color.red;
+                //exitText.color = Color.white;
+                break;
+
+            case 1:
+                playheadImage1.enabled = false;
+                playheadImage2.enabled = true;
+                playheadImage3.enabled = false;
+                //playText.color = Color.white;
+                //exitText.color = Color.red;
+                break;
+
+            case 2:
+                playheadImage1.enabled = false;
+                playheadImage2.enabled = false;
+                playheadImage3.enabled = true;
+                //playText.color = Color.white;
+                //exitText.color = Color.red;
+                break;
+
+            default:
+                break;
+        }
+
+        // Alternative way to handle the playhead index
+        /*
         if (playheadIndex == 0)
         {
             playheadImage1.enabled = true;
@@ -200,8 +224,8 @@ public class canvas : MonoBehaviour
             //playText.color = Color.white;
             //exitText.color = Color.red;
         }
+        */
     }
-
 
 
     void OnGameMenuPanel()
@@ -225,13 +249,13 @@ public class canvas : MonoBehaviour
 
             if (Application.isEditor)
             {
-                //UnityEditor.EditorApplication.isPlaying = false; // Stop play mode in the editor
+                //UnityEditor.EditorApplication.isPlaying = false; 
                 UnityEditor.EditorApplication.ExitPlaymode(); // Stop play mode in the editor
             }
             else
             {
                 Debug.Log("Exiting application");
-                Application.Quit(); // Quit the application
+                Application.Quit(); // Quit the application if not in the editor
             }
         });
 
@@ -264,9 +288,6 @@ public class canvas : MonoBehaviour
         else if (playheadIndex == 2)
         {
             Debug.Log("Settings selected");
-            // Here you can implement the settings functionality
-            //Debug.Log("Settings functionality not implemented yet.");
-
             settingsPanel.SetActive(true); // Show the settings panel
 
             // get user input for player name
@@ -278,11 +299,12 @@ public class canvas : MonoBehaviour
                 return; // wait until user enters name
             }
 
-
-            if (!string.IsNullOrEmpty(myInputField.text))
+            myInputField.text = myInputField.text.Trim();
+            if (string.IsNullOrEmpty(myInputField.text))
             {
-                outputText.text = "Hello, " + myInputField.text + "!";
+                myInputField.text = "Anonymous"; // default name
             }
+
             settingsPanel.SetActive(false);
             Debug.Log(myInputField.text);
             displayState.text = "Player: " + myInputField.text;
@@ -376,9 +398,17 @@ public class canvas : MonoBehaviour
         //Debug.Log(" I am on Game Over");
         //SceneManager.LoadScene("Menu_Scene");
         //Debug.Log(SceneManager.GetActiveScene().name);
+        int finalScore = 100 * ball.Instance.getDestroyedBricksCount();
+        saveScore(finalScore);
     }
 
-
+    void saveScore(int finalScore)
+    {
+        // Save the final score to high scores
+        //string playerName = myInputField.text; // Get the player name from the input field
+        HighScores.Instance.AddHighScore(playerName, finalScore); // added bonus score for ball lives
+        HighScores.Instance.saveHighScoresList();
+    }
     void OnWin()
     {
 
@@ -399,13 +429,15 @@ public class canvas : MonoBehaviour
         //Debug.Log("Player Score: " + playerScore);
         //Debug.Log("ball lives: " + ballLivesLeft);
         //Debug.Log(ball.Instance.getBallLives() + playerScore);
-        int finalScore = playerScore + 1000 * ballLivesLeft;
+        int finalScore = playerScore + 300 * ballLivesLeft;
         displayScore.text = "Score: " + finalScore.ToString();
 
         // Save the final score to high scores
+        saveScore(finalScore);
+
         //string playerName = myInputField.text; // Get the player name from the input field
-        HighScores.Instance.AddHighScore(playerName, finalScore); // added bonus score for ball lives
-        HighScores.Instance.saveHighScoresList();
+        //HighScores.Instance.AddHighScore(playerName, finalScore); // added bonus score for ball lives
+        //HighScores.Instance.saveHighScoresList();
     }
 
     void OnWinStats()

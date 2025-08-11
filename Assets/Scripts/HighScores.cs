@@ -55,15 +55,10 @@ public class HighScores : MonoBehaviour
     void PopulateScores()
     {
         // populate
-        highScores.Add(new HighScoreEntry { playerName = "SungGak", score = 3700 });
+        highScores.Add(new HighScoreEntry { playerName = "SungGak", score = 1700 });
         highScores.Add(new HighScoreEntry { playerName = "Pascal", score = 2500 });
-        highScores.Add(new HighScoreEntry { playerName = "Isaac ", score = 4200 });
+        highScores.Add(new HighScoreEntry { playerName = "Isaac ", score = 1200 });
         highScores.Add(new HighScoreEntry { playerName = "JungEun", score = 1600 });
-        highScores.Add(new HighScoreEntry { playerName = "SungGak", score = 7900 });
-        highScores.Add(new HighScoreEntry { playerName = "SungGak", score = 4500 });
-        highScores.Add(new HighScoreEntry { playerName = "Pascal", score = 2700 });
-        highScores.Add(new HighScoreEntry { playerName = "Isaac", score = 4100 });
-        highScores.Add(new HighScoreEntry { playerName = "Pascal", score = 6000 });
     }
 
     void RetrieveHighScores()
@@ -142,7 +137,7 @@ public class HighScores : MonoBehaviour
         //Debug.Log(highScores.Count + " high scores populated.");
         //RetrieveHighScores();
 
-        //saveHighScores();
+        //saveHighScoresList();
         loadHighScoresList();
         //Debug.Log(highScores.Count + " high scores loaded.");
     }
