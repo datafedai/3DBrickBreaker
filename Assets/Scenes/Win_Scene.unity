@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 49356724}
   m_Layer: 5
   m_Name: rank2
-  m_TagString: rank
+  m_TagString: rank2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 84071643}
   m_Layer: 5
   m_Name: rank3
-  m_TagString: rank
+  m_TagString: rank3
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2928,7 +2928,7 @@ GameObject:
   - component: {fileID: 731012303}
   m_Layer: 5
   m_Name: rank5
-  m_TagString: rank
+  m_TagString: rank5
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4725,7 +4725,7 @@ GameObject:
   - component: {fileID: 1016013859}
   m_Layer: 5
   m_Name: rank4
-  m_TagString: rank
+  m_TagString: rank4
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7241,11 +7241,11 @@ MonoBehaviour:
   exitText: {fileID: 1183403344}
   playheadImage3: {fileID: 1097104842}
   settingText: {fileID: 658674691}
-  highScoresPanel1: {fileID: 480935701}
-  highScoresPanel2: {fileID: 487067392}
   settingsPanel: {fileID: 911641352}
   myInputField: {fileID: 215017587}
   outputText: {fileID: 502860882}
+  highScoresPanel1: {fileID: 480935701}
+  highScoresPanel2: {fileID: 487067392}
 --- !u!1 &1519468577
 GameObject:
   m_ObjectHideFlags: 0
@@ -7957,7 +7957,7 @@ GameObject:
   - component: {fileID: 1882498758}
   m_Layer: 5
   m_Name: rank1
-  m_TagString: rank
+  m_TagString: rank1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

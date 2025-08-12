@@ -389,15 +389,6 @@ public class GameManager : MonoBehaviour
         //Debug.Log("new game state: " + newGameState);
         //Debug.Log("current state: " + currentGameState);
 
-        //isInvoked = true;
-        //Debug.Log("isInvoked set to true on Start");
-        //ballRB = ballObject.GetComponent<Rigidbody>();
-        /*
-                playGame = InputSystem.actions.FindAction("Confirm");   // space bar
-                pauseGame = InputSystem.actions.FindAction("Restart");  // ESC or P
-                quitGame = InputSystem.actions.FindAction("Menu");      // Q
-        */
-
         // When newGameState and currentGameState are declared, they get the value of the 1st enum, Menu
         // currentGameState = GameState.Menu, newGameState = GameState.Menu, 
         // so don't need to assign GameState.Menu at Start()
@@ -490,6 +481,12 @@ public class GameManager : MonoBehaviour
 
     }
 }
+
+
+
+
+
+
 
 
 

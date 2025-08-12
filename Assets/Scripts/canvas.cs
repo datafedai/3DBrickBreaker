@@ -365,9 +365,6 @@ public class canvas : MonoBehaviour
             gameMenuPanel.SetActive(true);
             gameMenuPanelText.SetActive(true);
         }
-
-
-
         //Debug.Log("setting gameOnPlaying to true");
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
@@ -375,6 +372,7 @@ public class canvas : MonoBehaviour
         displayInstruction.text = "";
         displayState.text = playerName + " is playing";
     }
+
 
     void OnPause()
     {
@@ -388,9 +386,7 @@ public class canvas : MonoBehaviour
 
     void OnLose()
     {
-        Debug.Log(SceneManager.GetActiveScene().name);
-
-
+        //Debug.Log(SceneManager.GetActiveScene().name);
         displayState.text = "Game Over";
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         displayState2.text = "Play Again?";
@@ -403,8 +399,11 @@ public class canvas : MonoBehaviour
         //Debug.Log(SceneManager.GetActiveScene().name);
         int finalScore = 100 * ball.Instance.getDestroyedBricksCount();
         saveScore(finalScore);
+        HighScores.Instance.loadHighScoresList();
 
         highScoresPanel1.SetActive(true);
+        //displayHighScores.text = "Score Rankings\n\n";
+        //HighScores.Instance.getHighScores().Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
         displayHighScoresPanel1(); // Display high scores in panel on left
 
         // display score rankings
@@ -425,9 +424,11 @@ public class canvas : MonoBehaviour
         HighScores.Instance.AddHighScore(playerName, finalScore); // added bonus score for ball lives
         HighScores.Instance.saveHighScoresList();
     }
+
+
+
     void OnWin()
     {
-
         //Debug.Log("You have won game!");
         //SceneManager.LoadScene("Over_Scene");
         displayState.text = "Congratulations!";
@@ -478,8 +479,6 @@ public class canvas : MonoBehaviour
         displayHighScoresPanel1(); // Display high scores in panel on left
         displayHighScoresPanel2(); // Display high scores in panel in the middle
 
-
-
         //Debug.Log("You have won game!");
         //SceneManager.LoadScene("Over_Scene");
         displayState.text = "";
@@ -524,33 +523,35 @@ public class canvas : MonoBehaviour
     }
 
 
-
-
     void displayHighScoresPanel1()
     {
         // panel1: left
 
         // gameobject rank
+        GameObject rank1 = GameObject.FindGameObjectWithTag("rank1");
+        TextMeshProUGUI[] allTextMeshPros1 = rank1.GetComponentsInChildren<TextMeshProUGUI>();
+        allTextMeshPros1[0].text = HighScores.Instance.getHighScores()[0].score.ToString(); // Set the score text
+        allTextMeshPros1[1].text = HighScores.Instance.getHighScores()[0].playerName; // Set the player name text
 
-        GameObject[] ranks = GameObject.FindGameObjectsWithTag("rank");
-        int index = 0;
+        GameObject rank2 = GameObject.FindGameObjectWithTag("rank2");
+        TextMeshProUGUI[] allTextMeshPros2 = rank2.GetComponentsInChildren<TextMeshProUGUI>();
+        allTextMeshPros2[0].text = HighScores.Instance.getHighScores()[1].score.ToString(); // Set the score text
+        allTextMeshPros2[1].text = HighScores.Instance.getHighScores()[1].playerName; // Set the player name text
 
-        foreach (HighScoreEntry entry in HighScores.Instance.getHighScores().Take(5))  // Display only top 10 scores
-        {
-            TextMeshProUGUI[] allTextMeshPros = ranks[index].GetComponentsInChildren<TextMeshProUGUI>();
+        GameObject rank3 = GameObject.FindGameObjectWithTag("rank3");
+        TextMeshProUGUI[] allTextMeshPros3 = rank3.GetComponentsInChildren<TextMeshProUGUI>();
+        allTextMeshPros3[0].text = HighScores.Instance.getHighScores()[2].score.ToString(); // Set the score text
+        allTextMeshPros3[1].text = HighScores.Instance.getHighScores()[2].playerName; // Set the player name text
 
-            int score = entry.score;
-            string playerName = entry.playerName;
-            //Debug.Log("Player: " + playerName + ", Score: " + score);
-            //Debug.Log("High Scores ....");
-            //displayHighScores.text += entry.score + "\t\t " + entry.playerName + "\n";
+        GameObject rank4 = GameObject.FindGameObjectWithTag("rank4");
+        TextMeshProUGUI[] allTextMeshPros4 = rank4.GetComponentsInChildren<TextMeshProUGUI>();
+        allTextMeshPros4[0].text = HighScores.Instance.getHighScores()[3].score.ToString(); // Set the score text
+        allTextMeshPros4[1].text = HighScores.Instance.getHighScores()[3].playerName; // Set the player name text
 
-            allTextMeshPros[0].text = score.ToString(); // Set the score text
-            allTextMeshPros[1].text = playerName; // Set the player name text
-
-            index++;
-        }
-
+        GameObject rank5 = GameObject.FindGameObjectWithTag("rank5");
+        TextMeshProUGUI[] allTextMeshPros5 = rank5.GetComponentsInChildren<TextMeshProUGUI>();
+        allTextMeshPros5[0].text = HighScores.Instance.getHighScores()[4].score.ToString(); // Set the score text
+        allTextMeshPros5[1].text = HighScores.Instance.getHighScores()[4].playerName; // Set the player name text
     }
 
 
@@ -578,7 +579,7 @@ public class canvas : MonoBehaviour
     void Start()
     {
         //highScoresPanel1.SetActive(false); // Hide the high scores panel at the start
-        if(SceneManager.GetActiveScene().name == "Lose_Scene")
+        if (SceneManager.GetActiveScene().name == "Lose_Scene")
         {
             highScoresPanel1.SetActive(true); // Show the game menu panel in the main scene
         }
@@ -599,12 +600,6 @@ public class canvas : MonoBehaviour
         playheadImage3.enabled = false;
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         //displayInstruction.text = "Press Space Bar for Playing.\nPress Q for the initial Main Menu.";
-        //buttonPanel.SetActive(true);
-        // Add listeners to the buttons
-        //ClickedYes?.Invoke();
-        //ClickedNo?.Invoke();
-        //yesButton.onClick.AddListener(YesClicked);
-        //noButton.onClick.AddListener(NoClicked);
     }
 
     // Update is called once per frame

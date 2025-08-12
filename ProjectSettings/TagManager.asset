@@ -7,9 +7,13 @@ TagManager:
   - BrickClone
   - winCircle
   - ball
-  - rank
   - settingsPanel
   - inputName
+  - rank1
+  - rank2
+  - rank3
+  - rank4
+  - rank5
   layers:
   - Default
   - TransparentFX

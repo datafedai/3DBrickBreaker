@@ -7,6 +7,26 @@ using UnityEngine.UIElements;
 
 
 [Serializable]
+public class HighScoreEntry
+{
+    public string playerName;
+    public int score;
+}
+
+[Serializable]
+public class HighScoreDataArray{
+    public HighScoreEntry[] highScoreEntryList;
+}
+
+[Serializable]
+public class HighScoreDataList
+{
+    public List<HighScoreEntry> highScoreEntryList;
+}
+
+
+
+[Serializable]
 public class HighScores : MonoBehaviour
 {
     public string playerName;
@@ -80,6 +100,14 @@ public class HighScores : MonoBehaviour
 
     public void saveHighScoresList()
     {
+        // sort high scores in descending order
+        highScores.Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
+        Debug.Log("saving scores...");
+        //Debug.Log(highScores[0].score);
+        //Debug.Log(highScores[1].score);
+        //Debug.Log(highScores[2].score); 
+        //Debug.Log(highScores[3].score);
+   
         HighScoreDataList highScoreData = new HighScoreDataList { highScoreEntryList = highScores };
         string json = JsonUtility.ToJson(highScoreData, true);
         File.WriteAllText(Application.persistentDataPath + "/highscoreData.json", json);
@@ -97,17 +125,23 @@ public class HighScores : MonoBehaviour
         //highScores = data.highScoreEntryList.ToList();
         highScores = data.highScoreEntryList.ToList();
         //Debug.Log("highScores count after loading: " + highScores.Count);
+        //Debug.Log(highScores[0].score);
+        //Debug.Log(highScores[1].score);
+        //Debug.Log(highScores[2].score); 
+        //Debug.Log(highScores[3].score);
+        /*
         foreach (HighScoreEntry entry in highScores)
         {
-            //highScores.Add(entry);        
-            //Debug.Log("Player: " + entry.playerName + ", Score: " + entry.score);
+            highScores.Add(entry);
+            Debug.Log("Player: " + entry.playerName + ", Score: " + entry.score);
         }
+        */
 
     }
 
 
 
-    void loadHighScoresList()
+    public void loadHighScoresList()
     {
         string filePath = Application.persistentDataPath + "/highscoreData.json";
         string json = File.ReadAllText(filePath);
@@ -118,6 +152,11 @@ public class HighScores : MonoBehaviour
         highScores = data.highScoreEntryList;
         //highScores = data;
         //Debug.Log("highScores count after loading: " + highScores.Count);
+        Debug.Log("loading scores...");
+        //Debug.Log(highScores[0].score);
+        //Debug.Log(highScores[1].score);
+        //Debug.Log(highScores[2].score); 
+        //Debug.Log(highScores[3].score);
         foreach (HighScoreEntry entry in highScores)
         {
             //highScores.Add(entry);        
@@ -149,21 +188,3 @@ public class HighScores : MonoBehaviour
     }
 }
 
-[Serializable]
-public class HighScoreEntry
-{
-    public string playerName;
-    public int score;
-}
-
-
-[Serializable]
-public class HighScoreDataArray{
-    public HighScoreEntry[] highScoreEntryList;
-}
-
-[Serializable]
-public class HighScoreDataList
-{
-    public List<HighScoreEntry> highScoreEntryList;
-}
