@@ -552,10 +552,6 @@ public class canvas : MonoBehaviour
                     allTextMeshPros[1].text = "Anonymous"; // Default player name
                 }
             }
-            else
-            {
-                Debug.LogWarning("Rank object with tag " + name + " not found!");
-            }
         }
 
 
