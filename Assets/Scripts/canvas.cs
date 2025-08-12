@@ -460,7 +460,7 @@ public class canvas : MonoBehaviour
     void OnWinStats()
     {
         highScoresPanel1.SetActive(true);
-        highScoresPanel2.SetActive(true);
+        //highScoresPanel2.SetActive(true);
 
         GameObject middleCircle = GameObject.FindGameObjectWithTag("winCircle");
         if (middleCircle != null)
@@ -477,7 +477,7 @@ public class canvas : MonoBehaviour
         HighScores.Instance.getHighScores().Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
 
         displayHighScoresPanel1(); // Display high scores in panel on left
-        displayHighScoresPanel2(); // Display high scores in panel in the middle
+        //displayHighScoresPanel2(); // Display high scores in panel in the middle
 
         //Debug.Log("You have won game!");
         //SceneManager.LoadScene("Over_Scene");
