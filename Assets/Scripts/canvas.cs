@@ -5,7 +5,8 @@ using Microsoft.Unity.VisualStudio.Editor;
 using Image = UnityEngine.UI.Image;
 using UnityEngine.UI; // For UI elements like Button and Text
 using System;
-using System.Linq; // for Action
+using System.Linq;
+using System.Collections.Generic; // for Action
 
 
 public class canvas : MonoBehaviour
@@ -527,7 +528,38 @@ public class canvas : MonoBehaviour
     {
         // panel1: left
 
+        List<string> ranks = new List<string> { "rank1", "rank2", "rank3", "rank4", "rank5" };
+
         // gameobject rank
+        foreach (string name in ranks)
+        {
+            GameObject rank = GameObject.FindGameObjectWithTag(name);
+            if (rank != null)
+            {
+                TextMeshProUGUI[] allTextMeshPros = rank.GetComponentsInChildren<TextMeshProUGUI>();
+                //Debug.Log("score: " + allTextMeshPros[0].name);
+                //Debug.Log("name: " + allTextMeshPros[1].name);
+
+                int index = ranks.IndexOf(name);
+                if (index < HighScores.Instance.getHighScores().Count)
+                {
+                    allTextMeshPros[0].text = HighScores.Instance.getHighScores()[index].score.ToString(); // Set the score text
+                    allTextMeshPros[1].text = HighScores.Instance.getHighScores()[index].playerName; // Set the player name text
+                }
+                else
+                {
+                    allTextMeshPros[0].text = "0"; // Default score if no high score exists
+                    allTextMeshPros[1].text = "Anonymous"; // Default player name
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Rank object with tag " + name + " not found!");
+            }
+        }
+
+
+/*
         GameObject rank1 = GameObject.FindGameObjectWithTag("rank1");
         TextMeshProUGUI[] allTextMeshPros1 = rank1.GetComponentsInChildren<TextMeshProUGUI>();
         allTextMeshPros1[0].text = HighScores.Instance.getHighScores()[0].score.ToString(); // Set the score text
@@ -552,6 +584,8 @@ public class canvas : MonoBehaviour
         TextMeshProUGUI[] allTextMeshPros5 = rank5.GetComponentsInChildren<TextMeshProUGUI>();
         allTextMeshPros5[0].text = HighScores.Instance.getHighScores()[4].score.ToString(); // Set the score text
         allTextMeshPros5[1].text = HighScores.Instance.getHighScores()[4].playerName; // Set the player name text
+*/
+
     }
 
 
@@ -608,6 +642,11 @@ public class canvas : MonoBehaviour
         //Debug.Log(SceneManager.GetActiveScene().name);
         //Debug.Log("playheadIndex: " + playheadIndex);
         //Debug.Log("ball lives: " + ball.Instance.getBallLives());
+
+
+
+
+
     }
 
 }
