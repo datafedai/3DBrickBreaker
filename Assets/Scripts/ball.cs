@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+//using Unity.Mathematics;
 
 using UnityEngine.UI;
 using UnityEngine.Events;
@@ -7,6 +8,7 @@ using Random = UnityEngine.Random;
 //using UnityEngine.SceneManagement;
 using System.Collections;
 using Unity.VisualScripting;
+//using System.Numerics;
 
 public class ball : MonoBehaviour
 {
@@ -24,7 +26,9 @@ public class ball : MonoBehaviour
     public static ball Instance { get; private set; }
     public event Action<int> BrickDestroyed;
     public event Action<int> BallLives;
-    //public event Action GameWon;
+    public event Action<GameObject> ballHitBrick;
+
+    
     private float delayTime;
     private float timer;
     private bool timerStarted = false;
@@ -62,7 +66,9 @@ public class ball : MonoBehaviour
         //Debug.Log("gameObject: " + gameObject.name);
         if (collision.gameObject.name == "Brick(Clone)" || collision.gameObject.name == "Brick")
         {
-            Destroy(collision.gameObject);
+            ballHitBrick?.Invoke(collision.gameObject);
+
+            //Destroy(collision.gameObject);
             collisionAudioSource.Play();
             //Debug.Log(collision.gameObject.name + " destroyed.");
 
@@ -279,34 +285,42 @@ public class ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        // win
         /*
-        if (destroyedBrickCount >= 105)
-        {
-            GameWon?.Invoke();
-        }
+        Vector3 newPos = transform.position + new Vector3(moveDistance, 0, 0);
+        newPos.x = Mathf.Clamp(newPos.x, -wall, wall);
+        transform.position = newPos;
         */
-        
+        Vector3 ballV = ballRB.linearVelocity;
+        if (ballV.y < 0)
+        {
+            ballV.y = Mathf.Clamp(ballRB.linearVelocity.y, -30, -5);
+            ballRB.linearVelocity = ballV;
+        }
+        else if (ballV.y > 0)
+        {
+            ballV.y = Mathf.Clamp(ballRB.linearVelocity.y, 5, 30);
+            ballRB.linearVelocity = ballV;
+        }
+
 
         //Debug.Log("timer:1 " + timer);
-        if (!isBallLaunched && gameOnPlaying)
-        {
-            //Debug.Log("timer:2 " + timer);
-            if (timerStarted)
+            if (!isBallLaunched && gameOnPlaying)
             {
-                timer += Time.deltaTime;
-                //Debug.Log("timer:3 " + timer);
-                if (timer > delayTime)
+                //Debug.Log("timer:2 " + timer);
+                if (timerStarted)
                 {
-                    launchBall();
-                    ballLives--;
-                    BallLives?.Invoke(ballLives);
-                    isBallLaunched = true;
-                    timerStarted = false;
+                    timer += Time.deltaTime;
+                    //Debug.Log("timer:3 " + timer);
+                    if (timer > delayTime)
+                    {
+                        launchBall();
+                        ballLives--;
+                        BallLives?.Invoke(ballLives);
+                        isBallLaunched = true;
+                        timerStarted = false;
+                    }
                 }
             }
-        }
 
         if (gameOnPause)
         {
