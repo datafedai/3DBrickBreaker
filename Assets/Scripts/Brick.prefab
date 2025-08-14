@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 227285434364266961}
   - component: {fileID: 5058333348592881176}
   - component: {fileID: 7096624378256895356}
-  - component: {fileID: -736427870363614512}
-  - component: {fileID: 3001716683207465835}
+  - component: {fileID: 4116645548015574112}
+  - component: {fileID: 5875234838221162649}
+  - component: {fileID: 9104100450381263206}
   m_Layer: 0
   m_Name: Brick
   m_TagString: BrickClone
@@ -123,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1044159e950c6a248aa7d0685768a1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-736427870363614512
+--- !u!114 &4116645548015574112
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -135,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bca2b77bcd18d5b44b164c4e259ac7c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!54 &3001716683207465835
+--- !u!54 &5875234838221162649
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,3 +163,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!95 &9104100450381263206
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7872368346859609066}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3b8768800c046f443836c79122dfc119, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
