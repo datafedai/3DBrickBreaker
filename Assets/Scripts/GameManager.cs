@@ -176,20 +176,20 @@ public class GameManager : MonoBehaviour
 
     void ExecuteSelectionInMenu()
     {
-        Debug.Log("Execute selection in Menu");
-        canvas.Instance.ExecuteSelection();
+        //Debug.Log("Execute selection in Menu");
+        canvas.Instance.ExecuteMenuSelection();
     }   
 
     void UpArrowPressed()
     {
-        Debug.Log("Up arrow pressed in Menu");
+        //Debug.Log("Up arrow pressed in Menu");
         // Handle up arrow key press
         ArrowUp?.Invoke();
     }
 
     void DownArrowPressed()
     {
-        Debug.Log("Down arrow pressed in Menu");
+        //Debug.Log("Down arrow pressed in Menu");
         // Handle down arrow key press
         ArrowDown?.Invoke();
     }
@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviour
 
     void DisplayGameStats()
     {
-        Debug.Log("Displaying game stats");
+        //Debug.Log("Displaying game stats");
         if (SceneManager.GetActiveScene().name == "Win_Scene")
         {
             OnGameStateChangedToWinStats?.Invoke();
@@ -208,7 +208,7 @@ public class GameManager : MonoBehaviour
 
     void CheatGame_SelfDestruct()
     {
-        Debug.Log("Invoking to destroy all bricks.");
+        //Debug.Log("Invoking to destroy all bricks.");
         BrickSelfDestruct?.Invoke();
 
     }
@@ -216,16 +216,16 @@ public class GameManager : MonoBehaviour
 
     void CheatGame_FoundObjects()
     {
-        Debug.Log("You will won! Destroying all bricks.");
+        //Debug.Log("You will won! Destroying all bricks.");
         //DestroyAllBricks?.Invoke();
         //SceneManager.LoadScene("Win_Scene");
         GameObject[] foundBrickObject = GameObject.FindGameObjectsWithTag("BrickClone");
-        //Debug.Log("Found " + foundObject.Length + " bricks in the scene.");
+        Debug.Log("Found " + foundBrickObject.Length + " bricks in the scene.");
         if (foundBrickObject != null)
         {
             for (int i = 0; i < foundBrickObject.Length; i++)
             {
-                //Debug.Log("Destroying object: " + foundObject[i].name + " : " + i);
+                Debug.Log("Destroying object: " + foundBrickObject[i].name + " : " + i);
                 Destroy(foundBrickObject[i]);
             }
         }
@@ -373,7 +373,7 @@ public class GameManager : MonoBehaviour
         }        
     }
 
-    int remainingBricksCount()
+    int getRemainingBricksCount()
     {
         GameObject[] foundObject = GameObject.FindGameObjectsWithTag("BrickClone");
         //Debug.Log("Found " + foundObject.Length + " bricks in the scene.");
@@ -467,17 +467,13 @@ public class GameManager : MonoBehaviour
         }
 
         // check if all the bricks are destroyed
-
         //if (ballScript.getDestroyedBricksCount() == 105)
-        if (remainingBricksCount() == 0)
+        if (getRemainingBricksCount() == 0)
         {
             //Debug.Log("You won!");
             //OnGameStateChangedToPlaying?.Invoke();
             SceneManager.LoadScene("Win_Scene");
         }
-
-
-
 
     }
 }

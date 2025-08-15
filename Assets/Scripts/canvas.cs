@@ -133,9 +133,8 @@ public class canvas : MonoBehaviour
             playheadIndex = 0; // If already at the top, stay at 0  
         }
 
-
         playheadIndex = playheadIndex % 3; // Toggle between 0 and 1
-                                           //Debug.Log("playheadIndex after decrement: " + playheadIndex);
+        //Debug.Log("playheadIndex after decrement: " + playheadIndex);
 
         movePlayhead(playheadIndex);
 
@@ -264,7 +263,7 @@ public class canvas : MonoBehaviour
     }
 
     // left side menu with red arrow
-    public void ExecuteSelection()
+    public void ExecuteMenuSelection()
     {
         Debug.Log("in ExecuteSelection in Canvas");
         if (playheadIndex == 0)
