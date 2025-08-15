@@ -170,7 +170,7 @@ public class HighScores : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //Debug.Log("HighScores Start");
+        Debug.Log("HighScores Start");
         //PopulateScores();
         //AddHighScore("Anonimous", 5000);
         //Debug.Log(highScores.Count + " high scores populated.");

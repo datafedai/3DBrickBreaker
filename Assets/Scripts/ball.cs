@@ -72,10 +72,10 @@ public class ball : MonoBehaviour
             collisionAudioSource.Play();
             //Debug.Log(collision.gameObject.name + " destroyed.");
 
+            Debug.Log(destroyedBrickCount + " bricks destroyed. before");
             destroyedBrickCount++;
             BrickDestroyed?.Invoke(destroyedBrickCount);
-
-            //Debug.Log(destroyedBrickCount + " bricks destroyed.");
+            Debug.Log(destroyedBrickCount + " bricks destroyed. after");
         }
 
 
@@ -271,7 +271,7 @@ public class ball : MonoBehaviour
 
         isBallLaunched = false;
         isBallMissed = false;
-        initialForce = 20f;
+        initialForce = 10f;
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
 

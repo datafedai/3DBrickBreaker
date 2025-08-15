@@ -21,7 +21,7 @@ public class brick : MonoBehaviour
     {
         // Logic to handle when the ball hits a brick
         // For example, you can destroy the brick or change its state
-        Debug.Log("Brick hit by ball: " + gameObject.name);
+        //Debug.Log("Brick hit by ball: " + gameObject.name);
         Rigidbody brickRB = brickObject.GetComponent<Rigidbody>();
         //brickRB.isKinematic = false; // Make sure the brick can be affected by physics
         //brickRB.useGravity = true;
@@ -42,7 +42,7 @@ public class brick : MonoBehaviour
             {
                 //Debug.Log("Found object: " + foundObject[i].name + " : " + i);
                 //Debug.Log("Found the object: " + foundObject[0].name);
-                if (each.transform.position.y < -4f)
+                if (each.transform.position.y < -3f)
                 {
                     Destroy(each);
                 }

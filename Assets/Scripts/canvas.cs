@@ -54,6 +54,7 @@ public class canvas : MonoBehaviour
     public static canvas Instance { get; private set; }
     //public event Action ClickedYes;
     //public event Action ClickedNo;
+    //private static int brokenBricksCount = 0;
 
 
 
@@ -318,7 +319,7 @@ public class canvas : MonoBehaviour
     void UpdateScore(int bricksDestroyed)
     {
         //Debug.Log("score updated");
-        displayScore.text = (100 * bricksDestroyed).ToString();
+        displayScore.text = (100 * bricksDestroyed).ToString();    
     }
 
     void UpdateBallLives(int lives)
