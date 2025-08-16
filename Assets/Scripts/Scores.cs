@@ -193,7 +193,7 @@ public class Scores : MonoBehaviour
         //RetrieveHighScores();
 
         //saveHighScoresList();
-        loadHighScoresList();
+        //loadHighScoresList();
         //Debug.Log(highScores.Count + " high scores loaded.");
     }
 

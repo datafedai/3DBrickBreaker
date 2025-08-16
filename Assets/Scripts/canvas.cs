@@ -418,7 +418,7 @@ public class canvas : MonoBehaviour
         highScoresPanel1.SetActive(true);
         //displayHighScores.text = "Score Rankings\n\n";
         //HighScores.Instance.getHighScores().Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
-        displayHighScoresPanel1(); // Display high scores in panel on left
+        displayHighScoresPanel(); // Display high scores in panel on left
 
         // display score rankings
         /*
@@ -489,9 +489,9 @@ public class canvas : MonoBehaviour
 
 
         displayHighScores.text = "Score Rankings\n\n";
-        Scores.Instance.getHighScores().Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
+        //Scores.Instance.getHighScores().Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
 
-        displayHighScoresPanel1(); // Display high scores in panel on left
+        displayHighScoresPanel(); // Display high scores in panel on left
         //displayHighScoresPanel2(); // Display high scores in panel in the middle
 
         //Debug.Log("You have won game!");
@@ -505,40 +505,10 @@ public class canvas : MonoBehaviour
         //displayInstruction.text = "Press Space Bar to restart game";
         displayInstruction.text = "Press Space to play again.\nPress Q to return to Main Menu";
 
-
-        //GameObject[] ranks = GameObject.FindGameObjectsWithTag("rank");
-        /*
-        foreach (GameObject rank in ranks)
-        {
-            Debug.Log("Found rank object: " + rank.name);
-            //rank.SetActive(false); // Hide the rank objects
-            TextMeshProUGUI[] allTextMeshPros = rank.GetComponentsInChildren<TextMeshProUGUI>();
-            Debug.Log("score: " + allTextMeshPros[0].name);
-            Debug.Log("name: " + allTextMeshPros[1].name);
-
-
-            foreach (TextMeshProUGUI each in allTextMeshPros)
-            {
-                Debug.Log("Found TextMeshProUGUI: " + each.name);
-                //each.text = "";
-                if (each.name == "score")
-                {
-                    each.text = "888";
-                }
-                else if (each.name == "name")
-                {
-                    each.text = "SungGak";
-                }
-
-            } 
-
-        }   
-        */
-
     }
 
 
-    void displayHighScoresPanel1()
+    void displayHighScoresPanel()
     {
         // panel1: left
 
@@ -652,11 +622,6 @@ public class canvas : MonoBehaviour
         //Debug.Log(SceneManager.GetActiveScene().name);
         //Debug.Log("playheadIndex: " + playheadIndex);
         //Debug.Log("ball lives: " + ball.Instance.getBallLives());
-
-
-
-
-
     }
 
 }

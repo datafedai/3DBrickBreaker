@@ -21,7 +21,7 @@ public class ball : MonoBehaviour
     private bool isBallLaunched;
     public bool isBallMissed;
     private static int ballLives;
-    static private int destroyedBrickCount;
+    //static private int destroyedBrickCount;
 
     public static ball Instance { get; private set; }
     public event Action BallBrickCollision;
@@ -72,10 +72,10 @@ public class ball : MonoBehaviour
             collisionAudioSource.Play();
             //Debug.Log(collision.gameObject.name + " destroyed.");
 
-            Debug.Log(destroyedBrickCount + " bricks destroyed. before");
-            destroyedBrickCount++;
+            //Debug.Log(destroyedBrickCount + " bricks destroyed. before");
+            //destroyedBrickCount++;
             BallBrickCollision?.Invoke();
-            Debug.Log(destroyedBrickCount + " bricks destroyed. after");
+            //Debug.Log(destroyedBrickCount + " bricks destroyed. after");
         }
 
 
@@ -178,9 +178,10 @@ public class ball : MonoBehaviour
     }
 
 
+    // not used, delete
     public int getDestroyedBricksCount()
     {
-        return destroyedBrickCount;
+        return 0; // destroyedBrickCount;
     }
 
     public int getBallLives()
@@ -275,7 +276,7 @@ public class ball : MonoBehaviour
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
 
-        destroyedBrickCount = 0;
+        //destroyedBrickCount = 0;
         timerStarted = true;
         delayTime = 1f;
         timer = 0f;
