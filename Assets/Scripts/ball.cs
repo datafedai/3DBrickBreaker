@@ -24,7 +24,7 @@ public class ball : MonoBehaviour
     static private int destroyedBrickCount;
 
     public static ball Instance { get; private set; }
-    public event Action<int> BrickDestroyed;
+    public event Action BallBrickCollision;
     public event Action<int> BallLives;
     public event Action<GameObject> ballHitBrick;
 
@@ -74,7 +74,7 @@ public class ball : MonoBehaviour
 
             Debug.Log(destroyedBrickCount + " bricks destroyed. before");
             destroyedBrickCount++;
-            BrickDestroyed?.Invoke(destroyedBrickCount);
+            BallBrickCollision?.Invoke();
             Debug.Log(destroyedBrickCount + " bricks destroyed. after");
         }
 

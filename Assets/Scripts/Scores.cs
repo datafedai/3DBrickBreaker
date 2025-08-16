@@ -4,17 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 
 [Serializable]
 public class HighScoreEntry
 {
-    public string playerName;
+    public string name;
     public int score;
 }
 
 [Serializable]
-public class HighScoreDataArray{
+public class HighScoreDataArray
+{
     public HighScoreEntry[] highScoreEntryList;
 }
 
@@ -27,15 +29,18 @@ public class HighScoreDataList
 
 
 [Serializable]
-public class HighScores : MonoBehaviour
+public class Scores : MonoBehaviour
 {
-    public string playerName;
-    public int score;
+    //public string playerName;
+    //public int PlayerScore;
     //public HighScoreEntry[] highScoreEntryList;
 
+    private static int currentPlayerScore = 0;
     List<HighScoreEntry> emptyHighScores = new List<HighScoreEntry>();
-    public static HighScores Instance { get; private set; }
+    public static Scores Instance { get; private set; }
     List<HighScoreEntry> highScores = new List<HighScoreEntry>();
+
+    
 
     private void Awake()
     {
@@ -56,6 +61,17 @@ public class HighScores : MonoBehaviour
         }
     }
 
+    public int getCurrentPlayerScore()
+    {
+        return currentPlayerScore;
+    }
+
+    private void updateCurrentPlayerScore()
+    {
+        GameObject[] brickObjects = GameObject.FindGameObjectsWithTag("BrickClone");
+        int currentBrickObjects = brickObjects.Length;
+        currentPlayerScore = (105 - currentBrickObjects) * 100;
+    }
 
     public List<HighScoreEntry> getHighScores()
     {
@@ -64,9 +80,9 @@ public class HighScores : MonoBehaviour
     }
 
 
-    public void AddHighScore(string playerName, int score)
+    public void AddHighScore(string playerName, int playerScore)
     {
-        highScores.Add(new HighScoreEntry { playerName = playerName, score = score });
+        highScores.Add(new HighScoreEntry { name = playerName, score = playerScore });
     }
 
 
@@ -75,17 +91,17 @@ public class HighScores : MonoBehaviour
     void PopulateScores()
     {
         // populate
-        highScores.Add(new HighScoreEntry { playerName = "SungGak", score = 1700 });
-        highScores.Add(new HighScoreEntry { playerName = "Pascal", score = 2500 });
-        highScores.Add(new HighScoreEntry { playerName = "Isaac ", score = 1200 });
-        highScores.Add(new HighScoreEntry { playerName = "JungEun", score = 1600 });
+        highScores.Add(new HighScoreEntry { name = "SungGak", score = 1700 });
+        highScores.Add(new HighScoreEntry { name = "Pascal", score = 2500 });
+        highScores.Add(new HighScoreEntry { name = "Isaac ", score = 1200 });
+        highScores.Add(new HighScoreEntry { name = "JungEun", score = 1600 });
     }
 
     void RetrieveHighScores()
     {
         foreach (HighScoreEntry each in highScores)
         {
-            Debug.Log("Player: " + each.playerName + ", Score: " + each.score);
+            Debug.Log("Player: " + each.name + ", Score: " + each.score);
         }
     }
 
@@ -107,7 +123,7 @@ public class HighScores : MonoBehaviour
         //Debug.Log(highScores[1].score);
         //Debug.Log(highScores[2].score); 
         //Debug.Log(highScores[3].score);
-   
+
         HighScoreDataList highScoreData = new HighScoreDataList { highScoreEntryList = highScores };
         string json = JsonUtility.ToJson(highScoreData, true);
         File.WriteAllText(Application.persistentDataPath + "/highscoreData.json", json);
@@ -184,7 +200,7 @@ public class HighScores : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        updateCurrentPlayerScore();
     }
 }
 

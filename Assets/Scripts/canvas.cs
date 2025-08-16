@@ -92,7 +92,7 @@ public class canvas : MonoBehaviour
         GameManager.Instance.ArrowDown += MoveArrowDown;
 
         // score update
-        ball.Instance.BrickDestroyed += UpdateScore;
+        ball.Instance.BallBrickCollision += OnBallBrickCollision;
         ball.Instance.BallLives += UpdateBallLives;
         //ball.Instance.BallLives += UpdateLives;     
     }
@@ -110,7 +110,8 @@ public class canvas : MonoBehaviour
         GameManager.Instance.ArrowDown -= MoveArrowDown;
         //GameManager.Instance.WonGame -= YouWonGame;
         // score
-        ball.Instance.BrickDestroyed -= UpdateScore;
+
+        ball.Instance.BallBrickCollision -= OnBallBrickCollision;        
         ball.Instance.BallLives -= UpdateBallLives;
         //ball.Instance.BallLives -= UpdateLives;
     }
@@ -314,12 +315,20 @@ public class canvas : MonoBehaviour
 
     }
 
+    void OnBallBrickCollision()
+    {
+        Debug.Log("ball-brick collision occurred");
+        UpdateScoreToCanvas();
+    }
 
-    void UpdateScore(int bricksDestroyed)
+
+    void UpdateScoreToCanvas()
     {
         //Debug.Log("score updated");
-        displayScore.text = (100 * bricksDestroyed).ToString();    
+        //displayScore.text = (100 * bricksDestroyed).ToString();    
+        displayScore.text = (Scores.Instance.getCurrentPlayerScore()).ToString();
     }
+
 
     void UpdateBallLives(int lives)
     {
@@ -391,16 +400,20 @@ public class canvas : MonoBehaviour
         displayState.text = "Game Over";
         //displayState2.text = "<color=Red>Special</color>\n<size=70><color=Blue>Scene</color></size>";
         displayState2.text = "Play Again?";
-        displayScore.text = "Score: " + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
+        //displayScore.text = "Score: " + (100 * ball.Instance.getDestroyedBricksCount()).ToString();
+
+        int finalScore = Scores.Instance.getCurrentPlayerScore();
+        displayScore.text = "Score: " + finalScore.ToString();
+        saveScore(finalScore);
+        Scores.Instance.loadHighScoresList();
 
         //displayInstruction.text = "Press Space Bar to restart game";
         displayInstruction.text = "Press Space Bar to play again.\nPress Q to return to Main Menu";
         //Debug.Log(" I am on Game Over");
         //SceneManager.LoadScene("Menu_Scene");
         //Debug.Log(SceneManager.GetActiveScene().name);
-        int finalScore = 100 * ball.Instance.getDestroyedBricksCount();
-        saveScore(finalScore);
-        HighScores.Instance.loadHighScoresList();
+
+
 
         highScoresPanel1.SetActive(true);
         //displayHighScores.text = "Score Rankings\n\n";
@@ -422,8 +435,8 @@ public class canvas : MonoBehaviour
     {
         // Save the final score to high scores
         //string playerName = myInputField.text; // Get the player name from the input field
-        HighScores.Instance.AddHighScore(playerName, finalScore); // added bonus score for ball lives
-        HighScores.Instance.saveHighScoresList();
+        Scores.Instance.AddHighScore(playerName, finalScore); // added bonus score for ball lives
+        Scores.Instance.saveHighScoresList();
     }
 
 
@@ -442,13 +455,14 @@ public class canvas : MonoBehaviour
         displayInstruction.text = "Press Space to see high scores.\nPress Q to return to Main Menu";
 
         // experimental
-        int playerScore = 100 * ball.Instance.getDestroyedBricksCount();
+        int playerScore = Scores.Instance.getCurrentPlayerScore();
         int ballLivesLeft = 1 + ball.Instance.getBallLives();
-        //Debug.Log("Player Score: " + playerScore);
-        //Debug.Log("ball lives: " + ballLivesLeft);
-        //Debug.Log(ball.Instance.getBallLives() + playerScore);
-        int finalScore = playerScore + 300 * ballLivesLeft;
+        int finalScore = playerScore + 1000 * ballLivesLeft;
         displayScore.text = "Score: " + finalScore.ToString();
+        Debug.Log("Player Score: " + playerScore);
+        Debug.Log("ball lives: " + ballLivesLeft);
+        //Debug.Log(ball.Instance.getBallLives() + playerScore);
+
 
         // Save the final score to high scores
         saveScore(finalScore);
@@ -475,7 +489,7 @@ public class canvas : MonoBehaviour
 
 
         displayHighScores.text = "Score Rankings\n\n";
-        HighScores.Instance.getHighScores().Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
+        Scores.Instance.getHighScores().Sort((x, y) => y.score.CompareTo(x.score)); // Sort high scores in descending order
 
         displayHighScoresPanel1(); // Display high scores in panel on left
         //displayHighScoresPanel2(); // Display high scores in panel in the middle
@@ -531,20 +545,20 @@ public class canvas : MonoBehaviour
         List<string> ranks = new List<string> { "rank1", "rank2", "rank3", "rank4", "rank5" };
 
         // gameobject rank
-        foreach (string name in ranks)
+        foreach (string rankName in ranks)
         {
-            GameObject rank = GameObject.FindGameObjectWithTag(name);
+            GameObject rank = GameObject.FindGameObjectWithTag(rankName);
             if (rank != null)
             {
                 TextMeshProUGUI[] allTextMeshPros = rank.GetComponentsInChildren<TextMeshProUGUI>();
                 //Debug.Log("score: " + allTextMeshPros[0].name);
                 //Debug.Log("name: " + allTextMeshPros[1].name);
 
-                int index = ranks.IndexOf(name);
-                if (index < HighScores.Instance.getHighScores().Count)
+                int index = ranks.IndexOf(rankName);
+                if (index < Scores.Instance.getHighScores().Count)
                 {
-                    allTextMeshPros[0].text = HighScores.Instance.getHighScores()[index].score.ToString(); // Set the score text
-                    allTextMeshPros[1].text = HighScores.Instance.getHighScores()[index].playerName; // Set the player name text
+                    allTextMeshPros[0].text = Scores.Instance.getHighScores()[index].score.ToString(); // Set the score text
+                    allTextMeshPros[1].text = Scores.Instance.getHighScores()[index].name; // Set the player name text
                 }
                 else
                 {
@@ -589,14 +603,14 @@ public class canvas : MonoBehaviour
     {
 
         // panel2: middle
-        foreach (HighScoreEntry entry in HighScores.Instance.getHighScores().Take(5))  // Display only top 10 scores
+        foreach (HighScoreEntry entry in Scores.Instance.getHighScores().Take(5))  // Display only top 10 scores
         {
 
             int score = entry.score;
-            string playerName = entry.playerName;
+            string playerName = entry.name;
             //Debug.Log("Player: " + playerName + ", Score: " + score);
             //Debug.Log("High Scores ....");
-            displayHighScores.text += entry.score + "\t\t " + entry.playerName + "\n";
+            displayHighScores.text += entry.score + "\t\t " + entry.name + "\n";
 
         }
 
