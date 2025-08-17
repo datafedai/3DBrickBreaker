@@ -379,7 +379,6 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Found " + foundObject.Length + " bricks in the scene.");
         return foundObject.Length;
     }
-    
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

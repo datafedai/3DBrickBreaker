@@ -18,8 +18,8 @@ public class ball : MonoBehaviour
     private bool gameOnPlaying;
     private bool gameOnPause;
     public float initialForce;
-    private bool isBallLaunched;
-    public bool isBallMissed;
+    private bool isBallLaunched;  // ball status if it is moving on Playing
+    public bool isBallMissed;   // ball status if player missed it to hit
     private static int ballLives;
     //static private int destroyedBrickCount;
 
@@ -28,7 +28,7 @@ public class ball : MonoBehaviour
     public event Action<int> BallLives;
     public event Action<GameObject> ballHitBrick;
 
-    
+
     private float delayTime;
     private float timer;
     private bool timerStarted = false;
@@ -61,6 +61,9 @@ public class ball : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        // collision audio
+        collisionAudioSource.Play();
+
         //Debug.Log("collision collider: " + collision.collider);
         //Debug.Log("collision gameObject: " + collision.gameObject.name);
         //Debug.Log("gameObject: " + gameObject.name);
@@ -69,7 +72,7 @@ public class ball : MonoBehaviour
             ballHitBrick?.Invoke(collision.gameObject);
 
             //Destroy(collision.gameObject);
-            collisionAudioSource.Play();
+            //collisionAudioSource.Play();
             //Debug.Log(collision.gameObject.name + " destroyed.");
 
             //Debug.Log(destroyedBrickCount + " bricks destroyed. before");
@@ -81,29 +84,33 @@ public class ball : MonoBehaviour
 
         else if (collision.collider.name == "Paddle")
         {
-            collisionAudioSource.Play();
+            //collisionAudioSource.Play();
 
             paddle pd = collision.collider.GetComponent<paddle>();
             //Debug.Log("Ball hit Paddle");
             Vector2 paddleMoveValue = pd.getMoveValue();    // +1 for right arrow, -1 for left arrow
+
             //Debug.Log("ball velocity1: " + ballRB.linearVelocity);
             //Debug.Log("paddle move value: " + paddleMoveValue.x);
             //Debug.Log("ball linear velocity: " + ballRB.linearVelocity);
             //Debug.Log("paddle move value: " + paddleMoveValue.x);
             //Debug.Log("paddle move speed: " + paddleCont.moveSpeed);
-            float paddleSpeedInfluence = pd.moveSpeed * 0.1f;   // default paddle speed: 20, 
+            //float paddleSpeedInfluence = pd.moveSpeed * 0.1f;   // default paddle speed: 20, 
 
+            float extraBallSpeedByPaddleMovement = pd.moveSpeed * 0.1f;   // default paddle speed: 20, 
             // if the paddle is moving while ball hits it, 
             // the horizontal speed of the ball is added by -2 or +2 by default
-            ballRB.linearVelocity += new Vector3(paddleSpeedInfluence * paddleMoveValue.x, 0f, 0f);
+            ballRB.linearVelocity += new Vector3(extraBallSpeedByPaddleMovement * paddleMoveValue.x, 0f, 0f);
 
             //Debug.Log(ballRB.linearVelocityY);
             //Debug.Log("ball velocity2: " + ballRB.linearVelocity);
         }
+        /*
         else if (collision.collider.name == "LWall" || collision.collider.name == "RWall")
         {
             collisionAudioSource.Play();
         }
+        */
     }
 
 
@@ -137,7 +144,7 @@ public class ball : MonoBehaviour
 
     void PlayAgainNo()
     {
-        
+
         Debug.Log("No Button Clicked ball");
     }
 
@@ -291,37 +298,41 @@ public class ball : MonoBehaviour
         newPos.x = Mathf.Clamp(newPos.x, -wall, wall);
         transform.position = newPos;
         */
+
+        // ball velocity vector, to prevent ball from being horizontally bouncing forever
+        /*
         Vector3 ballV = ballRB.linearVelocity;
-        if (ballV.y < 0)
+        if (ballV.y < 0)    // when ball is moving downward
         {
             ballV.y = Mathf.Clamp(ballRB.linearVelocity.y, -30, -5);
             ballRB.linearVelocity = ballV;
         }
-        else if (ballV.y > 0)
+        else if (ballV.y > 0)   // when ball is moving upward
         {
             ballV.y = Mathf.Clamp(ballRB.linearVelocity.y, 5, 30);
             ballRB.linearVelocity = ballV;
         }
+        */
 
 
         //Debug.Log("timer:1 " + timer);
-            if (!isBallLaunched && gameOnPlaying)
+        if (gameOnPlaying && !isBallLaunched)
+        {
+            //Debug.Log("timer:2 " + timer);
+            if (timerStarted)
             {
-                //Debug.Log("timer:2 " + timer);
-                if (timerStarted)
+                timer += Time.deltaTime;
+                //Debug.Log("timer:3 " + timer);
+                if (timer > delayTime)
                 {
-                    timer += Time.deltaTime;
-                    //Debug.Log("timer:3 " + timer);
-                    if (timer > delayTime)
-                    {
-                        launchBall();
-                        ballLives--;
-                        BallLives?.Invoke(ballLives);
-                        isBallLaunched = true;
-                        timerStarted = false;
-                    }
+                    launchBall();
+                    ballLives--;
+                    BallLives?.Invoke(ballLives);
+                    isBallLaunched = true;
+                    timerStarted = false;
                 }
             }
+        }
 
         if (gameOnPause)
         {
