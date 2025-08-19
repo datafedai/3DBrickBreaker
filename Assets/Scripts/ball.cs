@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 //using UnityEngine.SceneManagement;
 using System.Collections;
 using Unity.VisualScripting;
+using Mono.Cecil.Cil;
 //using System.Numerics;
 
 public class ball : MonoBehaviour
@@ -18,10 +19,13 @@ public class ball : MonoBehaviour
     private bool gameOnPlaying;
     private bool gameOnPause;
     public float initialForce;
-    private bool isBallLaunched;  // ball status if it is moving on Playing
+    //private bool isBallLaunched;  // ball status if it is moving on Playing
     public bool isBallMissed;   // ball status if player missed it to hit
     private static int ballLives;
     //static private int destroyedBrickCount;
+
+    float pdPosY = -3f; // paddle position y
+    float wallPosX = 14f;   // right wall position x 
 
     public static ball Instance { get; private set; }
     public event Action BallBrickCollision;
@@ -34,8 +38,16 @@ public class ball : MonoBehaviour
     private bool timerStarted = false;
 
     public AudioSource collisionAudioSource;
+    BallState currentBallState;
 
 
+    private enum BallState
+    {
+        Ready,      // ready to launch
+        InMoving,   // launched and moving
+        OutMoving,   // out of playing space    
+        //Dead        // ball has no life left
+    }
     private void Awake()
     {
         // Check if an instance already exists and it's not this one.
@@ -156,7 +168,9 @@ public class ball : MonoBehaviour
         Time.timeScale = 1;
         gameOnPlaying = true;
         gameOnPause = false;
-        isBallLaunched = false;
+        //isBallLaunched = false;
+        //currentBallState = BallState.Ready;
+        //currentBallState = BallState.InMoving;
     }
 
     void OnPause()
@@ -177,6 +191,8 @@ public class ball : MonoBehaviour
         //Vector3 launchDirection = new Vector3(1f, 0.01f, 0f).normalized;  // test, straight down
         Vector3 launchDirection = new Vector3(Random.Range(-1f, 1f), -1f, 0f).normalized;  // unit vector with varing direction
         ballRB.AddForce(launchDirection * initialForce, ForceMode.Impulse);
+
+        currentBallState = BallState.InMoving;
     }
 
     void pauseGame()
@@ -210,7 +226,7 @@ public class ball : MonoBehaviour
 
     public void resetIsBallLaunched()
     {
-        isBallLaunched = false;
+        //isBallLaunched = false;
     }
 
 
@@ -224,12 +240,14 @@ public class ball : MonoBehaviour
         BallLives?.Invoke(ballLives);
 
 
-        isBallLaunched = false;
+        //isBallLaunched = false;
         isBallMissed = false;
         //initialForce = 10f;
 
-        ballRB.transform.position = new Vector3(0f, 5f, 0f);
+        ballRB.transform.position = new Vector3(0f, 6f, 0f);
         ballRB.linearVelocity = Vector3.zero;
+
+        currentBallState = BallState.Ready;
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
         //Debug.Log("gameOnpause: " + gameOnPause);
 
@@ -244,27 +262,41 @@ public class ball : MonoBehaviour
     }
 
 
-    bool isBallNotWithinGameSpace()
+    private void UpdateBallState()
     {
         //Debug.Log(transform.position);
 
         // ball missed by paddle
-        if (transform.position.y < -5f)
+        //GameObject pd = GameObject.FindGameObjectWithTag("paddle");
+        //float pdPosY = pd.transform.position.y;
+
+        //GameObject rwall = GameObject.FindGameObjectWithTag("RWall");
+        //float wallPosX = rwall.transform.position.x; 
+
+        if (transform.position.y < pdPosY)
         {
-            //Debug.Log("hey");
-            return true;
+            //Debug.Log("paddle missied ball");
+            currentBallState = BallState.OutMoving;
+
         }
         // ball escaped through between wall and ceiling
-        else if (transform.position.x < -15f || transform.position.x > 15f)
+
+        else if (transform.position.x < -wallPosX || transform.position.x > wallPosX)
         {
             //Debug.Log("hey2");
-            return true;
+            currentBallState = BallState.OutMoving;
+
         }
         // ball is still inside playing space
-        else
+        else if (transform.position == new Vector3(0f, 6f, 0f))
         {
             //Debug.Log("hey3");
-            return false;
+            currentBallState = BallState.Ready;
+
+        }
+        else
+        {
+            currentBallState = BallState.InMoving;
         }
     }
 
@@ -273,11 +305,18 @@ public class ball : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //gameOnPlaying = false;
+        gameOnPause = false;
+
+        Debug.Log("ball state: " + currentBallState);
+        currentBallState = BallState.Ready; 
+        Debug.Log("ball state: " + currentBallState);
+
         //ballRB.linearVelocity = Vector3.zero;
         ballLives = 3;
         BallLives?.Invoke(ballLives);
 
-        isBallLaunched = false;
+        //isBallLaunched = false;
         isBallMissed = false;
         initialForce = 10f;
         //Debug.Log("gameOnPlaying: " + gameOnPlaying);
@@ -314,9 +353,13 @@ public class ball : MonoBehaviour
         }
         */
 
+        //Debug.Log(ballRB.transform.position);
+        //Debug.Log("gameOnPlaying " + gameOnPlaying);
+        //Debug.Log("ball state: " + currentBallState);
+        //Debug.Log("ball out of space: " + isBallOutOfGameSpace());
 
-        //Debug.Log("timer:1 " + timer);
-        if (gameOnPlaying && !isBallLaunched)
+        //if (gameOnPlaying && !isBallLaunched)
+        if (currentBallState == BallState.Ready && gameOnPlaying)
         {
             //Debug.Log("timer:2 " + timer);
             if (timerStarted)
@@ -328,7 +371,8 @@ public class ball : MonoBehaviour
                     launchBall();
                     ballLives--;
                     BallLives?.Invoke(ballLives);
-                    isBallLaunched = true;
+                    //currentBallState = BallState.InMoving;
+                    //isBallLaunched = true;
                     timerStarted = false;
                 }
             }
@@ -345,15 +389,19 @@ public class ball : MonoBehaviour
         //newPos.x = Mathf.Clamp(newPos.x, -14f, 14f);
         //transform.position = newPos;
 
-        if (isBallNotWithinGameSpace()) // check if ball is not inside game playing space
+        UpdateBallState();
+
+        if (currentBallState == BallState.OutMoving) // check if ball is not inside game playing space
         {
             if (ballLives > 0)
             {
                 Restart();
             }
-            else
+            else    // end of game
             {
                 isBallMissed = true; // ball missed or escaped
+                //currentBallState = BallState.Dead;
+                //BallLives?.Invoke(0);
                 //gameOnPlaying = true;
             }
             //Debug.Log("The ball is missed. Game Over");

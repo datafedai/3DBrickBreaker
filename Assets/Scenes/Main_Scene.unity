@@ -3087,7 +3087,7 @@ GameObject:
   - component: {fileID: 993263697}
   m_Layer: 0
   m_Name: RWall
-  m_TagString: Untagged
+  m_TagString: RWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3196,7 +3196,7 @@ GameObject:
   - component: {fileID: 1015801296}
   m_Layer: 0
   m_Name: LWall
-  m_TagString: Untagged
+  m_TagString: LWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4253,8 +4253,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6d31f4e92a69f4a8bd6c1a34b4d51e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: 
-  score: 0
 --- !u!1 &1392553691
 GameObject:
   m_ObjectHideFlags: 0
@@ -6027,7 +6025,7 @@ GameObject:
   - component: {fileID: 1954861308}
   m_Layer: 0
   m_Name: Paddle
-  m_TagString: Untagged
+  m_TagString: paddle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
